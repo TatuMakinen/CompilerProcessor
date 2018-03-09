@@ -1,10 +1,13 @@
-all:compiler
+all: compiler
 
-lex.yy.c:compiler.l
-	flex compiler.l
+lex.yy.c: compiler.l
+	./flex compiler.l
 
-compiler:lex.yy.c
-	gcc -o compiler lex.yy.c -ll
+compiler.tab.c: compiler.y
+	./bison/bin/bison -d compiler.y
 
-test:compiler
-	./compiler < test.c | tr "#" "\n" | grep -v '^~'
+compiler: compiler.tab.c lex.yy.c
+	gcc -o compiler lex.yy.c compiler.tab.c libfl.a bison/lib/liby.a
+
+test: compiler
+	./compiler < test.c
