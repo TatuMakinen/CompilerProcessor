@@ -1,3 +1,7 @@
+%{
+  #include "compiler.tab.h"
+%}
+
 %%
 if                   {return tIF;}
 while                {return tWHILE;}

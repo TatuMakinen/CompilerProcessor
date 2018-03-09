@@ -1,7 +1,7 @@
 %union { char str[80]; int nb; }
 
 %token tID tPO tPF tAO tAF
-%type <dtr> tID
+%type <str> tID
 
 %%
 
