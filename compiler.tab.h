@@ -58,12 +58,9 @@
      tEQUAL = 274,
      tPARGAU = 275,
      tPARDROI = 276,
-     tEOF = 277,
-     tTAB = 278,
-     tSPACE = 279,
-     tINT = 280,
-     tVARIABLE = 281,
-     tEXP = 282
+     tINT = 277,
+     tVARIABLE = 278,
+     tEXP = 279
    };
 #endif
 /* Tokens.  */
@@ -86,12 +83,9 @@
 #define tEQUAL 274
 #define tPARGAU 275
 #define tPARDROI 276
-#define tEOF 277
-#define tTAB 278
-#define tSPACE 279
-#define tINT 280
-#define tVARIABLE 281
-#define tEXP 282
+#define tINT 277
+#define tVARIABLE 278
+#define tEXP 279
 
 
 
@@ -101,7 +95,7 @@ typedef union YYSTYPE
 #line 6 "compiler.y"
 { char* str; int nb; }
 /* Line 1529 of yacc.c.  */
-#line 105 "compiler.tab.h"
+#line 99 "compiler.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
