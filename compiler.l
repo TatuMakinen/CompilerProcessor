@@ -11,8 +11,8 @@ const                   {return tCONST;}
 return                  {return tRETURN;}
 printf                  {return tPRINTF;}
 int                     {return tINT;}
-"{"                     {return tACOLGAU;}
-"}"                     {return tACOLDROI;}
+"{"                     {return tAG;}
+"}"                     {return tAD;}
 ";"                     {return tSEMICOLON;}
 ","                     {return tCOMMA;}
 "+"                     {return tPLUS;}
@@ -20,10 +20,16 @@ int                     {return tINT;}
 "/"                     {return tSLASH;}
 "*"                     {return tMUL;}
 "="                     {return tEQUAL;}
-"("                     {return tPARGAU;}
-")"                     {return tPARDROI;}
+"("                     {return tPG;}
+")"                     {return tPD;}
+"\""                    {return tQUOTE;}
+"\%d"                   {return tPERCENTINT;}
+"\%s"                   {return tPERCENTSTRING;}
+"$1"                    {return tFIRSTARG;}
 [0-9]+                  {yylval.nb=atoi(yytext);
                         return tINTEGER;}
+[a-zA-Z0-9_]+           {yylval.str=strdup(yytext);
+                        return tSTRING;}
 [a-zA-Z][a-zA-Z0-9_]*   {yylval.str=strdup(yytext);
                         return tVARIABLE;}
 [0-9]+E-?[0-9]+         {return tEXP;}
