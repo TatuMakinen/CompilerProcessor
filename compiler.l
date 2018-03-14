@@ -10,6 +10,7 @@ main                    {return tMAIN;}
 const                   {return tCONST;}
 return                  {return tRETURN;}
 printf                  {return tPRINTF;}
+int                     {return tINT};
 "{"                     {return tACOLGAU;}
 "}"                     {return tACOLDROI;}
 ";"                     {return tSEMICOLON;}
@@ -24,6 +25,6 @@ printf                  {return tPRINTF;}
 \n+                     {return tEOF;}
 \t+                     {return tTAB;}
 " "+                    {return tSPACE;}
-[0-9]+                  {return tINT;}
+[0-9]+                  {return tINTEGER;}
 [a-zA-Z][a-zA-Z0-9_]*   {return tVARIABLE;}
 [0-9]+E-?[0-9]+         {return tEXP;}

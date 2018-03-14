@@ -1,6 +1,11 @@
+%{#include<stdio.h>}
+  int yylex(void);
+  void yyerror(char*);
+%}
+
 %union { char str[80]; int nb; }
 
-%token tIF tWHILE tELSE tMAIN tCONST tRETURN tPRINTF tACOLGAU tACOLDROI tSEMICOLON tCOMMA tPLUS tMINUS tSLASH tMUL tEQUAL tPARGAU tPARDROI tEOF tTAB tSPACE tINT tVARIABLE tEXP
+%token tIF tWHILE tELSE tMAIN tCONST tINTEGER tRETURN tPRINTF tACOLGAU tACOLDROI tSEMICOLON tCOMMA tPLUS tMINUS tSLASH tMUL tEQUAL tPARGAU tPARDROI tEOF tTAB tSPACE tINT tVARIABLE tEXP
 %type <str> tVARIABLE
 
 %%
@@ -22,6 +27,3 @@ int main(void) {
   yyparse();
   return 0;
 }
-
-yyerror() {}
-yywrap() {}
