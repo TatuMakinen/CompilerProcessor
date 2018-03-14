@@ -39,19 +39,57 @@
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     tID = 258,
-     tPO = 259,
-     tPF = 260,
-     tAO = 261,
-     tAF = 262
+     tIF = 258,
+     tWHILE = 259,
+     tELSE = 260,
+     tMAIN = 261,
+     tCONST = 262,
+     tRETURN = 263,
+     tPRINTF = 264,
+     tACOLGAU = 265,
+     tACOLDROI = 266,
+     tSEMICOLON = 267,
+     tCOMMA = 268,
+     tPLUS = 269,
+     tMINUS = 270,
+     tSLASH = 271,
+     tMUL = 272,
+     tEQUAL = 273,
+     tPARGAU = 274,
+     tPARDROI = 275,
+     tEOF = 276,
+     tTAB = 277,
+     tSPACE = 278,
+     tINT = 279,
+     tVARIABLE = 280,
+     tEXP = 281
    };
 #endif
 /* Tokens.  */
-#define tID 258
-#define tPO 259
-#define tPF 260
-#define tAO 261
-#define tAF 262
+#define tIF 258
+#define tWHILE 259
+#define tELSE 260
+#define tMAIN 261
+#define tCONST 262
+#define tRETURN 263
+#define tPRINTF 264
+#define tACOLGAU 265
+#define tACOLDROI 266
+#define tSEMICOLON 267
+#define tCOMMA 268
+#define tPLUS 269
+#define tMINUS 270
+#define tSLASH 271
+#define tMUL 272
+#define tEQUAL 273
+#define tPARGAU 274
+#define tPARDROI 275
+#define tEOF 276
+#define tTAB 277
+#define tSPACE 278
+#define tINT 279
+#define tVARIABLE 280
+#define tEXP 281
 
 
 
@@ -61,7 +99,7 @@ typedef union YYSTYPE
 #line 1 "compiler.y"
 { char str[80]; int nb; }
 /* Line 1529 of yacc.c.  */
-#line 65 "compiler.tab.h"
+#line 103 "compiler.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
