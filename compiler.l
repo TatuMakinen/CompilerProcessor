@@ -10,7 +10,7 @@ main                    {return tMAIN;}
 const                   {return tCONST;}
 return                  {return tRETURN;}
 printf                  {return tPRINTF;}
-int                     {return tINT};
+int                     {return tINT;}
 "{"                     {return tACOLGAU;}
 "}"                     {return tACOLDROI;}
 ";"                     {return tSEMICOLON;}
@@ -25,6 +25,8 @@ int                     {return tINT};
 \n+                     {return tEOF;}
 \t+                     {return tTAB;}
 " "+                    {return tSPACE;}
-[0-9]+                  {return tINTEGER;}
-[a-zA-Z][a-zA-Z0-9_]*   {return tVARIABLE;}
+[0-9]+                  {yylval.str=strdup(yytext);
+                        return tINTEGER;}
+[a-zA-Z][a-zA-Z0-9_]*   {yylval.str=strdup(yytext);
+                        return tVARIABLE;}
 [0-9]+E-?[0-9]+         {return tEXP;}

@@ -10,4 +10,4 @@ compiler: compiler.tab.c lex.yy.c
 	gcc -o compiler lex.yy.c compiler.tab.c -ll -ly
 
 test: compiler
-	./compiler < test.c
+	./compiler < test2

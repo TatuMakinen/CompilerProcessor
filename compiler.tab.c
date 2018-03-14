@@ -71,25 +71,26 @@
      tELSE = 260,
      tMAIN = 261,
      tCONST = 262,
-     tRETURN = 263,
-     tPRINTF = 264,
-     tACOLGAU = 265,
-     tACOLDROI = 266,
-     tSEMICOLON = 267,
-     tCOMMA = 268,
-     tPLUS = 269,
-     tMINUS = 270,
-     tSLASH = 271,
-     tMUL = 272,
-     tEQUAL = 273,
-     tPARGAU = 274,
-     tPARDROI = 275,
-     tEOF = 276,
-     tTAB = 277,
-     tSPACE = 278,
-     tINT = 279,
-     tVARIABLE = 280,
-     tEXP = 281
+     tINTEGER = 263,
+     tRETURN = 264,
+     tPRINTF = 265,
+     tACOLGAU = 266,
+     tACOLDROI = 267,
+     tSEMICOLON = 268,
+     tCOMMA = 269,
+     tPLUS = 270,
+     tMINUS = 271,
+     tSLASH = 272,
+     tMUL = 273,
+     tEQUAL = 274,
+     tPARGAU = 275,
+     tPARDROI = 276,
+     tEOF = 277,
+     tTAB = 278,
+     tSPACE = 279,
+     tINT = 280,
+     tVARIABLE = 281,
+     tEXP = 282
    };
 #endif
 /* Tokens.  */
@@ -98,30 +99,35 @@
 #define tELSE 260
 #define tMAIN 261
 #define tCONST 262
-#define tRETURN 263
-#define tPRINTF 264
-#define tACOLGAU 265
-#define tACOLDROI 266
-#define tSEMICOLON 267
-#define tCOMMA 268
-#define tPLUS 269
-#define tMINUS 270
-#define tSLASH 271
-#define tMUL 272
-#define tEQUAL 273
-#define tPARGAU 274
-#define tPARDROI 275
-#define tEOF 276
-#define tTAB 277
-#define tSPACE 278
-#define tINT 279
-#define tVARIABLE 280
-#define tEXP 281
+#define tINTEGER 263
+#define tRETURN 264
+#define tPRINTF 265
+#define tACOLGAU 266
+#define tACOLDROI 267
+#define tSEMICOLON 268
+#define tCOMMA 269
+#define tPLUS 270
+#define tMINUS 271
+#define tSLASH 272
+#define tMUL 273
+#define tEQUAL 274
+#define tPARGAU 275
+#define tPARDROI 276
+#define tEOF 277
+#define tTAB 278
+#define tSPACE 279
+#define tINT 280
+#define tVARIABLE 281
+#define tEXP 282
 
 
 
 
 /* Copy the first part of user declarations.  */
+#line 1 "compiler.y"
+#include <stdio.h>
+  int yylex(void);
+  void yyerror(char*);
 
 
 /* Enabling traces.  */
@@ -144,10 +150,10 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 1 "compiler.y"
-{ char str[80]; int nb; }
+#line 6 "compiler.y"
+{ char* str; int nb; }
 /* Line 193 of yacc.c.  */
-#line 151 "compiler.tab.c"
+#line 157 "compiler.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -160,7 +166,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 164 "compiler.tab.c"
+#line 170 "compiler.tab.c"
 
 #ifdef short
 # undef short
@@ -373,22 +379,22 @@ union yyalloc
 #endif
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  5
+#define YYFINAL  4
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   7
+#define YYLAST   6
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  27
+#define YYNTOKENS  28
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  3
+#define YYNNTS  2
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  4
+#define YYNRULES  2
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  10
+#define YYNSTATES  8
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   281
+#define YYMAXUTOK   282
 
 #define YYTRANSLATE(YYX)						\
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -424,7 +430,7 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26
+      25,    26,    27
 };
 
 #if YYDEBUG
@@ -432,20 +438,19 @@ static const yytype_uint8 yytranslate[] =
    YYRHS.  */
 static const yytype_uint8 yyprhs[] =
 {
-       0,     0,     3,     4,     7
+       0,     0,     3
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      28,     0,    -1,    -1,    29,    28,    -1,    25,    19,    20,
-      10,    11,    -1
+      29,     0,    -1,    26,    20,    21,    11,    12,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,     8,     8,     9,    13
+       0,    16,    16
 };
 #endif
 
@@ -455,10 +460,10 @@ static const yytype_uint8 yyrline[] =
 static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "tIF", "tWHILE", "tELSE", "tMAIN",
-  "tCONST", "tRETURN", "tPRINTF", "tACOLGAU", "tACOLDROI", "tSEMICOLON",
-  "tCOMMA", "tPLUS", "tMINUS", "tSLASH", "tMUL", "tEQUAL", "tPARGAU",
-  "tPARDROI", "tEOF", "tTAB", "tSPACE", "tINT", "tVARIABLE", "tEXP",
-  "$accept", "Program", "Fonction", 0
+  "tCONST", "tINTEGER", "tRETURN", "tPRINTF", "tACOLGAU", "tACOLDROI",
+  "tSEMICOLON", "tCOMMA", "tPLUS", "tMINUS", "tSLASH", "tMUL", "tEQUAL",
+  "tPARGAU", "tPARDROI", "tEOF", "tTAB", "tSPACE", "tINT", "tVARIABLE",
+  "tEXP", "$accept", "Fonction", 0
 };
 #endif
 
@@ -469,20 +474,20 @@ static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
-     275,   276,   277,   278,   279,   280,   281
+     275,   276,   277,   278,   279,   280,   281,   282
 };
 # endif
 
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    27,    28,    28,    29
+       0,    28,    29
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     0,     2,     5
+       0,     2,     5
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -490,27 +495,27 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       2,     0,     0,     2,     0,     1,     3,     0,     0,     4
+       0,     0,     0,     0,     1,     0,     0,     2
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     2,     3
+      -1,     2
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -26
+#define YYPACT_NINF -27
 static const yytype_int8 yypact[] =
 {
-     -25,   -18,     2,   -25,   -17,   -26,   -26,    -6,    -5,   -26
+     -26,   -19,     2,   -18,   -27,    -7,    -6,   -27
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -26,     4,   -26
+     -27,   -27
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -520,19 +525,19 @@ static const yytype_int8 yypgoto[] =
 #define YYTABLE_NINF -1
 static const yytype_uint8 yytable[] =
 {
-       1,     4,     5,     7,     8,     0,     9,     6
+       1,     3,     4,     5,     6,     0,     7
 };
 
 static const yytype_int8 yycheck[] =
 {
-      25,    19,     0,    20,    10,    -1,    11,     3
+      26,    20,     0,    21,    11,    -1,    12
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,    25,    28,    29,    19,     0,    28,    20,    10,    11
+       0,    26,    29,    20,     0,    21,    11,    12
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1346,16 +1351,16 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 4:
-#line 14 "compiler.y"
+        case 2:
+#line 17 "compiler.y"
     {
-    printf("Declaration de la fonction : '%s' \n", (yyvsp[(1) - (5)].str));
-  ;}
+      printf("Declaration de la fonction : '%s' \n", (yyvsp[(1) - (5)].str));
+    ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1359 "compiler.tab.c"
+#line 1364 "compiler.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1569,7 +1574,7 @@ yyreturn:
 }
 
 
-#line 19 "compiler.y"
+#line 29 "compiler.y"
 
 
 int main(void) {
@@ -1577,5 +1582,14 @@ int main(void) {
   return 0;
 }
 
-yyerror() {}
-yywrap() {}
+/*Program :
+  | Fonction Program
+  ;
+
+Fonction :
+  tVARIABLE tPARGAU tPARDROI tACOLGAU tACOLDROI
+  {
+    printf("Declaration de la fonction : '%s' \n", $1);
+  }
+  ; */
+

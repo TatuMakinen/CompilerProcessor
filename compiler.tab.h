@@ -44,25 +44,26 @@
      tELSE = 260,
      tMAIN = 261,
      tCONST = 262,
-     tRETURN = 263,
-     tPRINTF = 264,
-     tACOLGAU = 265,
-     tACOLDROI = 266,
-     tSEMICOLON = 267,
-     tCOMMA = 268,
-     tPLUS = 269,
-     tMINUS = 270,
-     tSLASH = 271,
-     tMUL = 272,
-     tEQUAL = 273,
-     tPARGAU = 274,
-     tPARDROI = 275,
-     tEOF = 276,
-     tTAB = 277,
-     tSPACE = 278,
-     tINT = 279,
-     tVARIABLE = 280,
-     tEXP = 281
+     tINTEGER = 263,
+     tRETURN = 264,
+     tPRINTF = 265,
+     tACOLGAU = 266,
+     tACOLDROI = 267,
+     tSEMICOLON = 268,
+     tCOMMA = 269,
+     tPLUS = 270,
+     tMINUS = 271,
+     tSLASH = 272,
+     tMUL = 273,
+     tEQUAL = 274,
+     tPARGAU = 275,
+     tPARDROI = 276,
+     tEOF = 277,
+     tTAB = 278,
+     tSPACE = 279,
+     tINT = 280,
+     tVARIABLE = 281,
+     tEXP = 282
    };
 #endif
 /* Tokens.  */
@@ -71,35 +72,36 @@
 #define tELSE 260
 #define tMAIN 261
 #define tCONST 262
-#define tRETURN 263
-#define tPRINTF 264
-#define tACOLGAU 265
-#define tACOLDROI 266
-#define tSEMICOLON 267
-#define tCOMMA 268
-#define tPLUS 269
-#define tMINUS 270
-#define tSLASH 271
-#define tMUL 272
-#define tEQUAL 273
-#define tPARGAU 274
-#define tPARDROI 275
-#define tEOF 276
-#define tTAB 277
-#define tSPACE 278
-#define tINT 279
-#define tVARIABLE 280
-#define tEXP 281
+#define tINTEGER 263
+#define tRETURN 264
+#define tPRINTF 265
+#define tACOLGAU 266
+#define tACOLDROI 267
+#define tSEMICOLON 268
+#define tCOMMA 269
+#define tPLUS 270
+#define tMINUS 271
+#define tSLASH 272
+#define tMUL 273
+#define tEQUAL 274
+#define tPARGAU 275
+#define tPARDROI 276
+#define tEOF 277
+#define tTAB 278
+#define tSPACE 279
+#define tINT 280
+#define tVARIABLE 281
+#define tEXP 282
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 1 "compiler.y"
-{ char str[80]; int nb; }
+#line 6 "compiler.y"
+{ char* str; int nb; }
 /* Line 1529 of yacc.c.  */
-#line 103 "compiler.tab.h"
+#line 105 "compiler.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
