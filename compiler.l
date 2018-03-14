@@ -25,7 +25,7 @@ int                     {return tINT;}
 \n+                     {return tEOF;}
 \t+                     {return tTAB;}
 " "+                    {return tSPACE;}
-[0-9]+                  {yylval.str=strdup(yytext);
+[0-9]+                  {yylval.nb=atoi(yytext);
                         return tINTEGER;}
 [a-zA-Z][a-zA-Z0-9_]*   {yylval.str=strdup(yytext);
                         return tVARIABLE;}

@@ -381,16 +381,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  4
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   6
+#define YYLAST   20
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  28
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  2
+#define YYNNTS  7
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  2
+#define YYNRULES  11
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  8
+#define YYNSTATES  25
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
@@ -438,19 +438,24 @@ static const yytype_uint8 yytranslate[] =
    YYRHS.  */
 static const yytype_uint8 yyprhs[] =
 {
-       0,     0,     3
+       0,     0,     3,    12,    13,    15,    17,    20,    25,    26,
+      31,    32
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      29,     0,    -1,    26,    20,    21,    11,    12,    -1
+      29,     0,    -1,    25,    24,     6,    20,    21,    11,    30,
+      12,    -1,    -1,    32,    -1,    31,    -1,    33,    13,    -1,
+      33,    19,     8,    13,    -1,    -1,    25,    24,    26,    34,
+      -1,    -1,    14,    26,    34,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    16,    16
+       0,    14,    14,    20,    21,    22,    24,    25,    26,    27,
+      29,    30
 };
 #endif
 
@@ -463,7 +468,8 @@ static const char *const yytname[] =
   "tCONST", "tINTEGER", "tRETURN", "tPRINTF", "tACOLGAU", "tACOLDROI",
   "tSEMICOLON", "tCOMMA", "tPLUS", "tMINUS", "tSLASH", "tMUL", "tEQUAL",
   "tPARGAU", "tPARDROI", "tEOF", "tTAB", "tSPACE", "tINT", "tVARIABLE",
-  "tEXP", "$accept", "Fonction", 0
+  "tEXP", "$accept", "Main", "Content", "VariableDeclaration",
+  "VariableDefinition", "Variable", "RemVariable", 0
 };
 #endif
 
@@ -481,13 +487,15 @@ static const yytype_uint16 yytoknum[] =
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    28,    29
+       0,    28,    29,    30,    30,    30,    31,    32,    33,    33,
+      34,    34
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     5
+       0,     2,     8,     0,     1,     1,     2,     4,     0,     4,
+       0,     3
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -495,49 +503,59 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     0,     0,     0,     1,     0,     0,     2
+       0,     0,     0,     0,     1,     0,     0,     0,     8,     0,
+       0,     5,     4,     0,     0,     2,     6,     0,    10,     0,
+       0,     9,     7,    10,    11
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     2
+      -1,     2,    10,    11,    12,    13,    21
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -27
+#define YYPACT_NINF -25
 static const yytype_int8 yypact[] =
 {
-     -26,   -19,     2,   -18,   -27,    -7,    -6,   -27
+     -24,   -21,     4,    -1,   -25,   -14,   -10,    -4,   -12,   -15,
+      -2,   -25,   -25,   -11,    -9,   -25,   -25,     6,     1,     3,
+      -8,   -25,   -25,     1,   -25
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -27,   -27
+     -25,   -25,   -25,   -25,   -25,   -25,    -3
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule which
    number is the opposite.  If zero, do what YYDEFACT says.
    If YYTABLE_NINF, syntax error.  */
-#define YYTABLE_NINF -1
-static const yytype_uint8 yytable[] =
+#define YYTABLE_NINF -4
+static const yytype_int8 yytable[] =
 {
-       1,     3,     4,     5,     6,     0,     7
+      -3,     1,    16,     3,     4,     5,     6,     8,    17,    14,
+      15,     7,     0,     9,    19,    20,    22,    18,    23,     0,
+      24
 };
 
 static const yytype_int8 yycheck[] =
 {
-      26,    20,     0,    21,    11,    -1,    12
+      12,    25,    13,    24,     0,     6,    20,    11,    19,    24,
+      12,    21,    -1,    25,     8,    14,    13,    26,    26,    -1,
+      23
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,    26,    29,    20,     0,    21,    11,    12
+       0,    25,    29,    24,     0,     6,    20,    21,    11,    25,
+      30,    31,    32,    33,    24,    12,    13,    19,    26,     8,
+      14,    34,    13,    26,    34
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1352,15 +1370,55 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 17 "compiler.y"
+#line 15 "compiler.y"
     {
-      printf("Declaration de la fonction : '%s' \n", (yyvsp[(1) - (5)].str));
+      printf("Declaration de la fonction : 'main' \n");
     ;}
+    break;
+
+  case 3:
+#line 20 "compiler.y"
+    {printf("Content : 'none' \n");}
+    break;
+
+  case 4:
+#line 21 "compiler.y"
+    {;}
+    break;
+
+  case 5:
+#line 22 "compiler.y"
+    {;}
+    break;
+
+  case 6:
+#line 24 "compiler.y"
+    {;}
+    break;
+
+  case 7:
+#line 25 "compiler.y"
+    {printf("Valeur de la variable : '%d'\n",(yyvsp[(3) - (4)].nb));}
+    break;
+
+  case 9:
+#line 27 "compiler.y"
+    {printf("Variable : '%s' \n", (yyvsp[(3) - (4)].str));}
+    break;
+
+  case 10:
+#line 29 "compiler.y"
+    {printf("Variable : 'none' \n");}
+    break;
+
+  case 11:
+#line 30 "compiler.y"
+    {printf("Variable 2 : '%s' \n", (yyvsp[(2) - (3)].str));}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1364 "compiler.tab.c"
+#line 1422 "compiler.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1574,7 +1632,7 @@ yyreturn:
 }
 
 
-#line 29 "compiler.y"
+#line 33 "compiler.y"
 
 
 int main(void) {

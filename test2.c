@@ -1,1 +1,1 @@
-main(){int aa;}
+main(){}
