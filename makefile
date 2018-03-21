@@ -7,7 +7,7 @@ compiler.tab.c: compiler.y
 	bison -d compiler.y
 
 compiler: compiler.tab.c lex.yy.c
-	gcc -o compiler lex.yy.c compiler.tab.c -ll -ly
+	gcc -o compiler lex.yy.c compiler.tab.c libfl.a /home/makinen/bison/bison-3.0.4/lib/liby.a
 
 test: compiler
-	./compiler < test2.c
+	compiler < test.c
