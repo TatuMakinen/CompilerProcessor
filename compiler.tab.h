@@ -60,12 +60,10 @@
      tPG = 276,
      tPD = 277,
      tINT = 278,
-     tSTRING = 279,
-     tVARIABLE = 280,
-     tEXP = 281,
-     tFIRSTARG = 282,
-     tPERCENTINT = 283,
-     tPERCENTSTRING = 284
+     tVARIABLE = 279,
+     tEXP = 280,
+     tFIRSTARG = 281,
+     tPERCENTINT = 282
    };
 #endif
 /* Tokens.  */
@@ -90,22 +88,20 @@
 #define tPG 276
 #define tPD 277
 #define tINT 278
-#define tSTRING 279
-#define tVARIABLE 280
-#define tEXP 281
-#define tFIRSTARG 282
-#define tPERCENTINT 283
-#define tPERCENTSTRING 284
+#define tVARIABLE 279
+#define tEXP 280
+#define tFIRSTARG 281
+#define tPERCENTINT 282
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 6 "compiler.y"
+#line 8 "compiler.y"
 { char* str; int nb; }
 /* Line 1529 of yacc.c.  */
-#line 109 "compiler.tab.h"
+#line 105 "compiler.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

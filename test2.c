@@ -1,4 +1,5 @@
 int   main(){
   int i = 5;
-  printf("adam %d",i);
+  int x = 4;
+  int t = i + x;
 }
