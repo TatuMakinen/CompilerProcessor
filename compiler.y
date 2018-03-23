@@ -26,18 +26,25 @@
   RemindProgram : {};
     | Line RemindProgram {};
   Line : Content tSEMICOLON
+<<<<<<< HEAD
   Content : {printf("Content : 'none' \n")}
     |Addition {};
     |VariableDefinition  {};
     |VariableDeclaration  {};
+=======
+  Content : {printf("Content : 'none' \n");};
+    |VariableDefinition {};
+    |VariableDeclaration {};
+>>>>>>> a5166f1b5fc641d18256f41e6d2d2fc574d4bf7d
     |Print {};
 
   VariableDeclaration : Variable {};
-  VariableDefinition : Variable tEQUAL tINTEGER {printf("Valeur de la variable : '%d'\n",$3)};
-  Variable :  tINT tVARIABLE RemVariable {printf("Nom de la Variable 1: '%s' \n", $2)};
-  RemVariable : {printf("Variable : 'none' \n")};
-    |tCOMMA tVARIABLE RemVariable {printf("Variable 2 : '%s' \n", $2)};
+  VariableDefinition : Variable tEQUAL tINTEGER {printf("Valeur de la variable : '%d'\n",$3);};
+  Variable :  tINT tVARIABLE RemVariable {printf("Nom de la Variable 1: '%s' \n", $2);};
+  RemVariable : {printf("Variable : 'none' \n");};
+    |tCOMMA tVARIABLE RemVariable {printf("Variable 2 : '%s' \n", $2);};
 
+<<<<<<< HEAD
   VariableTmp : tINTEGER {int adr = empiler(pile,'i',$1,1);printf("AFC r0 %d\n",$1);printf("STORE %d r0 \n",adr)};
     | tVARIABLE {empiler(&pile,'i',$1,1);printf("Voici ton string %s",$1)};
 
@@ -45,8 +52,12 @@
 
   Print : tPRINTF tPG tQUOTE tVARIABLE tQUOTE tPD {printf("Nous printons : '%s'\n",$4)};
   /*| tPRINTF tPG tQUOTE RemPrint tQUOTE tCOMMA tVARIABLE tPD {printf("Nous printons : '%s'\n",$7)};
+=======
+  Print : tPRINTF tPG tQUOTE tSTRING tQUOTE tPD {printf("Nous printons : '%s'\n",$4);};
+  | tPRINTF tPG tQUOTE RemPrint tQUOTE tCOMMA tVARIABLE tPD {printf("Nous printons : '%s'\n",$7);};
+>>>>>>> a5166f1b5fc641d18256f41e6d2d2fc574d4bf7d
 
-  RemPrint : {printf("Content : 'none' \n")}
+  RemPrint : {printf("Content : 'none' \n");}
   | tPERCENTINT tSTRING {};
   | tSTRING RemPrint {};*/
 %%
