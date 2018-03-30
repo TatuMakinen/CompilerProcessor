@@ -67,6 +67,4 @@ void afficherPile(Pile *pile)
         printf("Variable : id=%s, type=%s, adr=%d, depth=%d\n", actuel->id,actuel->type,actuel->adr,actuel->depth);
         actuel = actuel->suivant;
     }
-
-    printf("\n");
 }

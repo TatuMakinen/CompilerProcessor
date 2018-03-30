@@ -7,6 +7,7 @@
   char* type;
   char* name;
   int res;
+  int depth = 0;
 %}
 
 %union { char* str; int nb; }
@@ -27,19 +28,20 @@
     ;
   Program : Line RemindProgram {};
   RemindProgram : {};
-    | Line RemindProgram {};
-  Line : Content tSEMICOLON;
+    |Line RemindProgram {};
+  Line : Content tSEMICOLON {};
+	|If {};
   Content : {printf("Content : 'none' \n");};
     |Arithmetique {};
     |VariableDefinition  {};
     |VariableDeclaration  {};
-    |IfElseStatement {};
-	  |Print {};
+    |Print {};
+
 
   Arithmetique : VariableDefinition RemArith {};
     | Variable tEQUAL tPG VarInt RemArith tPD  RemArith {};
   Operation : tPLUS {printf("Addition");};
-    |tMINUS {printf("Soustraction");}
+    |tMINUS {printf("Soustraction");};
     |tSLASH {printf("Division");};
     |tMUL {printf("Multiplication");};
   RemArith : Operation tPG VarInt RemArith tPD{};
@@ -48,16 +50,21 @@
 
 
   VariableType : {};
-    | tINT {type = "int";printf(" int ");}
-  VariableDeclaration : Variable RemVariable {empiler(pile,type,name,0);printf("-Declaration");};
-  VariableDefinition : Variable tEQUAL VarInt {empiler(pile, type,name,0);afficherPile(pile);printf("-Definition");};
-  Variable :  VariableType tVARIABLE {name = $2;printf("Variable: '%s'", $2);};
+    | tINT {type = "int";};
+  VariableDeclaration : Variable RemVariable {empiler(pile,type,name,depth);printf("-Declaration\n");};
+  VariableDefinition : Variable tEQUAL VarInt {empiler(pile, type,name,depth);afficherPile(pile);printf("-Definition\n");};
+  Variable :  VariableType tVARIABLE {};
   RemVariable : {};
-    |tCOMMA tVARIABLE RemVariable {name = $2;empiler(pile,type,name,0);printf("Variable2: '%s' ", $2);};
-  VarInt : tINTEGER {printf("%d \n",$1);};
+    |tCOMMA tVARIABLE RemVariable {name = $2;empiler(pile,type,name,depth);};
+  VarInt : tINTEGER {};
     | tVARIABLE {printf("Voici ton string %s",$1);};
 
 
+  If : StartIf RemindProgram EndIf {};
+  EndIf : tAD;
+
+  StartIf : tIF tPG Boolean tPD tAG {++depth;printf("Depth = %d\n",depth);};
+  Boolean : {printf("Boolean ici\n");};
 
 
 
@@ -69,7 +76,6 @@ printf("LOAD r0 %d\n",pile->premier);printf("LOAD r1 %d\n",pile->premier->suivan
 
 
   Print : tPRINTF tPG tQUOTE tVARIABLE tQUOTE tPD {printf("Nous printons : '%s'\n",$4);};
-    | tPRINTF tPG
   /*| tPRINTF tPG tQUOTE RemPrint tQUOTE tCOMMA tVARIABLE tPD {printf("Nous printons : '%s'\n",$7)};
   Print : tPRINTF tPG tQUOTE tSTRING tQUOTE tPD {printf("Nous printons : '%s'\n",$4);};
   | tPRINTF tPG tQUOTE RemPrint tQUOTE tCOMMA tVARIABLE tPD {printf("Nous printons : '%s'\n",$7);};
