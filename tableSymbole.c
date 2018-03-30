@@ -18,16 +18,18 @@ struct Pile
     int adr;
 };
 
-Pile initPile(Pile pile){
-  pile.premier = NULL;
-  pile.adr = 0;
-  return pile;
+Pile* initPile(){
+  Pile *pile = malloc(sizeof(*pile));
+  pile->premier = NULL;	
+  pile->adr = 0;
 }
 
 int empiler(Pile* pile, char* type, char* id, int depth){
 
-  Element* element = malloc(sizeof(Element));
-
+  Element* element = malloc(sizeof(*element));
+  if(pile == NULL | element ==NULL){
+		exit(EXIT_FAILURE);
+  }
   element->adr = pile->adr;
   pile->adr++;
   element->type = type;
@@ -40,11 +42,13 @@ int empiler(Pile* pile, char* type, char* id, int depth){
 
 void depiler(Pile* pile){
 
+	if(pile != NULL){
+		exit(EXIT_FAILURE);
+	}
   Element* thingToDepile = pile->premier;
 
-  if(pile != NULL || pile->premier != NULL){
+  if(pile != NULL && pile->premier != NULL){
     pile->premier = pile->premier->suivant;
     free(thingToDepile);
   }
-
 }
