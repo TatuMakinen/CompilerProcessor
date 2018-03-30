@@ -1,0 +1,4 @@
+cd ~/bison/bison-3.0.4
+./configure
+make bison
+make install

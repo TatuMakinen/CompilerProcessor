@@ -18,16 +18,16 @@ struct Pile
     int adr;
 };
 
-Pile initPile(){
-  Pile* pile = malloc(sizeof(*pile));
+Pile * initPile(){
+  Pile* pile = malloc(sizeof(Pile));
   pile->premier = NULL;
   pile->adr = 0;
-  return *pile;
+  return pile;
 }
 
 int empiler(Pile* pile, char* type, char* id, int depth){
 
-  Element* element = malloc(sizeof(*element));
+  Element* element = malloc(sizeof(Element));
 
   element->adr = pile->adr;
   pile->adr++;
