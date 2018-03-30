@@ -31,4 +31,6 @@ int                     {return tINT;}
 [a-zA-Z][a-zA-Z0-9_]*   {yylval.str=strdup(yytext);
                         return tVARIABLE;}
 [0-9]+E-?[0-9]+         {return tEXP;}
+[a-zA-Z0-9_]+           {yylval.str=strdup(yytext);
+                        return tCHAINE;}
 [ \n\t];

@@ -12,7 +12,7 @@
 
 %union { char* str; int nb; }
 
-%token tIF tWHILE tELSE tMAIN tQUOTE  tCONST tINTEGER tRETURN tPRINTF tSTRING tAG tAD tSEMICOLON tCOMMA tPLUS tMINUS tSLASH tMUL tEQUAL tPG tPD tINT tVARIABLE tEXP tFIRSTARG tPERCENTINT
+%token tIF tWHILE tELSE tMAIN tQUOTE tCHAINE tCONST tINTEGER tRETURN tPRINTF tSTRING tAG tAD tSEMICOLON tCOMMA tPLUS tMINUS tSLASH tMUL tEQUAL tPG tPD tINT tVARIABLE tEXP tFIRSTARG tPERCENTINT
 %type <str> tVARIABLE
 %type <nb> tINTEGER
 //%type <str> tSTRING
@@ -66,6 +66,12 @@
   StartIf : tIF tPG Boolean tPD tAG {++depth;printf("Depth = %d\n",depth);};
   Boolean : {printf("Boolean ici\n");};
 
+  Print : tPRINTF tPG tQUOTE RemPrint tQUOTE tPD {};
+    | tPRINTF tPG tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA tVARIABLE tPD {printf("Nous printons : %s \n",$8);};
+    | tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tVARIABLE tPD {printf("Nous printons : %s \n",$9);};
+
+  RemPrint : {};
+    | tCHAINE RemPrint {printTest = $1;printf("Nous printons : %s \n",printTest)};
 
 
 /*
@@ -73,15 +79,6 @@ int adr = empiler(pile,'i',$1,1);printf("AFC r0 %d\n",$1);printf("STORE %d r0 \n
 empiler(&pile,'i',$1,1);
 printf("LOAD r0 %d\n",pile->premier);printf("LOAD r1 %d\n",pile->premier->suivant);printf("ADD R0 R1");printf("STORE %d R0",pile->premier->suivant);depiler(pile);
 */
-
-
-  Print : tPRINTF tPG tQUOTE tVARIABLE tQUOTE tPD {printf("Nous printons : '%s'\n",$4);};
-  /*| tPRINTF tPG tQUOTE RemPrint tQUOTE tCOMMA tVARIABLE tPD {printf("Nous printons : '%s'\n",$7)};
-  Print : tPRINTF tPG tQUOTE tSTRING tQUOTE tPD {printf("Nous printons : '%s'\n",$4);};
-  | tPRINTF tPG tQUOTE RemPrint tQUOTE tCOMMA tVARIABLE tPD {printf("Nous printons : '%s'\n",$7);};
-  RemPrint : {printf("Content : 'none' \n");}
-  | tPERCENTINT tSTRING {};
-  | tSTRING RemPrint {};*/
 %%
 
 int main(void) {
