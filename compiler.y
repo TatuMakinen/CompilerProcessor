@@ -4,6 +4,9 @@
   int yylex(void);
   void yyerror(char*);
   Pile *pile;
+  char* type;
+  char* name;
+  int res;
 %}
 
 %union { char* str; int nb; }
@@ -30,7 +33,8 @@
     |Arithmetique {};
     |VariableDefinition  {};
     |VariableDeclaration  {};
-	|Print {};
+    |IfElseStatement {};
+	  |Print {};
 
   Arithmetique : VariableDefinition RemArith {};
     | Variable tEQUAL tPG VarInt RemArith tPD  RemArith {};
@@ -42,15 +46,20 @@
     | Operation VarInt RemArith {};
     | Operation VarInt {};
 
+
   VariableType : {};
-    | tINT {printf(" int ");}
-  VariableDeclaration : Variable RemVariable {printf("-Declaration");};
-  VariableDefinition : Variable tEQUAL VarInt {printf("-Definition");};
-  Variable :  VariableType tVARIABLE {printf("Variable: '%s' ", $2);};
+    | tINT {type = "int";printf(" int ");}
+  VariableDeclaration : Variable RemVariable {empiler(pile,type,name,0);printf("-Declaration");};
+  VariableDefinition : Variable tEQUAL VarInt {empiler(pile, type,name,0);afficherPile(pile);printf("-Definition");};
+  Variable :  VariableType tVARIABLE {name = $2;printf("Variable: '%s'", $2);};
   RemVariable : {};
-    |tCOMMA tVARIABLE RemVariable {printf("Variable2: '%s' ", $2);};
-  VarInt : tINTEGER {printf("%d ",$1);};
+    |tCOMMA tVARIABLE RemVariable {name = $2;empiler(pile,type,name,0);printf("Variable2: '%s' ", $2);};
+  VarInt : tINTEGER {printf("%d \n",$1);};
     | tVARIABLE {printf("Voici ton string %s",$1);};
+
+
+
+
 
 /*
 int adr = empiler(pile,'i',$1,1);printf("AFC r0 %d\n",$1);printf("STORE %d r0 \n",adr)
@@ -60,6 +69,7 @@ printf("LOAD r0 %d\n",pile->premier);printf("LOAD r1 %d\n",pile->premier->suivan
 
 
   Print : tPRINTF tPG tQUOTE tVARIABLE tQUOTE tPD {printf("Nous printons : '%s'\n",$4);};
+    | tPRINTF tPG
   /*| tPRINTF tPG tQUOTE RemPrint tQUOTE tCOMMA tVARIABLE tPD {printf("Nous printons : '%s'\n",$7)};
   Print : tPRINTF tPG tQUOTE tSTRING tQUOTE tPD {printf("Nous printons : '%s'\n",$4);};
   | tPRINTF tPG tQUOTE RemPrint tQUOTE tCOMMA tVARIABLE tPD {printf("Nous printons : '%s'\n",$7);};

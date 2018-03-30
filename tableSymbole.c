@@ -20,8 +20,9 @@ struct Pile
 
 Pile* initPile(){
   Pile *pile = malloc(sizeof(*pile));
-  pile->premier = NULL;	
+  pile->premier = NULL;
   pile->adr = 0;
+  return pile;
 }
 
 int empiler(Pile* pile, char* type, char* id, int depth){
@@ -51,4 +52,21 @@ void depiler(Pile* pile){
     pile->premier = pile->premier->suivant;
     free(thingToDepile);
   }
+}
+
+void afficherPile(Pile *pile)
+{
+    if (pile == NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
+    Element *actuel = pile->premier;
+
+    while (actuel != NULL)
+    {
+        printf("Variable : id=%s, type=%s, adr=%d, depth=%d\n", actuel->id,actuel->type,actuel->adr,actuel->depth);
+        actuel = actuel->suivant;
+    }
+
+    printf("\n");
 }
