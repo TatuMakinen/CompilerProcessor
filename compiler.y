@@ -3,8 +3,7 @@
   #include "tableSymbole.c"
   int yylex(void);
   void yyerror(char*);
-  Pile pile;
-  pile = initPile(&pile);
+  Pile *pile;
 %}
 
 %union { char* str; int nb; }
@@ -20,8 +19,7 @@
   Main :
     tINT tMAIN tPG tPD tAG Program tAD
     {
-      int adr = empiler(pile, "a", "test", 1);
-      printf("Declaration de la fonction : 'main' \n %d",adr);
+      printf("Declaration de la fonction : 'main' \n");
     }
     ;
   Program : Line RemindProgram {};
@@ -29,28 +27,37 @@
     | Line RemindProgram {};
   Line : Content tSEMICOLON;
   Content : {printf("Content : 'none' \n");};
-    |Addition {};
+    |Arithmetique {};
     |VariableDefinition  {};
     |VariableDeclaration  {};
 	|Print {};
 
-  VariableType : tINT {printf(" int ");};
+  Arithmetique : VariableDefinition RemArith {};
+    | Variable tEQUAL tPG VarInt RemArith tPD  RemArith {};
+  Operation : tPLUS {printf("Addition");};
+    |tMINUS {printf("Soustraction");}
+    |tSLASH {printf("Division");};
+    |tMUL {printf("Multiplication");};
+  RemArith : Operation tPG VarInt RemArith tPD{};
+    | Operation VarInt RemArith {};
+    | Operation VarInt {};
+
+  VariableType : {};
+    | tINT {printf(" int ");}
   VariableDeclaration : Variable RemVariable {printf("-Declaration");};
-  VariableDefinition : Variable tEQUAL VariableTmp {printf("-Definition");};
+  VariableDefinition : Variable tEQUAL VarInt {printf("-Definition");};
   Variable :  VariableType tVARIABLE {printf("Variable: '%s' ", $2);};
   RemVariable : {};
     |tCOMMA tVARIABLE RemVariable {printf("Variable2: '%s' ", $2);};
-
-
-  VariableTmp : tINTEGER {printf("%d ",$1);};
+  VarInt : tINTEGER {printf("%d ",$1);};
     | tVARIABLE {printf("Voici ton string %s",$1);};
+
 /*
 int adr = empiler(pile,'i',$1,1);printf("AFC r0 %d\n",$1);printf("STORE %d r0 \n",adr)
 empiler(&pile,'i',$1,1);
 printf("LOAD r0 %d\n",pile->premier);printf("LOAD r1 %d\n",pile->premier->suivant);printf("ADD R0 R1");printf("STORE %d R0",pile->premier->suivant);depiler(pile);
 */
 
-  Addition : Variable tEQUAL VariableTmp tPLUS VariableTmp {printf("+");};
 
   Print : tPRINTF tPG tQUOTE tVARIABLE tQUOTE tPD {printf("Nous printons : '%s'\n",$4);};
   /*| tPRINTF tPG tQUOTE RemPrint tQUOTE tCOMMA tVARIABLE tPD {printf("Nous printons : '%s'\n",$7)};
@@ -62,6 +69,7 @@ printf("LOAD r0 %d\n",pile->premier);printf("LOAD r1 %d\n",pile->premier->suivan
 %%
 
 int main(void) {
+  pile = initPile();
   yyparse();
   return 0;
 }

@@ -1,5 +1,8 @@
 int main(){
 	int a,b;
-	int c = 2;
-	int d = 2;
+	int b = 2 + 3;
+	b = 4/2;
+	b = 4 - 2;
+	b = 4 * 2;
+	b = (4 + 2) + (4+2);
 }

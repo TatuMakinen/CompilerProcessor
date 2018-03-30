@@ -2,3 +2,5 @@ compiler
 compiler.tab.*
 lex.yy.c
 makefile
+compiler.tab.c
+compiler.tab.h
