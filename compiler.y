@@ -3,7 +3,8 @@
   #include "tableSymbole.c"
   int yylex(void);
   void yyerror(char*);
-  char table[100][100];
+  Pile pile;
+  pile = initPile(&pile);
 %}
 
 %union { char* str; int nb; }
@@ -19,7 +20,8 @@
   Main :
     tINT tMAIN tPG tPD tAG Program tAD
     {
-      table[0][0] = 'a';printf("Declaration de la fonction : 'main' \n %d",table[0][0]);
+      int adr = empiler(pile, "a", "test", 1);
+      printf("Declaration de la fonction : 'main' \n %d",adr);
     }
     ;
   Program : Line RemindProgram {};
@@ -41,13 +43,12 @@
 
 
   VariableTmp : tINTEGER {printf("%d ",$1);};
-
+    | tVARIABLE {printf("Voici ton string %s",$1);};
 /*
 int adr = empiler(pile,'i',$1,1);printf("AFC r0 %d\n",$1);printf("STORE %d r0 \n",adr)
 empiler(&pile,'i',$1,1);
 printf("LOAD r0 %d\n",pile->premier);printf("LOAD r1 %d\n",pile->premier->suivant);printf("ADD R0 R1");printf("STORE %d R0",pile->premier->suivant);depiler(pile);
 */
-    | tVARIABLE {printf("Voici ton string %s",$1);};
 
   Addition : Variable tEQUAL VariableTmp tPLUS VariableTmp {printf("+");};
 

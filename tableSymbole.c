@@ -18,10 +18,9 @@ struct Pile
     int adr;
 };
 
-Pile * initPile(){
-  Pile* pile = malloc(sizeof(Pile));
-  pile->premier = NULL;
-  pile->adr = 0;
+Pile initPile(Pile pile){
+  pile.premier = NULL;
+  pile.adr = 0;
   return pile;
 }
 
