@@ -10,12 +10,12 @@
   int depth = 0;
 %}
 
-%union { char* str; int nb; }
+%union { char* str; int nb;}
 
-%token tIF tWHILE tELSE tMAIN tQUOTE tCHAINE tCONST tINTEGER tRETURN tPRINTF tSTRING tAG tAD tSEMICOLON tCOMMA tPLUS tMINUS tSLASH tMUL tEQUAL tPG tPD tINT tVARIABLE tEXP tFIRSTARG tPERCENTINT
-%type <str> tVARIABLE
-%type <nb> tINTEGER
-//%type <str> tSTRING
+%token tIF tWHILE tELSE tMAIN tQUOTE tCHAINE tCONST tNB tRETURN tPRINTF tSTRING tAG tAD tSEMICOLON tCOMMA tPLUS tMINUS tSLASH tMUL tEQUAL tUNEQUAL tPG tPD tINT tVOID tID tEXP tFIRSTARG tPERCENTINT
+%type <str> tID
+%type <nb> tNB
+%type <str> tCHAINE
 %left tPLUS tMINUS
 %left tMUL tSLASH
 %%
@@ -30,55 +30,82 @@
   RemindProgram : {};
     |Line RemindProgram {};
   Line : Content tSEMICOLON {};
-	|If {};
+	  |If {};
+    |While {};
+    |Function {};
   Content : {printf("Content : 'none' \n");};
-    |Arithmetique {};
     |VariableDefinition  {};
     |VariableDeclaration  {};
     |Print {};
+    |Affectation {};
+
+    VariableType : tINT {type = "int";};
+    | tVOID {type ="void";};
+    | tSTRING {type ="string";};
+    VariableDeclaration : VariableType tID RemVariable {
+  				name = $2;
+  				empiler(pile,type,name,depth);};
+  	RemVariable : {};
+      |tCOMMA tID RemVariable {name = $2;empiler(pile,type,name,depth);};
 
 
-  Arithmetique : VariableDefinition RemArith {};
-    | Variable tEQUAL tPG VarInt RemArith tPD  RemArith {};
-  Operation : tPLUS {printf("Addition");};
-    |tMINUS {printf("Soustraction");};
-    |tSLASH {printf("Division");};
-    |tMUL {printf("Multiplication");};
-  RemArith : Operation tPG VarInt RemArith tPD{};
-    | Operation VarInt RemArith {};
-    | Operation VarInt {};
+    VariableDefinition : VariableType tID tEQUAL Expression{
+  							depiler(pile);
+  							empiler(pile, type,name,depth);};
+
+  	Affectation : tID tEQUAL Expression {
+  						printf("LOAD 0 %d\n",peek(pile));
+  						depiler(pile);
+  						printf("STORE %d 0",find($1));};
 
 
-  VariableType : {};
-    | tINT {type = "int";};
-  VariableDeclaration : Variable RemVariable {empiler(pile,type,name,depth);printf("-Declaration\n");};
-  VariableDefinition : Variable tEQUAL VarInt {empiler(pile, type,name,depth);afficherPile(pile);printf("-Definition\n");};
-  Variable :  VariableType tVARIABLE {};
-  RemVariable : {};
-    |tCOMMA tVARIABLE RemVariable {name = $2;empiler(pile,type,name,depth);};
-  VarInt : tINTEGER {};
-    | tVARIABLE {printf("Voici ton string %s",$1);};
+  	Expression : Expression tPLUS Expression {
+  																				printf("LOAD 0 %d\n",peek(pile));
+  																				depiler(pile);
+  																				printf("LOAD 1 %d\n",peek(pile));
+  																				printf("ADD 0 0 1\n");
+  																				printf("STORE %d 0\n",peek(pile));
+  																				empiler(pile, "int","tmp",depth);};
+  		|tNB {
+  						empiler(pile,"int","tmp",depth);
+  						printf("AFC 0 %d\n",$1);
+  						printf("STORE %d 0\n", peek(pile));};
+  		|tID {
+  						empiler(pile,"str","tmp",depth);
+  						printf("LOAD 0 %d\n",find($1));
+  						printf("STORE %d 0",peek(pile));};
 
-
-  If : StartIf RemindProgram EndIf {};
-  EndIf : tAD;
+  While : tWHILE tPG Boolean tPD tAG RemindProgram tAD {printf("while\n");};
+  If : StartIf RemindProgram tAD RemainIf {};
+  RemainIf : {};
+    | StartElse RemindProgram tAD {};
 
   StartIf : tIF tPG Boolean tPD tAG {++depth;printf("Depth = %d\n",depth);};
-  Boolean : {printf("Boolean ici\n");};
+  StartElse : tELSE tAG {printf("Depth = %d\n",depth);};
+  Boolean :	tID tEQUAL tEQUAL tNB {printf("VAR == INT\n");}
+  			| tID tEQUAL tEQUAL tID {printf("VAR == VAR\n");}
+  			| tNB tEQUAL tEQUAL tNB {printf("INT == INT\n");}
+  			| tNB tEQUAL tEQUAL tID {printf("INT == VAR\n");}
+  			| tID tUNEQUAL tNB {printf("VAR!=INT\n");}
+  			| tID tUNEQUAL tID {printf("VAR!=VAR\n");}
+  			| tNB tUNEQUAL tNB {printf("INT!=INT\n");}
+  			| tNB tUNEQUAL tID {printf("INT!=VAR\n");}
 
-  Print : tPRINTF tPG tQUOTE RemPrint tQUOTE tPD {};
-    | tPRINTF tPG tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA tVARIABLE tPD {printf("Nous printons : %s \n",$8);};
-    | tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tVARIABLE tPD {printf("Nous printons : %s \n",$9);};
+  Print : tPRINTF tPG tID tPD {printf("La variable a printé : %s \n", $3);};
+    | tPRINTF tPG tQUOTE RemPrint tQUOTE tPD {};
+    | tPRINTF tPG tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA tNB tPD {printf("Nous printons : %d \n",$8);};
+    | tPRINTF tPG tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA tID tPD {printf("Nous printons : %s \n",$8);};
+    | tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tID tPD {printf("Nous printons : %s \n",$9);};
+    | tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tNB tPD {printf("Nous printons : %d \n",$9);};
 
   RemPrint : {};
-    | tCHAINE RemPrint {printTest = $1;printf("Nous printons : %s \n",printTest)};
+    | tID RemPrint {printf("Nous printons : %s \n",$1)};
 
+  Function : VariableType tID tPG ParamFunction tPD tAG RemindProgram tAD{printf("Declaration de la fonction : '%s' \n", $2);};
 
-/*
-int adr = empiler(pile,'i',$1,1);printf("AFC r0 %d\n",$1);printf("STORE %d r0 \n",adr)
-empiler(&pile,'i',$1,1);
-printf("LOAD r0 %d\n",pile->premier);printf("LOAD r1 %d\n",pile->premier->suivant);printf("ADD R0 R1");printf("STORE %d R0",pile->premier->suivant);depiler(pile);
-*/
+  ParamFunction : {};
+    | VariableDeclaration;
+
 %%
 
 int main(void) {
@@ -91,10 +118,4 @@ int main(void) {
 /*Program :
   | Fonction Program
   ;
-
-Fonction :
-  tVARIABLE tPARGAU tPARDROI tACOLGAU tACOLDROI
-  {
-    printf("Declaration de la fonction : '%s' \n", $1);
-  }
-  ; */
+*/

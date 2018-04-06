@@ -25,6 +25,19 @@ Pile* initPile(){
   return pile;
 }
 
+int peek(Pile* pile){
+  printf("Exit failure");
+  if(pile == NULL){
+    printf("Exit failure");
+    exit(EXIT_FAILURE);
+  }
+  return pile->premier->adr;
+}
+
+int  find(char* id){
+  return 0;
+}
+
 int empiler(Pile* pile, char* type, char* id, int depth){
 
   Element* element = malloc(sizeof(*element));
