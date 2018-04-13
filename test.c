@@ -14,6 +14,4 @@ int main() {
     while(12 != i){
       k=8;
     }
-
-    void papis(int i,String j){}
 }

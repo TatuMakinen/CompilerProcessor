@@ -1,18 +1,21 @@
 %{
   #include <stdio.h>
   #include "tableSymbole.c"
+	#include "jumpTable.c"
   int yylex(void);
   void yyerror(char*);
   Pile *pile;
   char* type;
   char* name;
-  int res;
   int depth = 0;
+	int line = 0;
 %}
 
 %union { char* str; int nb;}
 
-%token tIF tWHILE tELSE tMAIN tQUOTE tCHAINE tCONST tNB tRETURN tPRINTF tSTRING tAG tAD tSEMICOLON tCOMMA tPLUS tMINUS tSLASH tMUL tEQUAL tUNEQUAL tPG tPD tINT tVOID tID tEXP tFIRSTARG tPERCENTINT
+%token tIF tWHILE tELSE tMAIN tQUOTE tCHAINE tCONST tNB tRETURN tPRINTF tSTRING 
+tAG tAD tSEMICOLON tCOMMA tPLUS tMINUS tSLASH tMUL tEQUAL tUNEQUAL tPG tPD tINT 
+tVOID tID tEXP tFIRSTARG tPERCENTINT
 %type <str> tID
 %type <nb> tNB
 %type <str> tCHAINE
@@ -21,19 +24,15 @@
 %%
 
   Main :
-    tINT tMAIN tPG tPD tAG Program tAD
-    {
-      printf("Declaration de la fonction : 'main' \n");
-    }
-    ;
-  Program : Line RemindProgram {};
+    tINT tMAIN tPG tPD tAG RemindProgram tAD{
+				printf("Declaration de la fonction : 'main' \n");};
   RemindProgram : {};
     |Line RemindProgram {};
   Line : Content tSEMICOLON {};
 	  |If {};
     |While {};
     |Function {};
-  Content : {printf("Content : 'none' \n");};
+  Content : {printf("Content: 'none' \n");};
     |VariableDefinition  {};
     |VariableDeclaration  {};
     |Print {};
@@ -54,33 +53,33 @@
   							empiler(pile, type,name,depth);};
 
   	Affectation : tID tEQUAL Expression {
-  						printf("LOAD 0 %d\n",peek(pile));
+  						printf("LOAD 0 %d\n",peek(pile));++line;
   						depiler(pile);
-  						printf("STORE %d 0",find($1));};
+  						printf("STORE %d 0",find($1));++line;};
 
 
   	Expression : Expression tPLUS Expression {
-  																				printf("LOAD 0 %d\n",peek(pile));
+  																				printf("LOAD 0 %d\n",peek(pile));++line;
   																				depiler(pile);
-  																				printf("LOAD 1 %d\n",peek(pile));
-  																				printf("ADD 0 0 1\n");
-  																				printf("STORE %d 0\n",peek(pile));
+  																				printf("LOAD 1 %d\n",peek(pile));++line;
+  																				printf("ADD 0 0 1\n");++line;
+  																				printf("STORE %d 0\n",peek(pile));++line;
   																				empiler(pile, "int","tmp",depth);};
   		|tNB {
   						empiler(pile,"int","tmp",depth);
-  						printf("AFC 0 %d\n",$1);
-  						printf("STORE %d 0\n", peek(pile));};
+  						printf("AFC 0 %d",$1);++line;
+  						printf("STORE %d 0", peek(pile));++line;};
   		|tID {
   						empiler(pile,"str","tmp",depth);
-  						printf("LOAD 0 %d\n",find($1));
-  						printf("STORE %d 0",peek(pile));};
+  						printf("LOAD 0 %d\n",find($1));++line;
+  						printf("STORE %d 0",peek(pile));++line;};
 
   While : tWHILE tPG Boolean tPD tAG RemindProgram tAD {printf("while\n");};
-  If : StartIf RemindProgram tAD RemainIf {};
+  If : StartIf RemindProgram tAD RemainIf {addInstruction(line)};
   RemainIf : {};
     | StartElse RemindProgram tAD {};
 
-  StartIf : tIF tPG Boolean tPD tAG {++depth;printf("Depth = %d\n",depth);};
+  StartIf : tIF tPG Boolean tPD tAG {++depth;printf("Depth = %d\n",depth);insertQueue(line);};
   StartElse : tELSE tAG {printf("Depth = %d\n",depth);};
   Boolean :	tID tEQUAL tEQUAL tNB {printf("VAR == INT\n");}
   			| tID tEQUAL tEQUAL tID {printf("VAR == VAR\n");}
@@ -99,7 +98,7 @@
     | tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tNB tPD {printf("Nous printons : %d \n",$9);};
 
   RemPrint : {};
-    | tID RemPrint {printf("Nous printons : %s \n",$1)};
+    | tID RemPrint {printf("Nous printons : %s \n",$1);};
 
   Function : VariableType tID tPG ParamFunction tPD tAG RemindProgram tAD{printf("Declaration de la fonction : '%s' \n", $2);};
 
@@ -107,6 +106,7 @@
     | VariableDeclaration;
 
 %%
+
 
 int main(void) {
   pile = initPile();

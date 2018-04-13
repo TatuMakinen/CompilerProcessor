@@ -26,9 +26,8 @@ Pile* initPile(){
 }
 
 int peek(Pile* pile){
-  printf("Exit failure");
   if(pile == NULL){
-    printf("Exit failure");
+    perror("peek");
     exit(EXIT_FAILURE);
   }
   return pile->premier->adr;
@@ -42,6 +41,7 @@ int empiler(Pile* pile, char* type, char* id, int depth){
 
   Element* element = malloc(sizeof(*element));
   if(pile == NULL | element ==NULL){
+   	perror("empiler");
 		exit(EXIT_FAILURE);
   }
   element->adr = pile->adr;
@@ -56,7 +56,8 @@ int empiler(Pile* pile, char* type, char* id, int depth){
 
 void depiler(Pile* pile){
 
-	if(pile != NULL){
+	if(pile == NULL){
+   	perror("depiler");
 		exit(EXIT_FAILURE);
 	}
   Element* thingToDepile = pile->premier;
@@ -71,6 +72,7 @@ void afficherPile(Pile *pile)
 {
     if (pile == NULL)
     {
+   			perror("afficherPile");
         exit(EXIT_FAILURE);
     }
     Element *actuel = pile->premier;
