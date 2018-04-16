@@ -26,3 +26,7 @@ void add_instruction(char* id, int param1, int param2, int param3){
     asmo[tailleEffective].param[2] = param3;
 	tailleEffective++;
 }
+
+int getTailleEffective(){
+	return tailleEffective;
+}

@@ -12,7 +12,6 @@
   char* type;
   char* name;
   int depth = 0;
-	int lineNumber;
 %}
 
 %union { char* str; int nb;}
@@ -82,12 +81,12 @@ tVOID tID tEXP tFIRSTARG tPERCENTINT
               add_instruction("STORE", peek(), 0, -1);};
 
   While : tWHILE tPG Boolean tPD tAG RemindProgram tAD {printf("while\n");};
-  If : StartIf RemindProgram tAD RemainIf {addInstruction(lineNumber);};
+  If : StartIf RemindProgram tAD RemainIf {addInstruction(getTailleEffective());};
   RemainIf : {};
     | StartElse RemindProgram tAD {};
 
   StartIf : tIF tPG Boolean tPD tAG {++depth;printf("Depth = %d\n",depth);
-								insertQueue(lineNumber);};
+								insertQueue(getTailleEffective());};
   StartElse : tELSE tAG {printf("Depth = %d\n",depth);};
   Boolean :	tID tEQUAL tEQUAL tNB {printf("VAR == INT\n");}
   			| tID tEQUAL tEQUAL tID {printf("VAR == VAR\n");}
