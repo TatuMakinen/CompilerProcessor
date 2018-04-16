@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+
+#define MAXSIZE 100
 // Groupe 21
 typedef struct Element Element;
 struct Element
@@ -18,14 +20,9 @@ struct Pile
     int adr;
 };
 
-Pile* initPile(){
-  Pile *pile = malloc(sizeof(*pile));
-  pile->premier = NULL;
-  pile->adr = 0;
-  return pile;
-}
+Pile* pile;
 
-int peek(Pile* pile){
+int peek(){
   if(pile == NULL){
     perror("peek");
     exit(EXIT_FAILURE);
@@ -33,11 +30,26 @@ int peek(Pile* pile){
   return pile->premier->adr;
 }
 
-int  find(char* id){
-  return 0;
+int find(char* id){
+  if(pile == NULL){
+    perror("find");
+    exit(EXIT_FAILURE);
+  }
+	Element* current = pile->premier;
+	while(current != NULL){
+		if(current->id == id){
+			return current->adr;
+		}
+		else{
+			current = current->suivant;
+		}
+	}
+	printf("Id not found\n");
+	exit(EXIT_FAILURE);
+	return 0;
 }
 
-int empiler(Pile* pile, char* type, char* id, int depth){
+int empiler(char* type, char* id, int depth){
 
   Element* element = malloc(sizeof(*element));
   if(pile == NULL | element ==NULL){
@@ -54,7 +66,7 @@ int empiler(Pile* pile, char* type, char* id, int depth){
   return element->adr;
 }
 
-void depiler(Pile* pile){
+void depiler(){
 
 	if(pile == NULL){
    	perror("depiler");
@@ -68,7 +80,7 @@ void depiler(Pile* pile){
   }
 }
 
-void afficherPile(Pile *pile)
+void afficherPile()
 {
     if (pile == NULL)
     {
@@ -79,7 +91,8 @@ void afficherPile(Pile *pile)
 
     while (actuel != NULL)
     {
-        printf("Variable : id=%s, type=%s, adr=%d, depth=%d\n", actuel->id,actuel->type,actuel->adr,actuel->depth);
+        printf("Variable : id=%s, type=%s, adr=%d, depth=%d\n", 
+					actuel->id,actuel->type,actuel->adr,actuel->depth);
         actuel = actuel->suivant;
     }
 }

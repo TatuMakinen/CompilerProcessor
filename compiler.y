@@ -9,7 +9,6 @@
 
   int yylex(void);
   void yyerror(char*);
-  Pile *pile;
   char* type;
   char* name;
   int depth = 0;
@@ -49,47 +48,57 @@ tVOID tID tEXP tFIRSTARG tPERCENTINT
     | tSTRING {type ="string";};
     VariableDeclaration : VariableType tID RemVariable {
   				name = $2;
-  				empiler(pile,type,name,depth);};
+  				empiler(type,name,depth);};
   	RemVariable : {};
-      |tCOMMA tID RemVariable {name = $2;empiler(pile,type,name,depth);};
+      |tCOMMA tID RemVariable {name = $2;empiler(type,name,depth);};
 
 
     VariableDefinition : VariableType tID tEQUAL Expression{
-  							depiler(pile);
-  							empiler(pile, type,name,depth);};
+  							depiler();
+  							empiler(type,name,depth);};
 
   	Affectation : tID tEQUAL Expression {
-              add_instruction(asmo, taille_effective, "LOAD", 0, peek(pile), -1);taille_effective++;
-  						depiler(pile);
-              add_instruction(asmo, taille_effective, "STORE", find($1), 0, -1);taille_effective++;};
+              add_instruction(asmo, taille_effective, "LOAD", 0, peek(), -1);
+							taille_effective++;
+  						depiler();
+              add_instruction(asmo, taille_effective, "STORE", find($1), 0, -1);
+							taille_effective++;};
 
 
 
   	Expression : Expression tPLUS Expression {
-  																				depiler(pile);
-                                          add_instruction(asmo, taille_effective, "LOAD", 1, peek(pile), -1);taille_effective++;
-                                          add_instruction(asmo, taille_effective, "ADD", 0, 0, 1);taille_effective++;
-                                          add_instruction(asmo, taille_effective, "STORE", peek(pile), 0, -1);taille_effective++;
-  																				empiler(pile, "int","tmp",depth);
-                                          display_struct(asmo,taille_effective);
-                                        };
+								depiler();
+                add_instruction(asmo, taille_effective, "LOAD", 1, peek(), -1);
+								taille_effective++;
+                add_instruction(asmo, taille_effective, "ADD", 0, 0, 1);
+								taille_effective++;
+                add_instruction(asmo, taille_effective, "STORE", peek(), 0, -1);
+								taille_effective++;
+								empiler("int","tmp",depth);
+                display_struct(asmo,taille_effective);
+              };
   		|tNB {
-  						empiler(pile,"int","tmp",depth);
-              add_instruction(asmo, taille_effective, "AFC", 0, $1, -1);taille_effective++;
-              add_instruction(asmo, taille_effective, "STORE", peek(pile), 0, -1);taille_effective++;
+  						empiler("int","tmp",depth);
+              add_instruction(asmo, taille_effective, "AFC", 0, $1, -1);
+							taille_effective++;
+              add_instruction(asmo, taille_effective, "STORE", peek(), 0, -1);
+							taille_effective++;
             };
   		|tID {
-  						empiler(pile,"str","tmp",depth);
-              add_instruction(asmo, taille_effective, "LOAD", 0, find($1), -1);taille_effective++;
-              add_instruction(asmo, taille_effective, "STORE", peek(pile), 0, -1);taille_effective++;
+  						empiler("str","tmp",depth);
+              add_instruction(asmo, taille_effective, "LOAD", 0, find($1), -1);
+							taille_effective++;
+              add_instruction(asmo, taille_effective, "STORE", peek(), 0, -1);
+							taille_effective++;
               };
 
   While : tWHILE tPG Boolean tPD tAG RemindProgram tAD {printf("while\n");};
-  If : StartIf RemindProgram tAD RemainIf {addInstruction(taille_effective)};
+  If : StartIf RemindProgram tAD RemainIf {addInstruction(taille_effective);};
   RemainIf : {};
     | StartElse RemindProgram tAD {};
 
-  StartIf : tIF tPG Boolean tPD tAG {++depth;printf("Depth = %d\n",depth);insertQueue(taille_effective);};
+  StartIf : tIF tPG Boolean tPD tAG {++depth;printf("Depth = %d\n",depth);
+								insertQueue(taille_effective);};
   StartElse : tELSE tAG {printf("Depth = %d\n",depth);};
   Boolean :	tID tEQUAL tEQUAL tNB {printf("VAR == INT\n");}
   			| tID tEQUAL tEQUAL tID {printf("VAR == VAR\n");}
@@ -113,13 +122,12 @@ tVOID tID tEXP tFIRSTARG tPERCENTINT
   Function : VariableType tID tPG ParamFunction tPD tAG RemindProgram tAD{printf("Declaration de la fonction : '%s' \n", $2);};
 
   ParamFunction : {};
-    | VariableDeclaration;
+    | VariableDeclaration {};
 
 %%
 
 
 int main(void) {
-  pile = initPile();
   yyparse();
   return 0;
 }
