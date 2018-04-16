@@ -5,21 +5,24 @@ struct Inst{
   char* id;
   int param[3];
 };
-void display_struct(Inst* asmo, int taille_tableau){
-  int i;
 
-  for(i=0;i<taille_tableau;i++){
+Inst asmo[15];
+int tailleEffective = 0;
+
+void display_struct(){
+  for(int i=0;i<tailleEffective;i++){
       printf("Pour l'instruction %s \n",asmo[i].id);
   }
 
 }
 
-void add_instruction(Inst* asmo, int taille_effective, char* id, int param1, int param2, int param3){
-  asmo[taille_effective].id = id;
+void add_instruction(char* id, int param1, int param2, int param3){
+  asmo[tailleEffective].id = id;
   if(param1 != -1)
-    asmo[taille_effective].param[0] = param1;
+    asmo[tailleEffective].param[0] = param1;
   if(param2 != -1)
-    asmo[taille_effective].param[1] = param2;
+    asmo[tailleEffective].param[1] = param2;
   if(param3 != -1)
-    asmo[taille_effective].param[2] = param3;
+    asmo[tailleEffective].param[2] = param3;
+	tailleEffective++;
 }

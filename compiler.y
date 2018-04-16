@@ -12,8 +12,7 @@
   char* type;
   char* name;
   int depth = 0;
-  Inst asmo[15];
-  int taille_effective = 0;
+	int lineNumber;
 %}
 
 %union { char* str; int nb;}
@@ -58,47 +57,37 @@ tVOID tID tEXP tFIRSTARG tPERCENTINT
   							empiler(type,name,depth);};
 
   	Affectation : tID tEQUAL Expression {
-              add_instruction(asmo, taille_effective, "LOAD", 0, peek(), -1);
-							taille_effective++;
+              add_instruction("LOAD", 0, peek(), -1);
   						depiler();
-              add_instruction(asmo, taille_effective, "STORE", find($1), 0, -1);
-							taille_effective++;};
+              add_instruction("STORE", find($1), 0, -1);};
 
 
 
   	Expression : Expression tPLUS Expression {
 								depiler();
-                add_instruction(asmo, taille_effective, "LOAD", 1, peek(), -1);
-								taille_effective++;
-                add_instruction(asmo, taille_effective, "ADD", 0, 0, 1);
-								taille_effective++;
-                add_instruction(asmo, taille_effective, "STORE", peek(), 0, -1);
-								taille_effective++;
+                add_instruction("LOAD", 1, peek(), -1);
+                add_instruction("ADD", 0, 0, 1);
+                add_instruction("STORE", peek(), 0, -1);
 								empiler("int","tmp",depth);
-                display_struct(asmo,taille_effective);
+                display_struct();
               };
   		|tNB {
   						empiler("int","tmp",depth);
-              add_instruction(asmo, taille_effective, "AFC", 0, $1, -1);
-							taille_effective++;
-              add_instruction(asmo, taille_effective, "STORE", peek(), 0, -1);
-							taille_effective++;
+              add_instruction("AFC", 0, $1, -1);
+              add_instruction("STORE", peek(), 0, -1);
             };
   		|tID {
   						empiler("str","tmp",depth);
-              add_instruction(asmo, taille_effective, "LOAD", 0, find($1), -1);
-							taille_effective++;
-              add_instruction(asmo, taille_effective, "STORE", peek(), 0, -1);
-							taille_effective++;
-              };
+              add_instruction("LOAD", 0, find($1), -1);
+              add_instruction("STORE", peek(), 0, -1);};
 
   While : tWHILE tPG Boolean tPD tAG RemindProgram tAD {printf("while\n");};
-  If : StartIf RemindProgram tAD RemainIf {addInstruction(taille_effective);};
+  If : StartIf RemindProgram tAD RemainIf {addInstruction(lineNumber);};
   RemainIf : {};
     | StartElse RemindProgram tAD {};
 
   StartIf : tIF tPG Boolean tPD tAG {++depth;printf("Depth = %d\n",depth);
-								insertQueue(taille_effective);};
+								insertQueue(lineNumber);};
   StartElse : tELSE tAG {printf("Depth = %d\n",depth);};
   Boolean :	tID tEQUAL tEQUAL tNB {printf("VAR == INT\n");}
   			| tID tEQUAL tEQUAL tID {printf("VAR == VAR\n");}
