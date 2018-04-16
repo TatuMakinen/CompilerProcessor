@@ -15,4 +15,6 @@
 * tables
 * preprocessor
 * just in time compilator
-%left tSTRING tVARIABLE (to erase shift reduce, something like that. Check course)
+
+## 16.4. ->
+* prochain fois, on va continuer avec processeur - doit finir les trucs de compilateur avant la prochaine séance

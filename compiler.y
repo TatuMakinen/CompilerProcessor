@@ -12,6 +12,8 @@
   char* type;
   char* name;
   int depth = 0;
+	Pile *pile;
+	Assembly* assembly;
 %}
 
 %union { char* str; int nb;}
@@ -28,7 +30,7 @@ tVOID tID tEXP tFIRSTARG tPERCENTINT
 
   Main :
     tINT tMAIN tPG tPD tAG RemindProgram tAD{
-				printf("Declaration de la fonction : 'main' \n");};
+				printf("Declaration  de la fonction : 'main' \n");};
   RemindProgram : {};
     |Line RemindProgram {};
   Line : Content tSEMICOLON {};
@@ -46,71 +48,71 @@ tVOID tID tEXP tFIRSTARG tPERCENTINT
     | tSTRING {type ="string";};
     VariableDeclaration : VariableType tID RemVariable {
   				name = $2;
-  				empiler(type,name,depth);};
+  				empiler(pile,type,name,depth);};
   	RemVariable : {};
-      |tCOMMA tID RemVariable {name = $2;empiler(type,name,depth);};
+      |tCOMMA tID RemVariable {name = $2;empiler(pile,type,name,depth);};
 
 
     VariableDefinition : VariableType tID tEQUAL Expression{
-  							depiler();
-  							empiler(type,name,depth);};
+  							depiler(pile);
+  							empiler(pile,type,name,depth);};
 
   	Affectation : tID tEQUAL Expression {
-              add_instruction("LOAD", 0, peek(), -1);
-  						depiler();
-              add_instruction("STORE", find($1), 0, -1);};
+              add_instruction(assembly,"LOAD", 0, peek(pile), -1);
+  						depiler(pile);
+              add_instruction(assembly,"STORE", find(pile,$1), 0, -1);};
 
 
 
   	Expression : Expression tPLUS Expression {
-								depiler();
-                add_instruction("LOAD", 1, peek(), -1);
-                add_instruction("ADD", 0, 0, 1);
-                add_instruction("STORE", peek(), 0, -1);
-								empiler("int","tmp",depth);
-                display_struct();
+								depiler(pile);
+                add_instruction(assembly,"LOAD", 1, peek(pile), -1);
+                add_instruction(assembly,"ADD", 0, 0, 1);
+                add_instruction(assembly,"STORE", peek(pile), 0, -1);
+								empiler(pile,"int","tmp",depth);
+                display_struct(assembly);
               };
       | Expression tMINUS Expression {
-              depiler();
-              add_instruction("LOAD",1,peek(),-1);
-              add_instruction("SUB",0,0,1);
-              add_instruction("STORE",peek(),0,-1);
-              empiler("int","tmp",depth);
-              display_struct();
+              depiler(pile);
+              add_instruction(assembly,"LOAD",1,peek(pile),-1);
+              add_instruction(assembly,"SUB",0,0,1);
+              add_instruction(assembly,"STORE",peek(pile),0,-1);
+              empiler(pile,"int","tmp",depth);
+              display_struct(assembly);
       };
       | Expression tMUL Expression {
-        depiler();
-        add_instruction("LOAD",1,peek(),-1);
-        add_instruction("MUL",0,0,1);
-        add_instruction("STORE",peek(),0,-1);
-        empiler("int","tmp",depth);
-        display_struct();
+        depiler(pile);
+        add_instruction(assembly,"LOAD",1,peek(pile),-1);
+        add_instruction(assembly,"MUL",0,0,1);
+        add_instruction(assembly,"STORE",peek(pile),0,-1);
+        empiler(pile,"int","tmp",depth);
+        display_struct(assembly);
       }
       | Expression tSLASH Expression {
-        depiler();
-        add_instruction("LOAD",1,peek(),-1);
-        add_instruction("DIV",0,0,1);
-        add_instruction("STORE",peek(),0,-1);
-        empiler("int","tmp",depth);
-        display_struct();
+        depiler(pile);
+        add_instruction(assembly,"LOAD",1,peek(pile),-1);
+        add_instruction(assembly,"DIV",0,0,1);
+        add_instruction(assembly,"STORE",peek(pile),0,-1);
+        empiler(pile,"int","tmp",depth);
+        display_struct(assembly);
       }
   		|tNB {
-  						empiler("int","tmp",depth);
-              add_instruction("AFC", 0, $1, -1);
-              add_instruction("STORE", peek(), 0, -1);
+  						empiler(pile,"int","tmp",depth);
+              add_instruction(assembly,"AFC", 0, $1, -1);
+              add_instruction(assembly,"STORE", peek(pile), 0, -1);
             };
   		|tID {
-  						empiler("str","tmp",depth);
-              add_instruction("LOAD", 0, find($1), -1);
-              add_instruction("STORE", peek(), 0, -1);};
+  						empiler(pile,"str","tmp",depth);
+              add_instruction(assembly,"LOAD", 0, find(pile,$1), -1);
+              add_instruction(assembly,"STORE", peek(pile), 0, -1);};
 
   While : tWHILE tPG Boolean tPD tAG RemindProgram tAD {printf("while\n");};
-  If : StartIf RemindProgram tAD RemainIf {addInstruction(getTailleEffective());};
+  If : StartIf RemindProgram tAD RemainIf {addInstruction(assembly->tailleEffective);};
   RemainIf : {};
     | StartElse RemindProgram tAD {};
 
   StartIf : tIF tPG Boolean tPD tAG {++depth;printf("Depth = %d\n",depth);
-								insertQueue(getTailleEffective());};
+								insertQueue(assembly->tailleEffective);};
   StartElse : tELSE tAG {printf("Depth = %d\n",depth);};
   Boolean :	tID tEQUAL tEQUAL tNB {printf("VAR == INT\n");}
   			| tID tEQUAL tEQUAL tID {printf("VAR == VAR\n");}
@@ -140,6 +142,8 @@ tVOID tID tEXP tFIRSTARG tPERCENTINT
 
 
 int main(void) {
+	pile = initPile();
+	assembly = initAsm(); 
   yyparse();
   return 0;
 }

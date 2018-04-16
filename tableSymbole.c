@@ -20,9 +20,14 @@ struct Pile
     int adr;
 };
 
-Pile* pile;
+Pile* initPile(){
+  Pile *pile = malloc(sizeof(*pile));
+  pile->premier = NULL;
+  pile->adr = 0;
+	return pile;
+}
 
-int peek(){
+int peek(Pile* pile){
   if(pile == NULL){
     perror("peek");
     exit(EXIT_FAILURE);
@@ -30,13 +35,14 @@ int peek(){
   return pile->premier->adr;
 }
 
-int find(char* id){
+int find(Pile* pile, char* id){
   if(pile == NULL){
     perror("find");
     exit(EXIT_FAILURE);
   }
 	Element* current = pile->premier;
 	while(current != NULL){
+		printf("%s %s\n",current->id,id);
 		if(current->id == id){
 			return current->adr;
 		}
@@ -49,7 +55,7 @@ int find(char* id){
 	return 0;
 }
 
-int empiler(char* type, char* id, int depth){
+int empiler(Pile* pile, char* type, char* id, int depth){
 
   Element* element = malloc(sizeof(*element));
   if(pile == NULL | element ==NULL){
@@ -66,7 +72,7 @@ int empiler(char* type, char* id, int depth){
   return element->adr;
 }
 
-void depiler(){
+void depiler(Pile* pile){
 
 	if(pile == NULL){
    	perror("depiler");
@@ -80,7 +86,7 @@ void depiler(){
   }
 }
 
-void afficherPile()
+void afficherPile(Pile* pile)
 {
     if (pile == NULL)
     {

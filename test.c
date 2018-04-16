@@ -1,3 +1,3 @@
 int main() {
-  int i = i+4;
+  int i = 4;
 }
