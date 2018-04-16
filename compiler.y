@@ -2,19 +2,25 @@
   #include <stdio.h>
   #include "tableSymbole.c"
 	#include "jumpTable.c"
+  #include "assemblerStruct.c"
+
+
+
+
   int yylex(void);
   void yyerror(char*);
   Pile *pile;
   char* type;
   char* name;
   int depth = 0;
-	int line = 0;
+  Inst asmo[15];
+  int taille_effective = 0;
 %}
 
 %union { char* str; int nb;}
 
-%token tIF tWHILE tELSE tMAIN tQUOTE tCHAINE tCONST tNB tRETURN tPRINTF tSTRING 
-tAG tAD tSEMICOLON tCOMMA tPLUS tMINUS tSLASH tMUL tEQUAL tUNEQUAL tPG tPD tINT 
+%token tIF tWHILE tELSE tMAIN tQUOTE tCHAINE tCONST tNB tRETURN tPRINTF tSTRING
+tAG tAD tSEMICOLON tCOMMA tPLUS tMINUS tSLASH tMUL tEQUAL tUNEQUAL tPG tPD tINT
 tVOID tID tEXP tFIRSTARG tPERCENTINT
 %type <str> tID
 %type <nb> tNB
@@ -53,33 +59,37 @@ tVOID tID tEXP tFIRSTARG tPERCENTINT
   							empiler(pile, type,name,depth);};
 
   	Affectation : tID tEQUAL Expression {
-  						printf("LOAD 0 %d\n",peek(pile));++line;
+              add_instruction(asmo, taille_effective, "LOAD", 0, peek(pile), -1);taille_effective++;
   						depiler(pile);
-  						printf("STORE %d 0",find($1));++line;};
+              add_instruction(asmo, taille_effective, "STORE", find($1), 0, -1);taille_effective++;};
+
 
 
   	Expression : Expression tPLUS Expression {
-  																				printf("LOAD 0 %d\n",peek(pile));++line;
   																				depiler(pile);
-  																				printf("LOAD 1 %d\n",peek(pile));++line;
-  																				printf("ADD 0 0 1\n");++line;
-  																				printf("STORE %d 0\n",peek(pile));++line;
-  																				empiler(pile, "int","tmp",depth);};
+                                          add_instruction(asmo, taille_effective, "LOAD", 1, peek(pile), -1);taille_effective++;
+                                          add_instruction(asmo, taille_effective, "ADD", 0, 0, 1);taille_effective++;
+                                          add_instruction(asmo, taille_effective, "STORE", peek(pile), 0, -1);taille_effective++;
+  																				empiler(pile, "int","tmp",depth);
+                                          display_struct(asmo,taille_effective);
+                                        };
   		|tNB {
   						empiler(pile,"int","tmp",depth);
-  						printf("AFC 0 %d",$1);++line;
-  						printf("STORE %d 0", peek(pile));++line;};
+              add_instruction(asmo, taille_effective, "AFC", 0, $1, -1);taille_effective++;
+              add_instruction(asmo, taille_effective, "STORE", peek(pile), 0, -1);taille_effective++;
+            };
   		|tID {
   						empiler(pile,"str","tmp",depth);
-  						printf("LOAD 0 %d\n",find($1));++line;
-  						printf("STORE %d 0",peek(pile));++line;};
+              add_instruction(asmo, taille_effective, "LOAD", 0, find($1), -1);taille_effective++;
+              add_instruction(asmo, taille_effective, "STORE", peek(pile), 0, -1);taille_effective++;
+              };
 
   While : tWHILE tPG Boolean tPD tAG RemindProgram tAD {printf("while\n");};
-  If : StartIf RemindProgram tAD RemainIf {addInstruction(line)};
+  If : StartIf RemindProgram tAD RemainIf {addInstruction(taille_effective)};
   RemainIf : {};
     | StartElse RemindProgram tAD {};
 
-  StartIf : tIF tPG Boolean tPD tAG {++depth;printf("Depth = %d\n",depth);insertQueue(line);};
+  StartIf : tIF tPG Boolean tPD tAG {++depth;printf("Depth = %d\n",depth);insertQueue(taille_effective);};
   StartElse : tELSE tAG {printf("Depth = %d\n",depth);};
   Boolean :	tID tEQUAL tEQUAL tNB {printf("VAR == INT\n");}
   			| tID tEQUAL tEQUAL tID {printf("VAR == VAR\n");}
@@ -113,9 +123,3 @@ int main(void) {
   yyparse();
   return 0;
 }
-
-
-/*Program :
-  | Fonction Program
-  ;
-*/
