@@ -70,6 +70,30 @@ tVOID tID tEXP tFIRSTARG tPERCENTINT
 								empiler("int","tmp",depth);
                 display_struct();
               };
+      | Expression tMINUS Expression {
+              depiler();
+              add_instruction("LOAD",1,peek(),-1);
+              add_instruction("SUB",0,0,1);
+              add_instruction("STORE",peek(),0,-1);
+              empiler("int","tmp",depth);
+              display_struct();
+      };
+      | Expression tMUL Expression {
+        depiler();
+        add_instruction("LOAD",1,peek(),-1);
+        add_instruction("MUL",0,0,1);
+        add_instruction("STORE",peek(),0,-1);
+        empiler("int","tmp",depth);
+        display_struct();
+      }
+      | Expression tSLASH Expression {
+        depiler();
+        add_instruction("LOAD",1,peek(),-1);
+        add_instruction("DIV",0,0,1);
+        add_instruction("STORE",peek(),0,-1);
+        empiler("int","tmp",depth);
+        display_struct();
+      }
   		|tNB {
   						empiler("int","tmp",depth);
               add_instruction("AFC", 0, $1, -1);
