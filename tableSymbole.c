@@ -88,17 +88,16 @@ void depiler(Pile* pile){
 
 void afficherPile(Pile* pile)
 {
-    if (pile == NULL)
-    {
-   			perror("afficherPile");
-        exit(EXIT_FAILURE);
-    }
-    Element *actuel = pile->premier;
+  if (pile == NULL)
+  {
+    perror("afficherPile");
+    exit(EXIT_FAILURE);
+  }
+  Element *actuel = pile->premier;
 
-    while (actuel != NULL)
-    {
-        printf("Variable : id=%s, type=%s, adr=%d, depth=%d\n", 
-					actuel->id,actuel->type,actuel->adr,actuel->depth);
-        actuel = actuel->suivant;
-    }
+  printf("\n|ID|TYPE|ADR|DEPTH|\n");
+  while (actuel != NULL){
+    printf("| %s | %s | %d | %d |\n", actuel->id,actuel->type,actuel->adr,actuel->depth);
+    actuel = actuel->suivant;
+  }
 }

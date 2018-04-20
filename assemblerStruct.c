@@ -22,6 +22,7 @@ Assembly* initAsm(){
 	
 
 void display_struct(Assembly* assembly){
+  printf("asd");
   for(int i=0;i<assembly->tailleEffective;i++){
       printf("Pour l'instruction %s \n",(assembly->asmo[i])->id);
   }
