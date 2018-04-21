@@ -78,7 +78,7 @@ void depiler(Pile* pile){
 	}
   Element* thingToDepile = pile->premier;
 
-  if(pile != NULL && pile->premier != NULL){
+  if(pile->premier != NULL){
     pile->premier = pile->premier->suivant;
     free(thingToDepile);
   }
@@ -94,6 +94,7 @@ void afficherPile(Pile* pile)
   Element *actuel = pile->premier;
   printf("## SYMBOL TABLE ##\n");
   printf("|    ID    | TYPE |    ADR   |DEPTH|\n");
+  printf("------------------------------------\n");
   while (actuel != NULL){
     printf("| %8s | %4s | %8d | %2d  |\n", actuel->id,actuel->type,actuel->adr,actuel->depth);
     actuel = actuel->suivant;

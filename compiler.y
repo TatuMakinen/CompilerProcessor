@@ -67,9 +67,9 @@ RemVariable:
 Assignment:
   tID tEQUAL Expression
   {
-    add_instruction(assembly,"LOAD", 0, peek(pile), -1);
+    add_instruction(assembly,LOAD, 0, peek(pile), -1);
     depiler(pile);
-    add_instruction(assembly,"STORE", find(pile,$1), 0, -1);
+    add_instruction(assembly,STORE, find(pile,$1), 0, -1);
   }
 ;
 // Variable is defined - added to the table
@@ -77,53 +77,62 @@ VariableDefinition:
   VariableType tID tEQUAL Expression
   {
     depiler(pile); empiler(pile,type,$2,depth);
+		add_instruction(assembly,STORE, peek(pile), 0, -1);
   }
 ;
 // Arithmetic operations
 Expression:
   Expression tPLUS Expression
   {
+		add_instruction(assembly,LOAD, 0, peek(pile), -1);
     depiler(pile);
-    add_instruction(assembly,"LOAD", 1, peek(pile), -1);
-    add_instruction(assembly,"ADD", 0, 0, 1);
-    add_instruction(assembly,"STORE", peek(pile), 0, -1);
-    empiler(pile,"int","tmp",depth);
+    add_instruction(assembly,LOAD, 1, peek(pile), -1);
+    add_instruction(assembly,ADD, 0, 0, 1);
+		depiler(pile);
+		empiler(pile,"int","tmp",depth);
+		add_instruction(assembly,STORE, peek(pile), 0, -1);
   }
   | Expression tMINUS Expression
   {
+		add_instruction(assembly,LOAD, 0, peek(pile), -1);
 		depiler(pile);
-    add_instruction(assembly,"LOAD",1,peek(pile),-1);
-    add_instruction(assembly,"SUB",0,0,1);
-    add_instruction(assembly,"STORE",peek(pile),0,-1);
-    empiler(pile,"int","tmp",depth);
+    add_instruction(assembly,LOAD,1,peek(pile),-1);
+    add_instruction(assembly,SUB,0,0,1);
+		depiler(pile);
+		empiler(pile,"int","tmp",depth);
+		add_instruction(assembly,STORE, peek(pile), 0, -1);
   }
   | Expression tMUL Expression
   {
+		add_instruction(assembly,LOAD, 0, peek(pile), -1);
     depiler(pile); 
-    add_instruction(assembly,"LOAD",1,peek(pile),-1);
-    add_instruction(assembly,"MUL",0,0,1);
-    add_instruction(assembly,"STORE",peek(pile),0,-1);
-    empiler(pile,"int","tmp",depth);
+    add_instruction(assembly,LOAD,1,peek(pile),-1);
+    add_instruction(assembly,MUL,0,0,1);
+		depiler(pile);
+		empiler(pile,"int","tmp",depth);
+		add_instruction(assembly,STORE, peek(pile), 0, -1);
   }
   | Expression tSLASH Expression
   {
+		add_instruction(assembly,LOAD, 0, peek(pile), -1); 
     depiler(pile);
-    add_instruction(assembly,"LOAD",1,peek(pile),-1);
-    add_instruction(assembly,"DIV",0,0,1);
-    add_instruction(assembly,"STORE",peek(pile),0,-1);
-    empiler(pile,"int","tmp",depth);
+    add_instruction(assembly,LOAD,1,peek(pile),-1);
+    add_instruction(assembly,DIV,0,0,1);
+		depiler(pile);
+		empiler(pile,"int","tmp",depth);
+		add_instruction(assembly,STORE, peek(pile), 0, -1);
   }
   | tNB 
   {
-    empiler(pile,"int","tmp",depth);
-    add_instruction(assembly,"AFC", 0, $1, -1);
-    add_instruction(assembly,"STORE", peek(pile), 0, -1);
+    add_instruction(assembly,AFC, 0, $1, -1);
+		empiler(pile,"int","tmp",depth);
+    add_instruction(assembly,STORE, peek(pile), 0, -1);
   }
   | tID
   {
-    empiler(pile,"str","tmp",depth);
-    add_instruction(assembly,"LOAD", 0, find(pile,$1), -1);
-    add_instruction(assembly,"STORE", peek(pile), 0, -1);
+    add_instruction(assembly,LOAD, 0, find(pile,$1), -1);
+		empiler(pile,"str","tmp",depth);
+    add_instruction(assembly,STORE, peek(pile), 0, -1);
   }
 ;
 While:
@@ -180,6 +189,7 @@ void yyerror (char const *s) {
 }
 
 int main(void) {
+	enum assembly_cmds {ADD,SUB,MUL,DIV,STORE,LOAD,AFC};
 	pile = initPile();
 	assembly = initAsm();
   yyparse();

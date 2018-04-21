@@ -1,4 +1,4 @@
 int main() {
-  int i = 4;
-  int a = i-3;
+  int a = 1+2+3;
+  int b = a*3;
 }
