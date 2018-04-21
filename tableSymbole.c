@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
-#define MAXSIZE 100
 // Groupe 21
 typedef struct Element Element;
 struct Element
@@ -42,20 +42,19 @@ int find(Pile* pile, char* id){
   }
 	Element* current = pile->premier;
 	while(current != NULL){
-		printf("%s %s\n",current->id,id);
-		if(current->id == id){
+		if(strcmp(current->id,id)==0){
 			return current->adr;
 		}
 		else{
 			current = current->suivant;
 		}
 	}
-	printf("Id not found\n");
+	printf("\"%s\" is not declared.\n",id);
 	exit(EXIT_FAILURE);
 	return 0;
 }
 
-int empiler(Pile* pile, char* type, char* id, int depth){
+void empiler(Pile* pile, char* type, char* id, int depth){
 
   Element* element = malloc(sizeof(*element));
   if(pile == NULL | element ==NULL){
@@ -69,7 +68,6 @@ int empiler(Pile* pile, char* type, char* id, int depth){
   element->depth = depth;
   element->suivant = pile->premier;
   pile->premier = element;
-  return element->adr;
 }
 
 void depiler(Pile* pile){
@@ -94,10 +92,10 @@ void afficherPile(Pile* pile)
     exit(EXIT_FAILURE);
   }
   Element *actuel = pile->premier;
-
-  printf("\n|ID|TYPE|ADR|DEPTH|\n");
+  printf("## SYMBOL TABLE ##\n");
+  printf("|    ID    | TYPE |    ADR   |DEPTH|\n");
   while (actuel != NULL){
-    printf("| %s | %s | %d | %d |\n", actuel->id,actuel->type,actuel->adr,actuel->depth);
+    printf("| %8s | %4s | %8d | %2d  |\n", actuel->id,actuel->type,actuel->adr,actuel->depth);
     actuel = actuel->suivant;
   }
 }

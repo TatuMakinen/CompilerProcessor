@@ -8,7 +8,8 @@
   char* type;
   char* name;
   int depth = 0;
-	Pile *pile;
+	int line = 0;
+	Pile* pile;
 	Assembly* assembly;
 %}
 
@@ -25,46 +26,45 @@ tVOID tID tEXP tFIRSTARG tPERCENTINT
 
 %%
 Main: 
-  tINT tMAIN tPG tPD tAG RemindProgram tAD
+  tINT tMAIN tPG tPD tAG Program tAD
   {
-    printf("Declaration de la fonction : 'main' \n");
+    printf("Compile succesful!\n"); 
   }
 ;
-RemindProgram:
-  | Line RemindProgram {}
+Program:
+
+  | Line Program {}
 ;
 Line:
-  Content tSEMICOLON {}
+  Content tSEMICOLON {++line;printf("Line %d:\n",line);afficherPile(pile);display_struct(assembly);}
   | If {}
   | While {}
   | Function {}
 ;
 Content:
-  { printf("Content: 'none' \n"); }
-  | VariableDefinition {}
+
   | VariableDeclaration {}
+  | VariableDefinition {}
+  | Assignment {}
   | Print {}
-  | Affectation {}
 ;
+// Variable type can be int, void or string
 VariableType:
   tINT { type = "int"; }
   | tVOID { type ="void"; }
   | tSTRING { type ="string"; }
 ;
+// Declaring one or multiple variables - they are added to the
+// symbol table for later assignment
 VariableDeclaration:
   VariableType tID RemVariable { empiler(pile,type,$2,depth); }
 ;
-RemVariable: 
+RemVariable:
+
   | tCOMMA tID RemVariable { empiler(pile,type,$2,depth); }
 ;
-VariableDefinition:
-  VariableType tID tEQUAL Expression
-  {
-    depiler(pile); empiler(pile,type,$2,depth);
-    afficherPile(pile);
-  }
-;
-Affectation:
+// Assignment - error if variable is not declared earlier in the code
+Assignment:
   tID tEQUAL Expression
   {
     add_instruction(assembly,"LOAD", 0, peek(pile), -1);
@@ -72,6 +72,14 @@ Affectation:
     add_instruction(assembly,"STORE", find(pile,$1), 0, -1);
   }
 ;
+// Variable is defined - added to the table
+VariableDefinition:
+  VariableType tID tEQUAL Expression
+  {
+    depiler(pile); empiler(pile,type,$2,depth);
+  }
+;
+// Arithmetic operations
 Expression:
   Expression tPLUS Expression
   {
@@ -80,25 +88,22 @@ Expression:
     add_instruction(assembly,"ADD", 0, 0, 1);
     add_instruction(assembly,"STORE", peek(pile), 0, -1);
     empiler(pile,"int","tmp",depth);
-    display_struct(assembly);
   }
   | Expression tMINUS Expression
   {
-    depiler(pile);
+		depiler(pile);
     add_instruction(assembly,"LOAD",1,peek(pile),-1);
     add_instruction(assembly,"SUB",0,0,1);
     add_instruction(assembly,"STORE",peek(pile),0,-1);
     empiler(pile,"int","tmp",depth);
-    display_struct(assembly);
   }
   | Expression tMUL Expression
   {
-    depiler(pile);
+    depiler(pile); 
     add_instruction(assembly,"LOAD",1,peek(pile),-1);
     add_instruction(assembly,"MUL",0,0,1);
     add_instruction(assembly,"STORE",peek(pile),0,-1);
     empiler(pile,"int","tmp",depth);
-    display_struct(assembly);
   }
   | Expression tSLASH Expression
   {
@@ -107,7 +112,6 @@ Expression:
     add_instruction(assembly,"DIV",0,0,1);
     add_instruction(assembly,"STORE",peek(pile),0,-1);
     empiler(pile,"int","tmp",depth);
-    display_struct(assembly);
   }
   | tNB 
   {
@@ -123,15 +127,14 @@ Expression:
   }
 ;
 While:
-  tWHILE tPG Boolean tPD tAG RemindProgram tAD { printf("while\n"); }
+  tWHILE tPG Boolean tPD tAG Program tAD { printf("while\n"); }
 ;
 If:
-  StartIf RemindProgram tAD RemainIf { addInstruction(assembly->tailleEffective); }
+  StartIf Program tAD RemainIf { addInstruction(assembly->tailleEffective); }
 ;
 RemainIf:
-  | StartElse RemindProgram tAD {}
+  | StartElse Program tAD {}
 ;
-
 StartIf:
   tIF tPG Boolean tPD tAG 
   {
@@ -164,7 +167,7 @@ RemPrint:
   | tID RemPrint { printf("Nous printons : %s \n",$1); }
 ;
 Function:
-  VariableType tID tPG ParamFunction tPD tAG RemindProgram tAD{ printf("Declaration de la fonction : '%s' \n", $2); }
+  VariableType tID tPG ParamFunction tPD tAG Program tAD{ printf("Declaration de la fonction : '%s' \n", $2); }
 ;
 ParamFunction:
   | VariableDeclaration {}
@@ -172,13 +175,13 @@ ParamFunction:
 
 %%
 
- void yyerror (char const *s) {
-   fprintf (stderr, "%s\n", s);
- }
+void yyerror (char const *s) {
+	fprintf (stderr, "%s\n", s);
+}
 
 int main(void) {
 	pile = initPile();
-	assembly = initAsm(); 
+	assembly = initAsm();
   yyparse();
   return 0;
 }
