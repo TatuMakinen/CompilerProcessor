@@ -94,10 +94,10 @@ void add_instruction(Assembly* assembly,int id, int param1, int param2, int para
   assembly->tailleEffective = place + 1;
 }
 
-void add_jmp_destination(Assembly* assembly, int line){
+void add_jmp_destination(Assembly* assembly, int line, int destination){
   if(assembly->tailleEffective<line){
     perror("line out of range\n");
     exit(EXIT_FAILURE);
   }
-  assembly->asmo[line]->param[0] = assembly->tailleEffective;
+  assembly->asmo[line]->param[0] = destination;
 }

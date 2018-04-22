@@ -137,18 +137,28 @@ Expression:
   }
 ;
 While:
-  tWHILE tPG Boolean tPD tAG Program tAD { printf("while\n"); }
+	StartWhile tPG Boolean tPD tAG Program tAD 
+	{ 
+		add_instruction(assembly,JMP,-1,-1,-1);
+		int jmf_line = removeQueue();
+		add_jmp_destination(assembly,jmf_line, assembly->tailleEffective); // Add destination to JMF
+		int jmp_line = removeQueue();
+		add_jmp_destination(assembly,assembly->tailleEffective-1,jmp_line); // Add destination to JMP
+	}
+;
+StartWhile:
+	tWHILE { insertQueue(assembly->tailleEffective+1); } // Save line nb to what follows (...CMP)
 ;
 If:
   StartIf Program tAD RemainIf {}
 ;
 RemainIf:
 	{
-		add_jmp_destination(assembly,removeQueue());
+		add_jmp_destination(assembly,removeQueue(),assembly->tailleEffective);
 	}
   | StartElse Program tAD 
 	{
-		add_jmp_destination(assembly,removeQueue());
+		add_jmp_destination(assembly,removeQueue(),assembly->tailleEffective);
 	}
 ;
 StartIf:
@@ -161,7 +171,7 @@ StartElse:
   tELSE tAG 
 	{
 		add_instruction(assembly,JMP,-1,-1,-1);
-		add_jmp_destination(assembly,removeQueue());
+		add_jmp_destination(assembly,removeQueue(),assembly->tailleEffective);
 		insertQueue(assembly->tailleEffective);
 	}
 ;
