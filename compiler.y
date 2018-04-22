@@ -11,7 +11,6 @@
 	int line = 0;
 	Pile* pile;
 	Assembly* assembly;
-	Jump* jump;
 %}
 
 %union { char* str; int nb;}
@@ -141,15 +140,16 @@ While:
   tWHILE tPG Boolean tPD tAG Program tAD { printf("while\n"); }
 ;
 If:
-  StartIf Program tAD RemainIf 
-	{
-		jump = add_jump(assembly->tailleEffective);  
-		add_jmf_destination(assembly,jump->if_adr,jump->dest_adr); 
-	}
+  StartIf Program tAD RemainIf {}
 ;
 RemainIf:
-
-  | StartElse Program tAD {}
+	{
+		add_jmp_destination(assembly,removeQueue());
+	}
+  | StartElse Program tAD 
+	{
+		add_jmp_destination(assembly,removeQueue());
+	}
 ;
 StartIf:
   tIF tPG Boolean tPD tAG 
@@ -158,7 +158,12 @@ StartIf:
   }
 ;
 StartElse:
-  tELSE tAG  { printf("Depth = %d\n",depth); }
+  tELSE tAG 
+	{
+		add_instruction(assembly,JMP,-1,-1,-1);
+		add_jmp_destination(assembly,removeQueue());
+		insertQueue(assembly->tailleEffective);
+	}
 ;
 Boolean:
   Expression tEQUAL tEQUAL Expression 
@@ -168,9 +173,8 @@ Boolean:
     add_instruction(assembly,LOAD,1,peek(pile),-1);
 		depiler(pile);
 		add_instruction(assembly,CMP,0,1,-1);
-		insertQueue(assembly->tailleEffective);
 		add_instruction(assembly,JNE,-1,-1,-1);
-
+		insertQueue(assembly->tailleEffective);
 	}
   | Expression tUNEQUAL Expression 
 	{
@@ -179,8 +183,8 @@ Boolean:
     add_instruction(assembly,LOAD,1,peek(pile),-1);
 		depiler(pile);
 		add_instruction(assembly,CMP,0,1,-1);
-		insertQueue(assembly->tailleEffective);
 		add_instruction(assembly,JE,-1,-1,-1);
+		insertQueue(assembly->tailleEffective);
 	}
 	| Expression tLESS Expression 
 	{
@@ -189,8 +193,8 @@ Boolean:
     add_instruction(assembly,LOAD,1,peek(pile),-1);
 		depiler(pile);
 		add_instruction(assembly,CMP,0,1,-1);
+		add_instruction(assembly,JGE,-1,-1,-1);
 		insertQueue(assembly->tailleEffective);
-		add_instruction(assembly,JL,-1,-1,-1);
 	}
 	| Expression tLESSEQUAL Expression 
 	{
@@ -199,8 +203,8 @@ Boolean:
     add_instruction(assembly,LOAD,1,peek(pile),-1);
 		depiler(pile);
 		add_instruction(assembly,CMP,0,1,-1);
+		add_instruction(assembly,JG,-1,-1,-1);
 		insertQueue(assembly->tailleEffective);
-		add_instruction(assembly,JLE,-1,-1,-1);
 	}
 	| Expression tGREATER Expression 
 	{
@@ -209,8 +213,8 @@ Boolean:
     add_instruction(assembly,LOAD,1,peek(pile),-1);
 		depiler(pile);
 		add_instruction(assembly,CMP,0,1,-1);
+		add_instruction(assembly,JLE,-1,-1,-1);
 		insertQueue(assembly->tailleEffective);
-		add_instruction(assembly,JG,-1,-1,-1);
 	}
 	| Expression tGREATEREQUAL Expression 
 	{
@@ -219,8 +223,8 @@ Boolean:
     add_instruction(assembly,LOAD,1,peek(pile),-1);
 		depiler(pile);
 		add_instruction(assembly,CMP,0,1,-1);
+		add_instruction(assembly,JL,-1,-1,-1);
 		insertQueue(assembly->tailleEffective);
-		add_instruction(assembly,JGE,-1,-1,-1);
 	}
 ;
 Print: 
@@ -248,7 +252,7 @@ void yyerror (char const *s) {
 }
 
 int main(void) {
-	enum assembly_cmds {ADD,SUB,MUL,DIV,STORE,LOAD,AFC,CMP,JE,JNE,JL,JLE,JG,JGE};
+	enum assembly_cmds {ADD,SUB,MUL,DIV,STORE,LOAD,AFC,CMP,JMP,JE,JNE,JL,JLE,JG,JGE};
 	pile = initPile();
 	assembly = initAsm();
   yyparse();

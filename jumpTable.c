@@ -16,10 +16,9 @@ bool isEmpty() {
 	return frontQueue == 0;
 }
 
-void insertQueue(int data) {
-
+void insertQueue(int currentline) {
 	if(!isFull()) {
-		intArray[++frontQueue] = data;
+		intArray[++frontQueue] = currentline-1;
 	}
 	else{
 		printf("Queue is full\n");
@@ -28,24 +27,9 @@ void insertQueue(int data) {
 
 int removeQueue() {
 	if(!isEmpty()) {
-		int data = intArray[frontQueue--];	
-   	return data;
+		int destination = intArray[frontQueue--];	
+   	return destination;
 	}
 	printf("Queue is empty\n");
 	return 0;
-}
-
-typedef struct Jump Jump;
-struct Jump
-{
-	int if_adr;
-	int dest_adr;
-};
-
-
-Jump* add_jump(int currentLine){
-	Jump *data = malloc(sizeof(*data));
-	data->if_adr = removeQueue(); // get the if adr from LIFO queue - last if that was encountered
-	data->dest_adr = currentLine;
-	return data;
 }

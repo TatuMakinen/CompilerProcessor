@@ -1,6 +1,6 @@
 #include <string.h>
 
-enum assembly_cmds {ADD,SUB,MUL,DIV,STORE,LOAD,AFC,CMP,JE,JNE,JL,JLE,JG,JGE};
+enum assembly_cmds {ADD,SUB,MUL,DIV,STORE,LOAD,AFC,CMP,JMP,JE,JNE,JL,JLE,JG,JGE};
 
 #define ASMSIZE 1000
 
@@ -48,6 +48,9 @@ void print_instruction(Inst* inst){
     case CMP :
       printf("CMP r%d r%d\n",inst->param[0],inst->param[1]);
       break;
+    case JMP :
+      printf("JMP @%d\n",inst->param[0]);
+      break;
     case JE :
       printf("JE @%d\n",inst->param[0]);
       break;
@@ -91,10 +94,10 @@ void add_instruction(Assembly* assembly,int id, int param1, int param2, int para
   assembly->tailleEffective = place + 1;
 }
 
-void add_jmf_destination(Assembly* assembly, int line, int destination){
+void add_jmp_destination(Assembly* assembly, int line){
   if(assembly->tailleEffective<line){
     perror("line out of range\n");
     exit(EXIT_FAILURE);
   }
-  assembly->asmo[line]->param[0] = destination;
+  assembly->asmo[line]->param[0] = assembly->tailleEffective;
 }

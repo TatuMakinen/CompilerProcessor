@@ -1,7 +1,7 @@
 int main() {
-  int a = 1+2+3;
-  if(a > 6){
+  int a = 1;
+  if(a > 10){
     int b = 2;
   }
-  int c = 5;
+  int d = 10000;
 }
