@@ -1,6 +1,6 @@
 #include <string.h>
 
-enum assembly_cmds {ADD,SUB,MUL,DIV,STORE,LOAD,AFC};
+enum assembly_cmds {ADD,SUB,MUL,DIV,STORE,LOAD,AFC,CMP,JE,JNE,JL,JLE,JG,JGE};
 
 #define ASMSIZE 1000
 
@@ -45,8 +45,30 @@ void print_instruction(Inst* inst){
     case AFC :
       printf("AFC r%d '%d'\n",inst->param[0],inst->param[1]);
       break;
+    case CMP :
+      printf("CMP r%d r%d\n",inst->param[0],inst->param[1]);
+      break;
+    case JE :
+      printf("JE @%d\n",inst->param[0]);
+      break;
+    case JNE :
+      printf("JNE @%d\n",inst->param[0]);
+      break;
+    case JL :
+      printf("JL @%d\n",inst->param[0]);
+      break;
+    case JLE :
+      printf("JLE @%d\n",inst->param[0]);
+      break;
+    case JG :
+      printf("JG @%d\n",inst->param[0]);
+      break;
+    case JGE :
+      printf("JGE @%d\n",inst->param[0]);
+      break;
     default :
-      printf("error\n");
+      printf("Instruction not known\n");
+      exit(EXIT_FAILURE);
   }
 }	
 
@@ -67,4 +89,12 @@ void add_instruction(Assembly* assembly,int id, int param1, int param2, int para
   inst->param[2] = param3;
   assembly->asmo[place] = inst;
   assembly->tailleEffective = place + 1;
+}
+
+void add_jmf_destination(Assembly* assembly, int line, int destination){
+  if(assembly->tailleEffective<line){
+    perror("line out of range\n");
+    exit(EXIT_FAILURE);
+  }
+  assembly->asmo[line]->param[0] = destination;
 }

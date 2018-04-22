@@ -35,48 +35,17 @@ int removeQueue() {
 	return 0;
 }
 
-typedef struct Instruction Instruction;
-struct Instruction
+typedef struct Jump Jump;
+struct Jump
 {
 	int if_adr;
 	int dest_adr;
 };
 
-Instruction* jumpTable[MAXTABLE];
-int frontTable = 0;
 
-void addInstruction(int currentLine){
-	if(frontTable<=MAXTABLE){
-		Instruction *data = malloc(sizeof(*data));
-		data->if_adr = removeQueue(); // get the if adr from LIFO queue - last if that was encountered
-		data->dest_adr = currentLine; 
-		jumpTable[frontTable++] = data;
-	}
-	else{
-		printf("Table is full.\n");
-	}
+Jump* add_jump(int currentLine){
+	Jump *data = malloc(sizeof(*data));
+	data->if_adr = removeQueue(); // get the if adr from LIFO queue - last if that was encountered
+	data->dest_adr = currentLine;
+	return data;
 }
-
-void displayTable()
-{
-    for(int i=0;i<frontTable;++i)
-    {
-        printf("Instruction JMF: %d destination: %d\n", jumpTable[i]->if_adr, jumpTable[i]->dest_adr);
-    }
-}
-/* Test structure
-int main(){
-	insertQueue(1);
-	insertQueue(2);
-	insertQueue(3);
-	insertQueue(4);
-	addInstruction(11);
-	addInstruction(12);
-	insertQueue(5);
-	addInstruction(13);
-	addInstruction(14);
-	addInstruction(15);
-	displayTable();
-
-}
-*/

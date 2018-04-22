@@ -11,13 +11,14 @@
 	int line = 0;
 	Pile* pile;
 	Assembly* assembly;
+	Jump* jump;
 %}
 
 %union { char* str; int nb;}
 
 %token tIF tWHILE tELSE tMAIN tQUOTE tCHAINE tCONST tNB tRETURN tPRINTF tSTRING
-tAG tAD tSEMICOLON tCOMMA tPLUS tMINUS tSLASH tMUL tEQUAL tUNEQUAL tPG tPD tINT
-tVOID tID tEXP tFIRSTARG tPERCENTINT
+tAG tAD tSEMICOLON tCOMMA tPLUS tMINUS tSLASH tMUL tEQUAL tUNEQUAL tLESS tLESSEQUAL 
+tGREATER tGREATEREQUAL tPG tPD tINT tVOID tID tEXP tFIRSTARG tPERCENTINT
 %type <str> tID
 %type <nb> tNB
 %type <str> tCHAINE
@@ -28,7 +29,8 @@ tVOID tID tEXP tFIRSTARG tPERCENTINT
 Main: 
   tINT tMAIN tPG tPD tAG Program tAD
   {
-    printf("Compile succesful!\n"); 
+    printf("Compile succesful!\n");
+		afficherPile(pile);display_struct(assembly);
   }
 ;
 Program:
@@ -36,7 +38,7 @@ Program:
   | Line Program {}
 ;
 Line:
-  Content tSEMICOLON {++line;printf("Line %d:\n",line);afficherPile(pile);display_struct(assembly);}
+  Content tSEMICOLON {}
   | If {}
   | While {}
   | Function {}
@@ -87,8 +89,8 @@ Expression:
 		add_instruction(assembly,LOAD, 0, peek(pile), -1);
     depiler(pile);
     add_instruction(assembly,LOAD, 1, peek(pile), -1);
-    add_instruction(assembly,ADD, 0, 0, 1);
 		depiler(pile);
+    add_instruction(assembly,ADD, 0, 0, 1);
 		empiler(pile,"int","tmp",depth);
 		add_instruction(assembly,STORE, peek(pile), 0, -1);
   }
@@ -97,8 +99,8 @@ Expression:
 		add_instruction(assembly,LOAD, 0, peek(pile), -1);
 		depiler(pile);
     add_instruction(assembly,LOAD,1,peek(pile),-1);
-    add_instruction(assembly,SUB,0,0,1);
 		depiler(pile);
+    add_instruction(assembly,SUB,0,0,1);
 		empiler(pile,"int","tmp",depth);
 		add_instruction(assembly,STORE, peek(pile), 0, -1);
   }
@@ -107,8 +109,8 @@ Expression:
 		add_instruction(assembly,LOAD, 0, peek(pile), -1);
     depiler(pile); 
     add_instruction(assembly,LOAD,1,peek(pile),-1);
-    add_instruction(assembly,MUL,0,0,1);
 		depiler(pile);
+    add_instruction(assembly,MUL,0,0,1);
 		empiler(pile,"int","tmp",depth);
 		add_instruction(assembly,STORE, peek(pile), 0, -1);
   }
@@ -117,8 +119,8 @@ Expression:
 		add_instruction(assembly,LOAD, 0, peek(pile), -1); 
     depiler(pile);
     add_instruction(assembly,LOAD,1,peek(pile),-1);
-    add_instruction(assembly,DIV,0,0,1);
 		depiler(pile);
+    add_instruction(assembly,DIV,0,0,1);
 		empiler(pile,"int","tmp",depth);
 		add_instruction(assembly,STORE, peek(pile), 0, -1);
   }
@@ -139,30 +141,87 @@ While:
   tWHILE tPG Boolean tPD tAG Program tAD { printf("while\n"); }
 ;
 If:
-  StartIf Program tAD RemainIf { addInstruction(assembly->tailleEffective); }
+  StartIf Program tAD RemainIf 
+	{
+		jump = add_jump(assembly->tailleEffective);  
+		add_jmf_destination(assembly,jump->if_adr,jump->dest_adr); 
+	}
 ;
 RemainIf:
+
   | StartElse Program tAD {}
 ;
 StartIf:
   tIF tPG Boolean tPD tAG 
   {
     ++depth; printf("Depth = %d\n",depth);
-    insertQueue(assembly->tailleEffective);
   }
 ;
 StartElse:
   tELSE tAG  { printf("Depth = %d\n",depth); }
 ;
 Boolean:
-  tID tEQUAL tEQUAL tNB { printf("VAR == INT\n"); }
-  | tID tEQUAL tEQUAL tID { printf("VAR == VAR\n"); }
-  | tNB tEQUAL tEQUAL tNB { printf("INT == INT\n");}
-  | tNB tEQUAL tEQUAL tID { printf("INT == VAR\n"); }
-  | tID tUNEQUAL tNB { printf("VAR!=INT\n"); }
-  | tID tUNEQUAL tID { printf("VAR!=VAR\n"); }
-  | tNB tUNEQUAL tNB { printf("INT!=INT\n"); }
-  | tNB tUNEQUAL tID { printf("INT!=VAR\n"); }
+  Expression tEQUAL tEQUAL Expression 
+	{ 
+		add_instruction(assembly,LOAD, 0, peek(pile), -1); 
+    depiler(pile);
+    add_instruction(assembly,LOAD,1,peek(pile),-1);
+		depiler(pile);
+		add_instruction(assembly,CMP,0,1,-1);
+		insertQueue(assembly->tailleEffective);
+		add_instruction(assembly,JNE,-1,-1,-1);
+
+	}
+  | Expression tUNEQUAL Expression 
+	{
+		add_instruction(assembly,LOAD, 0, peek(pile), -1); 
+    depiler(pile);
+    add_instruction(assembly,LOAD,1,peek(pile),-1);
+		depiler(pile);
+		add_instruction(assembly,CMP,0,1,-1);
+		insertQueue(assembly->tailleEffective);
+		add_instruction(assembly,JE,-1,-1,-1);
+	}
+	| Expression tLESS Expression 
+	{
+		add_instruction(assembly,LOAD, 0, peek(pile), -1); 
+    depiler(pile);
+    add_instruction(assembly,LOAD,1,peek(pile),-1);
+		depiler(pile);
+		add_instruction(assembly,CMP,0,1,-1);
+		insertQueue(assembly->tailleEffective);
+		add_instruction(assembly,JL,-1,-1,-1);
+	}
+	| Expression tLESSEQUAL Expression 
+	{
+		add_instruction(assembly,LOAD, 0, peek(pile), -1); 
+    depiler(pile);
+    add_instruction(assembly,LOAD,1,peek(pile),-1);
+		depiler(pile);
+		add_instruction(assembly,CMP,0,1,-1);
+		insertQueue(assembly->tailleEffective);
+		add_instruction(assembly,JLE,-1,-1,-1);
+	}
+	| Expression tGREATER Expression 
+	{
+		add_instruction(assembly,LOAD, 0, peek(pile), -1); 
+    depiler(pile);
+    add_instruction(assembly,LOAD,1,peek(pile),-1);
+		depiler(pile);
+		add_instruction(assembly,CMP,0,1,-1);
+		insertQueue(assembly->tailleEffective);
+		add_instruction(assembly,JG,-1,-1,-1);
+	}
+	| Expression tGREATEREQUAL Expression 
+	{
+		add_instruction(assembly,LOAD, 0, peek(pile), -1); 
+    depiler(pile);
+    add_instruction(assembly,LOAD,1,peek(pile),-1);
+		depiler(pile);
+		add_instruction(assembly,CMP,0,1,-1);
+		insertQueue(assembly->tailleEffective);
+		add_instruction(assembly,JGE,-1,-1,-1);
+	}
 ;
 Print: 
   tPRINTF tPG tID tPD { printf("La variable a printé : %s \n", $3); }
@@ -189,7 +248,7 @@ void yyerror (char const *s) {
 }
 
 int main(void) {
-	enum assembly_cmds {ADD,SUB,MUL,DIV,STORE,LOAD,AFC};
+	enum assembly_cmds {ADD,SUB,MUL,DIV,STORE,LOAD,AFC,CMP,JE,JNE,JL,JLE,JG,JGE};
 	pile = initPile();
 	assembly = initAsm();
   yyparse();

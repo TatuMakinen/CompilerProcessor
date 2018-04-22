@@ -23,6 +23,10 @@ void                    {return tVOID;}
 "*"                     {return tMUL;}
 "="                     {return tEQUAL;}
 "!="                    {return tUNEQUAL;}
+"<"                     {return tLESS;}
+"<="                    {return tLESSEQUAL;}
+">"                     {return tGREATER;}
+">="                    {return tGREATEREQUAL;}
 "("                     {return tPG;}
 ")"                     {return tPD;}
 "\""                    {return tQUOTE;}
