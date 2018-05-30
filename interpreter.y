@@ -97,6 +97,7 @@ int main(void) {
 		printf("Compile succesful!\n");
 		interpreter(assembly);
 		display_registers();
+		display_memory(20);
 	}
   return 0;
 }
