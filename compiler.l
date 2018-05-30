@@ -1,5 +1,6 @@
 %{
 #include "compiler.tab.h"
+#include <string.h>
 %}
 
 %%

@@ -1,4 +1,6 @@
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 enum assembly_cmds {ADD,MUL,SOU,DIV,COP,AFC,LOAD,STORE,EQU,INF,INFE,SUP,SUPE,JMP,JMPC};
 
@@ -82,6 +84,26 @@ void display_struct(Assembly* assembly){
   for(int i=0;i<assembly->tailleEffective;i++){
     printf("%2d ",i);
     print_instruction(assembly->asmo[i]);
+  }
+}
+
+void save_assembly_to_file(Assembly* assembly, char * filename){
+	FILE *fp = fopen(filename, "wb");
+  char line [30];
+	int n;
+	Inst* inst;
+	for(int i=0;i<assembly->tailleEffective;i++){
+		inst = assembly->asmo[i];
+		if(inst->id == JMP){
+			n = sprintf(line,"%s %d;\n",a_strings[inst->id],inst->param[0]);
+		}
+		else if((inst->id<EQU && inst->id>DIV)|| inst->id==JMPC){
+			n = sprintf(line,"%s %d %d;\n",a_strings[inst->id],inst->param[0],inst->param[1]);
+		}
+		else{
+			n = sprintf(line,"%s %d %d %d;\n",a_strings[inst->id],inst->param[0],inst->param[1],inst->param[2]);
+		}
+		fputs(line, fp);
   }
 }
 

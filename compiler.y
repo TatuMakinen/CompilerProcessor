@@ -27,10 +27,6 @@ tGREATER tGREATEREQUAL tPG tPD tINT tVOID tID tEXP tFIRSTARG tPERCENTINT
 %%
 Main: 
   tINT tMAIN tPG tPD tAG Program tAD
-  {
-    printf("Compile succesful!\n");
-		afficherPile(pile);display_struct(assembly);
-  }
 ;
 Program:
 
@@ -163,7 +159,7 @@ RemainIf:
 StartIf:
   tIF tPG Boolean tPD tAG 
   {
-    ++depth; printf("Depth = %d\n",depth);
+    ++depth;
   }
 ;
 StartElse:
@@ -263,9 +259,18 @@ void yyerror (char const *s) {
 }
 
 int main(void) {
-	enum assembly_cmds {ADD,SUB,MUL,DIV,STORE,LOAD,AFC,CMP,JMP,JE,JNE,JL,JLE,JG,JGE};
 	pile = initPile();
 	assembly = initAsm();
-  yyparse();
+  if(yyparse()) {
+		printf("Compile failed!\n");
+	}else{
+		printf("Compile succesful!\n");
+		afficherPile(pile);
+		display_struct(assembly);
+		save_assembly_to_file(assembly,"asm_code");
+	}
+
+
+
   return 0;
 }
