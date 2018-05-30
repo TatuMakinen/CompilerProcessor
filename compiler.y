@@ -77,8 +77,7 @@ Assignment:
 VariableDefinition:
   VariableType tID tEQUAL Expression
   {
-    depiler(pile); empiler(pile,type,$2,depth);
-		add_instruction(assembly,STORE, peek(pile), 0, -1);
+    changeTopId(pile,$2);
   }
 ;
 // Arithmetic operations
@@ -99,7 +98,7 @@ Expression:
 		depiler(pile);
     add_instruction(assembly,LOAD,1,peek(pile),-1);
 		depiler(pile);
-    add_instruction(assembly,SUB,0,0,1);
+    add_instruction(assembly,SOU,0,0,1);
 		empiler(pile,"int","tmp",depth);
 		add_instruction(assembly,STORE, peek(pile), 0, -1);
   }
@@ -132,7 +131,7 @@ Expression:
   | tID
   {
     add_instruction(assembly,LOAD, 0, find(pile,$1), -1);
-		empiler(pile,"str","tmp",depth);
+		empiler(pile,"int","tmp",depth);
     add_instruction(assembly,STORE, peek(pile), 0, -1);
   }
 ;
@@ -182,8 +181,8 @@ Boolean:
     depiler(pile);
     add_instruction(assembly,LOAD,1,peek(pile),-1);
 		depiler(pile);
-		add_instruction(assembly,CMP,0,1,-1);
-		add_instruction(assembly,JNE,-1,-1,-1);
+		add_instruction(assembly,EQU,0,0,1);
+		add_instruction(assembly,JMPC,-1,0,-1);
 		insertQueue(assembly->tailleEffective);
 	}
   | Expression tUNEQUAL Expression 
@@ -192,8 +191,10 @@ Boolean:
     depiler(pile);
     add_instruction(assembly,LOAD,1,peek(pile),-1);
 		depiler(pile);
-		add_instruction(assembly,CMP,0,1,-1);
-		add_instruction(assembly,JE,-1,-1,-1);
+		add_instruction(assembly,EQU,0,0,1);
+		add_instruction(assembly,AFC,1,0,-1);
+		add_instruction(assembly,EQU,0,0,1);
+		add_instruction(assembly,JMPC,-1,0,-1);
 		insertQueue(assembly->tailleEffective);
 	}
 	| Expression tLESS Expression 
@@ -202,8 +203,8 @@ Boolean:
     depiler(pile);
     add_instruction(assembly,LOAD,1,peek(pile),-1);
 		depiler(pile);
-		add_instruction(assembly,CMP,0,1,-1);
-		add_instruction(assembly,JGE,-1,-1,-1);
+		add_instruction(assembly,INF,0,0,1);
+		add_instruction(assembly,JMPC,-1,0,-1);
 		insertQueue(assembly->tailleEffective);
 	}
 	| Expression tLESSEQUAL Expression 
@@ -212,8 +213,8 @@ Boolean:
     depiler(pile);
     add_instruction(assembly,LOAD,1,peek(pile),-1);
 		depiler(pile);
-		add_instruction(assembly,CMP,0,1,-1);
-		add_instruction(assembly,JG,-1,-1,-1);
+		add_instruction(assembly,INFE,0,0,1);
+		add_instruction(assembly,JMPC,-1,0,-1);
 		insertQueue(assembly->tailleEffective);
 	}
 	| Expression tGREATER Expression 
@@ -222,8 +223,8 @@ Boolean:
     depiler(pile);
     add_instruction(assembly,LOAD,1,peek(pile),-1);
 		depiler(pile);
-		add_instruction(assembly,CMP,0,1,-1);
-		add_instruction(assembly,JLE,-1,-1,-1);
+		add_instruction(assembly,SUP,0,0,1);
+		add_instruction(assembly,JMPC,-1,0,-1);
 		insertQueue(assembly->tailleEffective);
 	}
 	| Expression tGREATEREQUAL Expression 
@@ -232,8 +233,8 @@ Boolean:
     depiler(pile);
     add_instruction(assembly,LOAD,1,peek(pile),-1);
 		depiler(pile);
-		add_instruction(assembly,CMP,0,1,-1);
-		add_instruction(assembly,JL,-1,-1,-1);
+		add_instruction(assembly,SUPE,0,0,1);
+		add_instruction(assembly,JMPC,-1,0,-1);
 		insertQueue(assembly->tailleEffective);
 	}
 ;

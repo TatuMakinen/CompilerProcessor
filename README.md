@@ -1,10 +1,11 @@
 # Compiler & Processor
 ## Obligatory things TODO:
 * if/else
-* while
-* functions
+* while (optional but do it ?)
+* functions (optional but do it)
 * arithmetic expressions
 * basic errors
+* interpretor
 
 ## Optional things TODO:
 * errors in depth

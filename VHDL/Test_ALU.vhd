@@ -96,30 +96,50 @@ BEGIN
    begin		
       -- hold reset state for 100 ns.
       wait for 100 ns;	
-
-
-      -- insert stimulus here
-		-- 1)Test addition without carry
-		OP_IN <= x"0001";
+		
+		-- 1) Test ADDITION
+		OP_IN <= x"0001"; -- normal
 		A_IN <= x"000A";
 		B_IN <= x"0001";
-		wait for 100 ns;	
-		-- 2)Test addition with carry
-		OP_IN <= x"0001";
+		wait for 10 ns;	
+		
+		OP_IN <= x"0001"; -- carry
 		A_IN <= x"FFFF";
 		B_IN <= x"FFFF";
-		wait for 100 ns;	
-		-- 3)Test addition equal to 0
-		OP_IN <= x"0001";
+		wait for 10 ns;	
+		
+		OP_IN <= x"0001"; -- zero
 		A_IN <= x"0000";
 		B_IN <= x"0000";
-		wait for 100 ns;
+		wait for 10 ns;
 		
-		-- 4)Test soustraction
-		OP_IN <= x"0003";
-		A_IN <= x"0004";
-		B_IN <= x"0003";
-		wait for 100 ns;
+		OP_IN <= x"0001"; -- overflow 1
+		A_IN <= x"4000";
+		B_IN <= x"4000";
+		wait for 10 ns;
+		
+		OP_IN <= x"0001"; -- overflow 2
+		A_IN <= x"8000";
+		B_IN <= x"8000";
+		
+		wait for 50 ns;
+		
+		-- 2) Test SUBSTRACTION
+		OP_IN <= x"0003"; -- without carry
+		A_IN <= x"0002";
+		B_IN <= x"0001";
+		wait for 10 ns;
+		
+		OP_IN <= x"0003"; -- with carry
+		A_IN <= x"0001";
+		B_IN <= x"0002";
+		wait for 10 ns;
+		
+		OP_IN <= x"0003"; -- equal to 0
+		A_IN <= x"FFFF";
+		B_IN <= x"FFFF";
+		
+		wait for 50 ns;
 		
 		-- Test multiplication 
 		OP_IN <= x"0002";

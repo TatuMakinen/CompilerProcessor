@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date:    10:33:12 05/14/2018 
+-- Create Date:    18:38:46 05/29/2018 
 -- Design Name: 
--- Module Name:    Pipeline - Behavioral 
+-- Module Name:    MUX3 - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
@@ -29,30 +29,20 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity Pipeline is
-    Port ( CK 	: in  STD_LOGIC;
-			  OP_IN : in  STD_LOGIC_VECTOR (7 downto 0);
-			  A_IN : in  STD_LOGIC_VECTOR (15 downto 0);
+entity MUX3 is
+    Port ( OP_IN : in  STD_LOGIC_VECTOR (7 downto 0);
            B_IN : in  STD_LOGIC_VECTOR (15 downto 0);
-           C_IN : in  STD_LOGIC_VECTOR (15 downto 0);
-			  OP_OUT : out  STD_LOGIC_VECTOR (7 downto 0);
-           A_OUT : out  STD_LOGIC_VECTOR (15 downto 0);
-           B_OUT : out  STD_LOGIC_VECTOR (15 downto 0);
-           C_OUT : out  STD_LOGIC_VECTOR (15 downto 0));
-end Pipeline;
+           DATA_IN : in  STD_LOGIC_VECTOR (15 downto 0);
+           DATA_OUT : out  STD_LOGIC_VECTOR (15 downto 0));
+end MUX3;
 
-architecture Behavioral of Pipeline is
+architecture Behavioral of MUX3 is
 
 begin
 
-	process
-	begin
-		wait until CK'event and CK='1';
-		A_OUT <= A_IN;
-		B_OUT <= B_IN;
-		C_OUT <= C_IN;
-		OP_OUT <= OP_IN;
-	end process;
+	DATA_OUT <= DATA_IN when OP_IN = x"07" else
+					B_IN;
+
 
 end Behavioral;
 

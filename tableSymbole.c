@@ -35,6 +35,15 @@ int peek(Pile* pile){
   return pile->premier->adr;
 }
 
+void changeTopId(Pile* pile, char* id){
+	if(pile == NULL){
+    perror("peek");
+    exit(EXIT_FAILURE);
+  }else{
+		pile->premier->id = id;
+	}
+}
+
 int find(Pile* pile, char* id){
   if(pile == NULL){
     perror("find");

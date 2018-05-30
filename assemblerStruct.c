@@ -1,6 +1,8 @@
 #include <string.h>
 
-enum assembly_cmds {ADD,SUB,MUL,DIV,STORE,LOAD,AFC,CMP,JMP,JE,JNE,JL,JLE,JG,JGE};
+enum assembly_cmds {ADD,MUL,SOU,DIV,COP,AFC,LOAD,STORE,EQU,INF,INFE,SUP,SUPE,JMP,JMPC};
+
+char* a_strings[15] = {"ADD","MUL","SOU","DIV","COP","AFC","LOAD","STORE","EQU","INF","INFE","SUP","SUPE","JMP","JMPC"};
 
 #define ASMSIZE 1000
 
@@ -25,49 +27,49 @@ Assembly* initAsm(){
 void print_instruction(Inst* inst){
   switch(inst->id) {
     case ADD :
-      printf("ADD r%d r%d r%d\n",inst->param[0],inst->param[1],inst->param[2]);
-      break;
-    case SUB :
-      printf("SUB r%d r%d r%d\n",inst->param[0],inst->param[1],inst->param[2]);
+      printf("%s r%d r%d r%d\n",a_strings[inst->id],inst->param[0],inst->param[1],inst->param[2]);
       break;
     case MUL :
-      printf("MUL r%d r%d r%d\n",inst->param[0],inst->param[1],inst->param[2]);
+      printf("%s r%d r%d r%d\n",a_strings[inst->id],inst->param[0],inst->param[1],inst->param[2]);
+      break;
+    case SOU :
+      printf("%s r%d r%d r%d\n",a_strings[inst->id],inst->param[0],inst->param[1],inst->param[2]);
       break;
     case DIV :
-      printf("DIV r%d r%d r%d\n",inst->param[0],inst->param[1],inst->param[2]);
+      printf("%s r%d r%d r%d\n",a_strings[inst->id],inst->param[0],inst->param[1],inst->param[2]);
       break;
-    case STORE :
-      printf("STR @%d r%d\n",inst->param[0],inst->param[1]);
-      break;
-    case LOAD :
-      printf("LDR r%d @%d\n",inst->param[0],inst->param[1]);
+    case COP :
+      printf("%s r%d r%d\n",a_strings[inst->id],inst->param[0],inst->param[1]);
       break;
     case AFC :
-      printf("AFC r%d '%d'\n",inst->param[0],inst->param[1]);
+      printf("%s r%d '%d'\n",a_strings[inst->id],inst->param[0],inst->param[1]);
       break;
-    case CMP :
-      printf("CMP r%d r%d\n",inst->param[0],inst->param[1]);
+    case LOAD :
+      printf("%s r%d @%d\n",a_strings[inst->id],inst->param[0],inst->param[1]);
+      break;
+    case STORE :
+      printf("%s @%d r%d\n",a_strings[inst->id],inst->param[0],inst->param[1]);
+      break;
+    case EQU :
+			printf("%s r%d r%d r%d\n",a_strings[inst->id],inst->param[0],inst->param[1],inst->param[2]);
+      break;
+    case INF :
+			printf("%s r%d r%d r%d\n",a_strings[inst->id],inst->param[0],inst->param[1],inst->param[2]);
+      break;
+    case INFE :
+			printf("%s r%d r%d r%d\n",a_strings[inst->id],inst->param[0],inst->param[1],inst->param[2]);
+      break;
+    case SUP :
+			printf("%s r%d r%d r%d\n",a_strings[inst->id],inst->param[0],inst->param[1],inst->param[2]);
+      break;
+    case SUPE :
+			printf("%s r%d r%d r%d\n",a_strings[inst->id],inst->param[0],inst->param[1],inst->param[2]);
       break;
     case JMP :
-      printf("JMP @%d\n",inst->param[0]);
+      printf("%s @%d\n",a_strings[inst->id],inst->param[0]);
       break;
-    case JE :
-      printf("JE @%d\n",inst->param[0]);
-      break;
-    case JNE :
-      printf("JNE @%d\n",inst->param[0]);
-      break;
-    case JL :
-      printf("JL @%d\n",inst->param[0]);
-      break;
-    case JLE :
-      printf("JLE @%d\n",inst->param[0]);
-      break;
-    case JG :
-      printf("JG @%d\n",inst->param[0]);
-      break;
-    case JGE :
-      printf("JGE @%d\n",inst->param[0]);
+    case JMPC :
+      printf("%s @%d r%d\n",a_strings[inst->id],inst->param[0],inst->param[1]);
       break;
     default :
       printf("Instruction not known\n");

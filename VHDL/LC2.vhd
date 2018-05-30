@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date:    10:33:12 05/14/2018 
+-- Create Date:    12:15:32 05/29/2018 
 -- Design Name: 
--- Module Name:    Pipeline - Behavioral 
+-- Module Name:    LC - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
@@ -29,30 +29,17 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity Pipeline is
-    Port ( CK 	: in  STD_LOGIC;
-			  OP_IN : in  STD_LOGIC_VECTOR (7 downto 0);
-			  A_IN : in  STD_LOGIC_VECTOR (15 downto 0);
-           B_IN : in  STD_LOGIC_VECTOR (15 downto 0);
-           C_IN : in  STD_LOGIC_VECTOR (15 downto 0);
-			  OP_OUT : out  STD_LOGIC_VECTOR (7 downto 0);
-           A_OUT : out  STD_LOGIC_VECTOR (15 downto 0);
-           B_OUT : out  STD_LOGIC_VECTOR (15 downto 0);
-           C_OUT : out  STD_LOGIC_VECTOR (15 downto 0));
-end Pipeline;
+entity LC2 is
+    Port ( op : in  STD_LOGIC_VECTOR (7 downto 0);
+           w : out  STD_LOGIC);
+end LC2;
 
-architecture Behavioral of Pipeline is
+architecture Behavioral of LC2 is
 
 begin
 
-	process
-	begin
-		wait until CK'event and CK='1';
-		A_OUT <= A_IN;
-		B_OUT <= B_IN;
-		C_OUT <= C_IN;
-		OP_OUT <= OP_IN;
-	end process;
+	w <= '0' when op = x"08" or op = x"0E" or op = x"0F" else
+		  '1';
 
 end Behavioral;
 

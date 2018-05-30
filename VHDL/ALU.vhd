@@ -31,16 +31,11 @@ use IEEE.STD_LOGIC_1164.ALL;
 use ieee.STD_LOGIC_UNSIGNED.all;
 
 entity ALU is
-    Port ( 	A_IN : in  STD_LOGIC_VECTOR (15 downto 0);
+    Port ( 	CTRL_ALU : in  STD_LOGIC_VECTOR (7 downto 0);
+				A_IN : in  STD_LOGIC_VECTOR (15 downto 0);
 				B_IN : in  STD_LOGIC_VECTOR (15 downto 0);
-				C_IN : in  STD_LOGIC_VECTOR (15 downto 0);
-				OP_IN : in  STD_LOGIC_VECTOR (15 downto 0);
-				Flag_IN : in  STD_LOGIC_VECTOR (15 downto 0);
-				A_OUT : out  STD_LOGIC_VECTOR (15 downto 0);
-				B_OUT : out  STD_LOGIC_VECTOR (15 downto 0);
-				C_OUT : out  STD_LOGIC_VECTOR (15 downto 0);
-				OP_OUT : out  STD_LOGIC_VECTOR (15 downto 0);
-				Flag_OUT : out  STD_LOGIC_VECTOR (15 downto 0));
+				R_OUT : out  STD_LOGIC_VECTOR (15 downto 0);
+				FLAGS_OUT: out  STD_LOGIC_VECTOR (15 downto 0));
 end ALU;
 
 architecture Behavioral of ALU is
@@ -48,18 +43,29 @@ architecture Behavioral of ALU is
 signal R : std_logic_vector(15 downto 0);
 signal Rmul : std_logic_vector(31 downto 0);
 signal Radd : std_logic_vector(16 downto 0);
+signal Rsub : std_logic_vector(16 downto 0);
 
 begin
 
-	Rmul <= A_IN*B_IN;
-	Radd <=('0'&A_IN)+('0'&B_IN);
-	R <= 	Radd(15 downto 0) when OP_IN = x"01" else
-			Rmul(15 downto 0) when OP_IN = x"02" else
-			A_IN-B_IN when OP_IN = x"03" else x"0000";
-															-- Negative flag and Overflow ?
-	Flag_OUT(1) <= Radd(16);							-- Carry flag
-	Flag_OUT(0) <= '1' when R=x"0000" else '0';  --ZERO flag
-	C_OUT <= R;
+	Rmul 	<= A_IN*B_IN;
+	Radd 	<=	('0'&A_IN)+('0'&B_IN);
+	Rsub 	<=	('0'&A_IN)-('0'&B_IN);
+	R_OUT <=	Radd(15 downto 0) when CTRL_ALU = x"01" else
+				Rmul(15 downto 0) when CTRL_ALU = x"02" else
+				Rsub(15 downto 0) when CTRL_ALU = x"03" else 
+				x"0000";
+	-- Z
+	FLAGS_OUT(0) <= 	'1' when R=x"0000" else 
+							'0';
+	-- C - for unsigned arithmetics to detect errors
+	FLAGS_OUT(1) <=	Radd(16) when CTRL_ALU = x"01" else
+							Rsub(16) when CTRL_ALU = x"03" else 
+							'0';
+	-- N
+	FLAGS_OUT(2)	<= R(15);
+	-- O - for signed arithmetics to detect errors
+	FLAGS_OUT(3)	<= '1' when A_IN(15) = B_IN(15) and not A_IN(15) = R(15) else 
+							'0';
 
 end Behavioral;
 
