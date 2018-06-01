@@ -34,4 +34,7 @@
 * finis les commandes de l'interpreteur - les sauts etc.
 
 
+# 1.6
 
+AFC, COP, ADD, SUB, MUL, DIV, LOAD, STORE
+chemin de données, alu, banc de registre, pipeline, décodeur

@@ -80,9 +80,9 @@ VariableDefinition:
 Expression:
   Expression tPLUS Expression
   {
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
+		add_instruction(assembly,LOAD, 1, peek(pile), -1);
     depiler(pile);
-    add_instruction(assembly,LOAD, 1, peek(pile), -1);
+    add_instruction(assembly,LOAD, 0, peek(pile), -1);
 		depiler(pile);
     add_instruction(assembly,ADD, 0, 0, 1);
 		empiler(pile,"int","tmp",depth);
@@ -90,9 +90,9 @@ Expression:
   }
   | Expression tMINUS Expression
   {
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
+		add_instruction(assembly,LOAD, 1, peek(pile), -1);
 		depiler(pile);
-    add_instruction(assembly,LOAD,1,peek(pile),-1);
+    add_instruction(assembly,LOAD,0,peek(pile),-1);
 		depiler(pile);
     add_instruction(assembly,SOU,0,0,1);
 		empiler(pile,"int","tmp",depth);
@@ -100,9 +100,9 @@ Expression:
   }
   | Expression tMUL Expression
   {
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
+		add_instruction(assembly,LOAD, 1, peek(pile), -1);
     depiler(pile); 
-    add_instruction(assembly,LOAD,1,peek(pile),-1);
+    add_instruction(assembly,LOAD,0,peek(pile),-1);
 		depiler(pile);
     add_instruction(assembly,MUL,0,0,1);
 		empiler(pile,"int","tmp",depth);
@@ -110,9 +110,9 @@ Expression:
   }
   | Expression tSLASH Expression
   {
-		add_instruction(assembly,LOAD, 0, peek(pile), -1); 
+		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
     depiler(pile);
-    add_instruction(assembly,LOAD,1,peek(pile),-1);
+    add_instruction(assembly,LOAD,0,peek(pile),-1);
 		depiler(pile);
     add_instruction(assembly,DIV,0,0,1);
 		empiler(pile,"int","tmp",depth);
@@ -132,17 +132,17 @@ Expression:
   }
 ;
 While:
-	StartWhile tPG Boolean tPD tAG Program tAD 
+	StartWhile tPG InverseBoolean tPD tAG Program tAD 
 	{ 
 		add_instruction(assembly,JMP,-1,-1,-1);
 		int jmf_line = removeQueue();
-		add_jmp_destination(assembly,jmf_line, assembly->tailleEffective); // Add destination to JMF
+		add_jmp_destination(assembly,jmf_line, assembly->tailleEffective); // Add destination to JMPC
 		int jmp_line = removeQueue();
 		add_jmp_destination(assembly,assembly->tailleEffective-1,jmp_line); // Add destination to JMP
 	}
 ;
 StartWhile:
-	tWHILE { insertQueue(assembly->tailleEffective+1); } // Save line nb to what follows (...CMP)
+	tWHILE { insertQueue(assembly->tailleEffective+1); } // Save line nb to what follows (INF,...)
 ;
 If:
   StartIf Program tAD RemainIf {}
@@ -188,7 +188,7 @@ Boolean:
     add_instruction(assembly,LOAD,1,peek(pile),-1);
 		depiler(pile);
 		add_instruction(assembly,EQU,0,0,1);
-		add_instruction(assembly,AFC,1,0,-1);
+		add_instruction(assembly,AFC,1,0,-1);	// To get inverse of EQU
 		add_instruction(assembly,EQU,0,0,1);
 		add_instruction(assembly,JMPC,-1,0,-1);
 		insertQueue(assembly->tailleEffective);
@@ -234,6 +234,71 @@ Boolean:
 		insertQueue(assembly->tailleEffective);
 	}
 ;
+InverseBoolean:
+  Expression tEQUAL tEQUAL Expression 
+	{
+		add_instruction(assembly,LOAD, 0, peek(pile), -1); 
+    depiler(pile);
+    add_instruction(assembly,LOAD,1,peek(pile),-1);
+		depiler(pile);
+		add_instruction(assembly,EQU,0,0,1);
+		add_instruction(assembly,JMPC,-1,0,-1);
+		insertQueue(assembly->tailleEffective);
+	}
+  | Expression tUNEQUAL Expression 
+	{
+		add_instruction(assembly,LOAD, 0, peek(pile), -1); 
+    depiler(pile);
+    add_instruction(assembly,LOAD,1,peek(pile),-1);
+		depiler(pile);
+		add_instruction(assembly,EQU,0,0,1);
+		add_instruction(assembly,AFC,1,0,-1);	// To get inverse of EQU
+		add_instruction(assembly,EQU,0,0,1);
+		add_instruction(assembly,JMPC,-1,0,-1);
+		insertQueue(assembly->tailleEffective);
+	}
+	| Expression tLESS Expression 
+	{
+		add_instruction(assembly,LOAD, 0, peek(pile), -1); 
+    depiler(pile);
+    add_instruction(assembly,LOAD,1,peek(pile),-1);
+		depiler(pile);
+		add_instruction(assembly,SUP,0,0,1);
+		add_instruction(assembly,JMPC,-1,0,-1);
+		insertQueue(assembly->tailleEffective);
+	}
+	| Expression tLESSEQUAL Expression 
+	{
+		add_instruction(assembly,LOAD, 0, peek(pile), -1); 
+    depiler(pile);
+    add_instruction(assembly,LOAD,1,peek(pile),-1);
+		depiler(pile);
+		add_instruction(assembly,SUPE,0,0,1);
+		add_instruction(assembly,JMPC,-1,0,-1);
+		insertQueue(assembly->tailleEffective);
+	}
+	| Expression tGREATER Expression 
+	{
+		add_instruction(assembly,LOAD, 0, peek(pile), -1); 
+    depiler(pile);
+    add_instruction(assembly,LOAD,1,peek(pile),-1);
+		depiler(pile);
+		add_instruction(assembly,INF,0,0,1);
+		add_instruction(assembly,JMPC,-1,0,-1);
+		insertQueue(assembly->tailleEffective);
+	}
+	| Expression tGREATEREQUAL Expression 
+	{
+		add_instruction(assembly,LOAD, 0, peek(pile), -1); 
+    depiler(pile);
+    add_instruction(assembly,LOAD,1,peek(pile),-1);
+		depiler(pile);
+		add_instruction(assembly,INFE,0,0,1);
+		add_instruction(assembly,JMPC,-1,0,-1);
+		insertQueue(assembly->tailleEffective);
+	}
+;
+
 Print: 
   tPRINTF tPG tID tPD { printf("La variable a printé : %s \n", $3); }
   | tPRINTF tPG tQUOTE RemPrint tQUOTE tPD {}
