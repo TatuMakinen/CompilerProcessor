@@ -1,0 +1,1436 @@
+Terminals which are not used
+
+   tCHAINE
+   tCONST
+   tRETURN
+   tEXP
+   tFIRSTARG
+
+
+State 40 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: Main $end
+
+    1 Main: /* empty */
+    2     | tINT tMAIN tPG tPD tAG Program tAD
+
+    3 Program: /* empty */
+    4        | Line Program
+
+    5 Line: Content tSEMICOLON
+    6     | If
+    7     | While
+
+    8 Content: /* empty */
+    9        | VariableDeclaration
+   10        | VariableDefinition
+   11        | Assignment
+   12        | Print
+
+   13 VariableType: tINT
+   14             | tVOID
+   15             | tSTRING
+
+   16 VariableDeclaration: VariableType tID RemVariable
+
+   17 RemVariable: /* empty */
+   18            | tCOMMA tID RemVariable
+
+   19 Assignment: tID tEQUAL Expression
+
+   20 VariableDefinition: VariableType tID tEQUAL Expression
+
+   21 Expression: Expression tPLUS Expression
+   22           | Expression tMINUS Expression
+   23           | Expression tMUL Expression
+   24           | Expression tSLASH Expression
+   25           | tNB
+   26           | tID
+
+   27 While: StartWhile tPG InverseBoolean tPD tAG Program tAD
+
+   28 StartWhile: tWHILE
+
+   29 If: StartIf Program tAD RemainIf
+
+   30 RemainIf: /* empty */
+   31         | StartElse Program tAD
+
+   32 StartIf: tIF tPG Boolean tPD tAG
+
+   33 StartElse: tELSE tAG
+
+   34 Boolean: Expression tEQUAL tEQUAL Expression
+   35        | Expression tUNEQUAL Expression
+   36        | Expression tLESS Expression
+   37        | Expression tLESSEQUAL Expression
+   38        | Expression tGREATER Expression
+   39        | Expression tGREATEREQUAL Expression
+
+   40 InverseBoolean: Expression tEQUAL tEQUAL Expression
+   41               | Expression tUNEQUAL Expression
+   42               | Expression tLESS Expression
+   43               | Expression tLESSEQUAL Expression
+   44               | Expression tGREATER Expression
+   45               | Expression tGREATEREQUAL Expression
+
+   46 Print: tPRINTF tPG tID tPD
+   47      | tPRINTF tPG tQUOTE RemPrint tQUOTE tPD
+   48      | tPRINTF tPG tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA tNB tPD
+   49      | tPRINTF tPG tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA tID tPD
+   50      | tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tID tPD
+   51      | tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tNB tPD
+
+   52 RemPrint: /* empty */
+   53         | tID RemPrint
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+tIF (258) 32
+tWHILE (259) 28
+tELSE (260) 33
+tMAIN (261) 2
+tQUOTE (262) 47 48 49 50 51
+tCHAINE (263)
+tCONST (264)
+tNB (265) 25 48 51
+tRETURN (266)
+tPRINTF (267) 46 47 48 49 50 51
+tSTRING (268) 15
+tAG (269) 2 27 32 33
+tAD (270) 2 27 29 31
+tSEMICOLON (271) 5
+tCOMMA (272) 18 48 49 50 51
+tPLUS (273) 21
+tMINUS (274) 22
+tSLASH (275) 24
+tMUL (276) 23
+tEQUAL (277) 19 20 34 40
+tUNEQUAL (278) 35 41
+tLESS (279) 36 42
+tLESSEQUAL (280) 37 43
+tGREATER (281) 38 44
+tGREATEREQUAL (282) 39 45
+tPG (283) 2 27 32 46 47 48 49 50 51
+tPD (284) 2 27 32 46 47 48 49 50 51
+tINT (285) 2 13
+tVOID (286) 14
+tID (287) 16 18 19 20 26 46 49 50 53
+tEXP (288)
+tFIRSTARG (289)
+tPERCENTINT (290) 48 49 50 51
+
+
+Nonterminals, with rules where they appear
+
+$accept (36)
+    on left: 0
+Main (37)
+    on left: 1 2, on right: 0
+Program (38)
+    on left: 3 4, on right: 2 4 27 29 31
+Line (39)
+    on left: 5 6 7, on right: 4
+Content (40)
+    on left: 8 9 10 11 12, on right: 5
+VariableType (41)
+    on left: 13 14 15, on right: 16 20
+VariableDeclaration (42)
+    on left: 16, on right: 9
+RemVariable (43)
+    on left: 17 18, on right: 16 18
+Assignment (44)
+    on left: 19, on right: 11
+VariableDefinition (45)
+    on left: 20, on right: 10
+Expression (46)
+    on left: 21 22 23 24 25 26, on right: 19 20 21 22 23 24 34 35 36
+    37 38 39 40 41 42 43 44 45
+While (47)
+    on left: 27, on right: 7
+StartWhile (48)
+    on left: 28, on right: 27
+If (49)
+    on left: 29, on right: 6
+RemainIf (50)
+    on left: 30 31, on right: 29
+StartIf (51)
+    on left: 32, on right: 29
+StartElse (52)
+    on left: 33, on right: 31
+Boolean (53)
+    on left: 34 35 36 37 38 39, on right: 32
+InverseBoolean (54)
+    on left: 40 41 42 43 44 45, on right: 27
+Print (55)
+    on left: 46 47 48 49 50 51, on right: 12
+RemPrint (56)
+    on left: 52 53, on right: 47 48 49 50 51 53
+
+
+state 0
+
+    0 $accept: . Main $end
+
+    tINT  shift, and go to state 1
+
+    $default  reduce using rule 1 (Main)
+
+    Main  go to state 2
+
+
+state 1
+
+    2 Main: tINT . tMAIN tPG tPD tAG Program tAD
+
+    tMAIN  shift, and go to state 3
+
+
+state 2
+
+    0 $accept: Main . $end
+
+    $end  shift, and go to state 4
+
+
+state 3
+
+    2 Main: tINT tMAIN . tPG tPD tAG Program tAD
+
+    tPG  shift, and go to state 5
+
+
+state 4
+
+    0 $accept: Main $end .
+
+    $default  accept
+
+
+state 5
+
+    2 Main: tINT tMAIN tPG . tPD tAG Program tAD
+
+    tPD  shift, and go to state 6
+
+
+state 6
+
+    2 Main: tINT tMAIN tPG tPD . tAG Program tAD
+
+    tAG  shift, and go to state 7
+
+
+state 7
+
+    2 Main: tINT tMAIN tPG tPD tAG . Program tAD
+
+    tIF      shift, and go to state 8
+    tWHILE   shift, and go to state 9
+    tPRINTF  shift, and go to state 10
+    tSTRING  shift, and go to state 11
+    tINT     shift, and go to state 12
+    tVOID    shift, and go to state 13
+    tID      shift, and go to state 14
+
+    tSEMICOLON  reduce using rule 8 (Content)
+    $default    reduce using rule 3 (Program)
+
+    Program              go to state 15
+    Line                 go to state 16
+    Content              go to state 17
+    VariableType         go to state 18
+    VariableDeclaration  go to state 19
+    Assignment           go to state 20
+    VariableDefinition   go to state 21
+    While                go to state 22
+    StartWhile           go to state 23
+    If                   go to state 24
+    StartIf              go to state 25
+    Print                go to state 26
+
+
+state 8
+
+   32 StartIf: tIF . tPG Boolean tPD tAG
+
+    tPG  shift, and go to state 27
+
+
+state 9
+
+   28 StartWhile: tWHILE .
+
+    $default  reduce using rule 28 (StartWhile)
+
+
+state 10
+
+   46 Print: tPRINTF . tPG tID tPD
+   47      | tPRINTF . tPG tQUOTE RemPrint tQUOTE tPD
+   48      | tPRINTF . tPG tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA tNB tPD
+   49      | tPRINTF . tPG tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA tID tPD
+   50      | tPRINTF . tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tID tPD
+   51      | tPRINTF . tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tNB tPD
+
+    tPG  shift, and go to state 28
+
+
+state 11
+
+   15 VariableType: tSTRING .
+
+    $default  reduce using rule 15 (VariableType)
+
+
+state 12
+
+   13 VariableType: tINT .
+
+    $default  reduce using rule 13 (VariableType)
+
+
+state 13
+
+   14 VariableType: tVOID .
+
+    $default  reduce using rule 14 (VariableType)
+
+
+state 14
+
+   19 Assignment: tID . tEQUAL Expression
+
+    tEQUAL  shift, and go to state 29
+
+
+state 15
+
+    2 Main: tINT tMAIN tPG tPD tAG Program . tAD
+
+    tAD  shift, and go to state 30
+
+
+state 16
+
+    4 Program: Line . Program
+
+    tIF      shift, and go to state 8
+    tWHILE   shift, and go to state 9
+    tPRINTF  shift, and go to state 10
+    tSTRING  shift, and go to state 11
+    tINT     shift, and go to state 12
+    tVOID    shift, and go to state 13
+    tID      shift, and go to state 14
+
+    tSEMICOLON  reduce using rule 8 (Content)
+    $default    reduce using rule 3 (Program)
+
+    Program              go to state 31
+    Line                 go to state 16
+    Content              go to state 17
+    VariableType         go to state 18
+    VariableDeclaration  go to state 19
+    Assignment           go to state 20
+    VariableDefinition   go to state 21
+    While                go to state 22
+    StartWhile           go to state 23
+    If                   go to state 24
+    StartIf              go to state 25
+    Print                go to state 26
+
+
+state 17
+
+    5 Line: Content . tSEMICOLON
+
+    tSEMICOLON  shift, and go to state 32
+
+
+state 18
+
+   16 VariableDeclaration: VariableType . tID RemVariable
+   20 VariableDefinition: VariableType . tID tEQUAL Expression
+
+    tID  shift, and go to state 33
+
+
+state 19
+
+    9 Content: VariableDeclaration .
+
+    $default  reduce using rule 9 (Content)
+
+
+state 20
+
+   11 Content: Assignment .
+
+    $default  reduce using rule 11 (Content)
+
+
+state 21
+
+   10 Content: VariableDefinition .
+
+    $default  reduce using rule 10 (Content)
+
+
+state 22
+
+    7 Line: While .
+
+    $default  reduce using rule 7 (Line)
+
+
+state 23
+
+   27 While: StartWhile . tPG InverseBoolean tPD tAG Program tAD
+
+    tPG  shift, and go to state 34
+
+
+state 24
+
+    6 Line: If .
+
+    $default  reduce using rule 6 (Line)
+
+
+state 25
+
+   29 If: StartIf . Program tAD RemainIf
+
+    tIF      shift, and go to state 8
+    tWHILE   shift, and go to state 9
+    tPRINTF  shift, and go to state 10
+    tSTRING  shift, and go to state 11
+    tINT     shift, and go to state 12
+    tVOID    shift, and go to state 13
+    tID      shift, and go to state 14
+
+    tSEMICOLON  reduce using rule 8 (Content)
+    $default    reduce using rule 3 (Program)
+
+    Program              go to state 35
+    Line                 go to state 16
+    Content              go to state 17
+    VariableType         go to state 18
+    VariableDeclaration  go to state 19
+    Assignment           go to state 20
+    VariableDefinition   go to state 21
+    While                go to state 22
+    StartWhile           go to state 23
+    If                   go to state 24
+    StartIf              go to state 25
+    Print                go to state 26
+
+
+state 26
+
+   12 Content: Print .
+
+    $default  reduce using rule 12 (Content)
+
+
+state 27
+
+   32 StartIf: tIF tPG . Boolean tPD tAG
+
+    tNB  shift, and go to state 36
+    tID  shift, and go to state 37
+
+    Expression  go to state 38
+    Boolean     go to state 39
+
+
+state 28
+
+   46 Print: tPRINTF tPG . tID tPD
+   47      | tPRINTF tPG . tQUOTE RemPrint tQUOTE tPD
+   48      | tPRINTF tPG . tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA tNB tPD
+   49      | tPRINTF tPG . tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA tID tPD
+   50      | tPRINTF tPG . tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tID tPD
+   51      | tPRINTF tPG . tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tNB tPD
+
+    tQUOTE  shift, and go to state 40
+    tID     shift, and go to state 41
+
+
+state 29
+
+   19 Assignment: tID tEQUAL . Expression
+
+    tNB  shift, and go to state 36
+    tID  shift, and go to state 37
+
+    Expression  go to state 42
+
+
+state 30
+
+    2 Main: tINT tMAIN tPG tPD tAG Program tAD .
+
+    $default  reduce using rule 2 (Main)
+
+
+state 31
+
+    4 Program: Line Program .
+
+    $default  reduce using rule 4 (Program)
+
+
+state 32
+
+    5 Line: Content tSEMICOLON .
+
+    $default  reduce using rule 5 (Line)
+
+
+state 33
+
+   16 VariableDeclaration: VariableType tID . RemVariable
+   20 VariableDefinition: VariableType tID . tEQUAL Expression
+
+    tCOMMA  shift, and go to state 43
+    tEQUAL  shift, and go to state 44
+
+    $default  reduce using rule 17 (RemVariable)
+
+    RemVariable  go to state 45
+
+
+state 34
+
+   27 While: StartWhile tPG . InverseBoolean tPD tAG Program tAD
+
+    tNB  shift, and go to state 36
+    tID  shift, and go to state 37
+
+    Expression      go to state 46
+    InverseBoolean  go to state 47
+
+
+state 35
+
+   29 If: StartIf Program . tAD RemainIf
+
+    tAD  shift, and go to state 48
+
+
+state 36
+
+   25 Expression: tNB .
+
+    $default  reduce using rule 25 (Expression)
+
+
+state 37
+
+   26 Expression: tID .
+
+    $default  reduce using rule 26 (Expression)
+
+
+state 38
+
+   21 Expression: Expression . tPLUS Expression
+   22           | Expression . tMINUS Expression
+   23           | Expression . tMUL Expression
+   24           | Expression . tSLASH Expression
+   34 Boolean: Expression . tEQUAL tEQUAL Expression
+   35        | Expression . tUNEQUAL Expression
+   36        | Expression . tLESS Expression
+   37        | Expression . tLESSEQUAL Expression
+   38        | Expression . tGREATER Expression
+   39        | Expression . tGREATEREQUAL Expression
+
+    tPLUS          shift, and go to state 49
+    tMINUS         shift, and go to state 50
+    tSLASH         shift, and go to state 51
+    tMUL           shift, and go to state 52
+    tEQUAL         shift, and go to state 53
+    tUNEQUAL       shift, and go to state 54
+    tLESS          shift, and go to state 55
+    tLESSEQUAL     shift, and go to state 56
+    tGREATER       shift, and go to state 57
+    tGREATEREQUAL  shift, and go to state 58
+
+
+state 39
+
+   32 StartIf: tIF tPG Boolean . tPD tAG
+
+    tPD  shift, and go to state 59
+
+
+state 40
+
+   47 Print: tPRINTF tPG tQUOTE . RemPrint tQUOTE tPD
+   48      | tPRINTF tPG tQUOTE . tPERCENTINT RemPrint tQUOTE tCOMMA tNB tPD
+   49      | tPRINTF tPG tQUOTE . tPERCENTINT RemPrint tQUOTE tCOMMA tID tPD
+   50      | tPRINTF tPG tQUOTE . RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tID tPD
+   51      | tPRINTF tPG tQUOTE . RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tNB tPD
+
+    tID          shift, and go to state 60
+    tPERCENTINT  shift, and go to state 61
+
+    tPERCENTINT  [reduce using rule 52 (RemPrint)]
+    $default     reduce using rule 52 (RemPrint)
+
+    RemPrint  go to state 62
+
+
+state 41
+
+   46 Print: tPRINTF tPG tID . tPD
+
+    tPD  shift, and go to state 63
+
+
+state 42
+
+   19 Assignment: tID tEQUAL Expression .
+   21 Expression: Expression . tPLUS Expression
+   22           | Expression . tMINUS Expression
+   23           | Expression . tMUL Expression
+   24           | Expression . tSLASH Expression
+
+    tPLUS   shift, and go to state 49
+    tMINUS  shift, and go to state 50
+    tSLASH  shift, and go to state 51
+    tMUL    shift, and go to state 52
+
+    $default  reduce using rule 19 (Assignment)
+
+
+state 43
+
+   18 RemVariable: tCOMMA . tID RemVariable
+
+    tID  shift, and go to state 64
+
+
+state 44
+
+   20 VariableDefinition: VariableType tID tEQUAL . Expression
+
+    tNB  shift, and go to state 36
+    tID  shift, and go to state 37
+
+    Expression  go to state 65
+
+
+state 45
+
+   16 VariableDeclaration: VariableType tID RemVariable .
+
+    $default  reduce using rule 16 (VariableDeclaration)
+
+
+state 46
+
+   21 Expression: Expression . tPLUS Expression
+   22           | Expression . tMINUS Expression
+   23           | Expression . tMUL Expression
+   24           | Expression . tSLASH Expression
+   40 InverseBoolean: Expression . tEQUAL tEQUAL Expression
+   41               | Expression . tUNEQUAL Expression
+   42               | Expression . tLESS Expression
+   43               | Expression . tLESSEQUAL Expression
+   44               | Expression . tGREATER Expression
+   45               | Expression . tGREATEREQUAL Expression
+
+    tPLUS          shift, and go to state 49
+    tMINUS         shift, and go to state 50
+    tSLASH         shift, and go to state 51
+    tMUL           shift, and go to state 52
+    tEQUAL         shift, and go to state 66
+    tUNEQUAL       shift, and go to state 67
+    tLESS          shift, and go to state 68
+    tLESSEQUAL     shift, and go to state 69
+    tGREATER       shift, and go to state 70
+    tGREATEREQUAL  shift, and go to state 71
+
+
+state 47
+
+   27 While: StartWhile tPG InverseBoolean . tPD tAG Program tAD
+
+    tPD  shift, and go to state 72
+
+
+state 48
+
+   29 If: StartIf Program tAD . RemainIf
+
+    tELSE  shift, and go to state 73
+
+    $default  reduce using rule 30 (RemainIf)
+
+    RemainIf   go to state 74
+    StartElse  go to state 75
+
+
+state 49
+
+   21 Expression: Expression tPLUS . Expression
+
+    tNB  shift, and go to state 36
+    tID  shift, and go to state 37
+
+    Expression  go to state 76
+
+
+state 50
+
+   22 Expression: Expression tMINUS . Expression
+
+    tNB  shift, and go to state 36
+    tID  shift, and go to state 37
+
+    Expression  go to state 77
+
+
+state 51
+
+   24 Expression: Expression tSLASH . Expression
+
+    tNB  shift, and go to state 36
+    tID  shift, and go to state 37
+
+    Expression  go to state 78
+
+
+state 52
+
+   23 Expression: Expression tMUL . Expression
+
+    tNB  shift, and go to state 36
+    tID  shift, and go to state 37
+
+    Expression  go to state 79
+
+
+state 53
+
+   34 Boolean: Expression tEQUAL . tEQUAL Expression
+
+    tEQUAL  shift, and go to state 80
+
+
+state 54
+
+   35 Boolean: Expression tUNEQUAL . Expression
+
+    tNB  shift, and go to state 36
+    tID  shift, and go to state 37
+
+    Expression  go to state 81
+
+
+state 55
+
+   36 Boolean: Expression tLESS . Expression
+
+    tNB  shift, and go to state 36
+    tID  shift, and go to state 37
+
+    Expression  go to state 82
+
+
+state 56
+
+   37 Boolean: Expression tLESSEQUAL . Expression
+
+    tNB  shift, and go to state 36
+    tID  shift, and go to state 37
+
+    Expression  go to state 83
+
+
+state 57
+
+   38 Boolean: Expression tGREATER . Expression
+
+    tNB  shift, and go to state 36
+    tID  shift, and go to state 37
+
+    Expression  go to state 84
+
+
+state 58
+
+   39 Boolean: Expression tGREATEREQUAL . Expression
+
+    tNB  shift, and go to state 36
+    tID  shift, and go to state 37
+
+    Expression  go to state 85
+
+
+state 59
+
+   32 StartIf: tIF tPG Boolean tPD . tAG
+
+    tAG  shift, and go to state 86
+
+
+state 60
+
+   53 RemPrint: tID . RemPrint
+
+    tID  shift, and go to state 60
+
+    $default  reduce using rule 52 (RemPrint)
+
+    RemPrint  go to state 87
+
+
+state 61
+
+   48 Print: tPRINTF tPG tQUOTE tPERCENTINT . RemPrint tQUOTE tCOMMA tNB tPD
+   49      | tPRINTF tPG tQUOTE tPERCENTINT . RemPrint tQUOTE tCOMMA tID tPD
+
+    tID  shift, and go to state 60
+
+    $default  reduce using rule 52 (RemPrint)
+
+    RemPrint  go to state 88
+
+
+state 62
+
+   47 Print: tPRINTF tPG tQUOTE RemPrint . tQUOTE tPD
+   50      | tPRINTF tPG tQUOTE RemPrint . tPERCENTINT RemPrint tQUOTE tCOMMA tID tPD
+   51      | tPRINTF tPG tQUOTE RemPrint . tPERCENTINT RemPrint tQUOTE tCOMMA tNB tPD
+
+    tQUOTE       shift, and go to state 89
+    tPERCENTINT  shift, and go to state 90
+
+
+state 63
+
+   46 Print: tPRINTF tPG tID tPD .
+
+    $default  reduce using rule 46 (Print)
+
+
+state 64
+
+   18 RemVariable: tCOMMA tID . RemVariable
+
+    tCOMMA  shift, and go to state 43
+
+    $default  reduce using rule 17 (RemVariable)
+
+    RemVariable  go to state 91
+
+
+state 65
+
+   20 VariableDefinition: VariableType tID tEQUAL Expression .
+   21 Expression: Expression . tPLUS Expression
+   22           | Expression . tMINUS Expression
+   23           | Expression . tMUL Expression
+   24           | Expression . tSLASH Expression
+
+    tPLUS   shift, and go to state 49
+    tMINUS  shift, and go to state 50
+    tSLASH  shift, and go to state 51
+    tMUL    shift, and go to state 52
+
+    $default  reduce using rule 20 (VariableDefinition)
+
+
+state 66
+
+   40 InverseBoolean: Expression tEQUAL . tEQUAL Expression
+
+    tEQUAL  shift, and go to state 92
+
+
+state 67
+
+   41 InverseBoolean: Expression tUNEQUAL . Expression
+
+    tNB  shift, and go to state 36
+    tID  shift, and go to state 37
+
+    Expression  go to state 93
+
+
+state 68
+
+   42 InverseBoolean: Expression tLESS . Expression
+
+    tNB  shift, and go to state 36
+    tID  shift, and go to state 37
+
+    Expression  go to state 94
+
+
+state 69
+
+   43 InverseBoolean: Expression tLESSEQUAL . Expression
+
+    tNB  shift, and go to state 36
+    tID  shift, and go to state 37
+
+    Expression  go to state 95
+
+
+state 70
+
+   44 InverseBoolean: Expression tGREATER . Expression
+
+    tNB  shift, and go to state 36
+    tID  shift, and go to state 37
+
+    Expression  go to state 96
+
+
+state 71
+
+   45 InverseBoolean: Expression tGREATEREQUAL . Expression
+
+    tNB  shift, and go to state 36
+    tID  shift, and go to state 37
+
+    Expression  go to state 97
+
+
+state 72
+
+   27 While: StartWhile tPG InverseBoolean tPD . tAG Program tAD
+
+    tAG  shift, and go to state 98
+
+
+state 73
+
+   33 StartElse: tELSE . tAG
+
+    tAG  shift, and go to state 99
+
+
+state 74
+
+   29 If: StartIf Program tAD RemainIf .
+
+    $default  reduce using rule 29 (If)
+
+
+state 75
+
+   31 RemainIf: StartElse . Program tAD
+
+    tIF      shift, and go to state 8
+    tWHILE   shift, and go to state 9
+    tPRINTF  shift, and go to state 10
+    tSTRING  shift, and go to state 11
+    tINT     shift, and go to state 12
+    tVOID    shift, and go to state 13
+    tID      shift, and go to state 14
+
+    tSEMICOLON  reduce using rule 8 (Content)
+    $default    reduce using rule 3 (Program)
+
+    Program              go to state 100
+    Line                 go to state 16
+    Content              go to state 17
+    VariableType         go to state 18
+    VariableDeclaration  go to state 19
+    Assignment           go to state 20
+    VariableDefinition   go to state 21
+    While                go to state 22
+    StartWhile           go to state 23
+    If                   go to state 24
+    StartIf              go to state 25
+    Print                go to state 26
+
+
+state 76
+
+   21 Expression: Expression . tPLUS Expression
+   21           | Expression tPLUS Expression .
+   22           | Expression . tMINUS Expression
+   23           | Expression . tMUL Expression
+   24           | Expression . tSLASH Expression
+
+    tSLASH  shift, and go to state 51
+    tMUL    shift, and go to state 52
+
+    $default  reduce using rule 21 (Expression)
+
+
+state 77
+
+   21 Expression: Expression . tPLUS Expression
+   22           | Expression . tMINUS Expression
+   22           | Expression tMINUS Expression .
+   23           | Expression . tMUL Expression
+   24           | Expression . tSLASH Expression
+
+    tSLASH  shift, and go to state 51
+    tMUL    shift, and go to state 52
+
+    $default  reduce using rule 22 (Expression)
+
+
+state 78
+
+   21 Expression: Expression . tPLUS Expression
+   22           | Expression . tMINUS Expression
+   23           | Expression . tMUL Expression
+   24           | Expression . tSLASH Expression
+   24           | Expression tSLASH Expression .
+
+    $default  reduce using rule 24 (Expression)
+
+
+state 79
+
+   21 Expression: Expression . tPLUS Expression
+   22           | Expression . tMINUS Expression
+   23           | Expression . tMUL Expression
+   23           | Expression tMUL Expression .
+   24           | Expression . tSLASH Expression
+
+    $default  reduce using rule 23 (Expression)
+
+
+state 80
+
+   34 Boolean: Expression tEQUAL tEQUAL . Expression
+
+    tNB  shift, and go to state 36
+    tID  shift, and go to state 37
+
+    Expression  go to state 101
+
+
+state 81
+
+   21 Expression: Expression . tPLUS Expression
+   22           | Expression . tMINUS Expression
+   23           | Expression . tMUL Expression
+   24           | Expression . tSLASH Expression
+   35 Boolean: Expression tUNEQUAL Expression .
+
+    tPLUS   shift, and go to state 49
+    tMINUS  shift, and go to state 50
+    tSLASH  shift, and go to state 51
+    tMUL    shift, and go to state 52
+
+    $default  reduce using rule 35 (Boolean)
+
+
+state 82
+
+   21 Expression: Expression . tPLUS Expression
+   22           | Expression . tMINUS Expression
+   23           | Expression . tMUL Expression
+   24           | Expression . tSLASH Expression
+   36 Boolean: Expression tLESS Expression .
+
+    tPLUS   shift, and go to state 49
+    tMINUS  shift, and go to state 50
+    tSLASH  shift, and go to state 51
+    tMUL    shift, and go to state 52
+
+    $default  reduce using rule 36 (Boolean)
+
+
+state 83
+
+   21 Expression: Expression . tPLUS Expression
+   22           | Expression . tMINUS Expression
+   23           | Expression . tMUL Expression
+   24           | Expression . tSLASH Expression
+   37 Boolean: Expression tLESSEQUAL Expression .
+
+    tPLUS   shift, and go to state 49
+    tMINUS  shift, and go to state 50
+    tSLASH  shift, and go to state 51
+    tMUL    shift, and go to state 52
+
+    $default  reduce using rule 37 (Boolean)
+
+
+state 84
+
+   21 Expression: Expression . tPLUS Expression
+   22           | Expression . tMINUS Expression
+   23           | Expression . tMUL Expression
+   24           | Expression . tSLASH Expression
+   38 Boolean: Expression tGREATER Expression .
+
+    tPLUS   shift, and go to state 49
+    tMINUS  shift, and go to state 50
+    tSLASH  shift, and go to state 51
+    tMUL    shift, and go to state 52
+
+    $default  reduce using rule 38 (Boolean)
+
+
+state 85
+
+   21 Expression: Expression . tPLUS Expression
+   22           | Expression . tMINUS Expression
+   23           | Expression . tMUL Expression
+   24           | Expression . tSLASH Expression
+   39 Boolean: Expression tGREATEREQUAL Expression .
+
+    tPLUS   shift, and go to state 49
+    tMINUS  shift, and go to state 50
+    tSLASH  shift, and go to state 51
+    tMUL    shift, and go to state 52
+
+    $default  reduce using rule 39 (Boolean)
+
+
+state 86
+
+   32 StartIf: tIF tPG Boolean tPD tAG .
+
+    $default  reduce using rule 32 (StartIf)
+
+
+state 87
+
+   53 RemPrint: tID RemPrint .
+
+    $default  reduce using rule 53 (RemPrint)
+
+
+state 88
+
+   48 Print: tPRINTF tPG tQUOTE tPERCENTINT RemPrint . tQUOTE tCOMMA tNB tPD
+   49      | tPRINTF tPG tQUOTE tPERCENTINT RemPrint . tQUOTE tCOMMA tID tPD
+
+    tQUOTE  shift, and go to state 102
+
+
+state 89
+
+   47 Print: tPRINTF tPG tQUOTE RemPrint tQUOTE . tPD
+
+    tPD  shift, and go to state 103
+
+
+state 90
+
+   50 Print: tPRINTF tPG tQUOTE RemPrint tPERCENTINT . RemPrint tQUOTE tCOMMA tID tPD
+   51      | tPRINTF tPG tQUOTE RemPrint tPERCENTINT . RemPrint tQUOTE tCOMMA tNB tPD
+
+    tID  shift, and go to state 60
+
+    $default  reduce using rule 52 (RemPrint)
+
+    RemPrint  go to state 104
+
+
+state 91
+
+   18 RemVariable: tCOMMA tID RemVariable .
+
+    $default  reduce using rule 18 (RemVariable)
+
+
+state 92
+
+   40 InverseBoolean: Expression tEQUAL tEQUAL . Expression
+
+    tNB  shift, and go to state 36
+    tID  shift, and go to state 37
+
+    Expression  go to state 105
+
+
+state 93
+
+   21 Expression: Expression . tPLUS Expression
+   22           | Expression . tMINUS Expression
+   23           | Expression . tMUL Expression
+   24           | Expression . tSLASH Expression
+   41 InverseBoolean: Expression tUNEQUAL Expression .
+
+    tPLUS   shift, and go to state 49
+    tMINUS  shift, and go to state 50
+    tSLASH  shift, and go to state 51
+    tMUL    shift, and go to state 52
+
+    $default  reduce using rule 41 (InverseBoolean)
+
+
+state 94
+
+   21 Expression: Expression . tPLUS Expression
+   22           | Expression . tMINUS Expression
+   23           | Expression . tMUL Expression
+   24           | Expression . tSLASH Expression
+   42 InverseBoolean: Expression tLESS Expression .
+
+    tPLUS   shift, and go to state 49
+    tMINUS  shift, and go to state 50
+    tSLASH  shift, and go to state 51
+    tMUL    shift, and go to state 52
+
+    $default  reduce using rule 42 (InverseBoolean)
+
+
+state 95
+
+   21 Expression: Expression . tPLUS Expression
+   22           | Expression . tMINUS Expression
+   23           | Expression . tMUL Expression
+   24           | Expression . tSLASH Expression
+   43 InverseBoolean: Expression tLESSEQUAL Expression .
+
+    tPLUS   shift, and go to state 49
+    tMINUS  shift, and go to state 50
+    tSLASH  shift, and go to state 51
+    tMUL    shift, and go to state 52
+
+    $default  reduce using rule 43 (InverseBoolean)
+
+
+state 96
+
+   21 Expression: Expression . tPLUS Expression
+   22           | Expression . tMINUS Expression
+   23           | Expression . tMUL Expression
+   24           | Expression . tSLASH Expression
+   44 InverseBoolean: Expression tGREATER Expression .
+
+    tPLUS   shift, and go to state 49
+    tMINUS  shift, and go to state 50
+    tSLASH  shift, and go to state 51
+    tMUL    shift, and go to state 52
+
+    $default  reduce using rule 44 (InverseBoolean)
+
+
+state 97
+
+   21 Expression: Expression . tPLUS Expression
+   22           | Expression . tMINUS Expression
+   23           | Expression . tMUL Expression
+   24           | Expression . tSLASH Expression
+   45 InverseBoolean: Expression tGREATEREQUAL Expression .
+
+    tPLUS   shift, and go to state 49
+    tMINUS  shift, and go to state 50
+    tSLASH  shift, and go to state 51
+    tMUL    shift, and go to state 52
+
+    $default  reduce using rule 45 (InverseBoolean)
+
+
+state 98
+
+   27 While: StartWhile tPG InverseBoolean tPD tAG . Program tAD
+
+    tIF      shift, and go to state 8
+    tWHILE   shift, and go to state 9
+    tPRINTF  shift, and go to state 10
+    tSTRING  shift, and go to state 11
+    tINT     shift, and go to state 12
+    tVOID    shift, and go to state 13
+    tID      shift, and go to state 14
+
+    tSEMICOLON  reduce using rule 8 (Content)
+    $default    reduce using rule 3 (Program)
+
+    Program              go to state 106
+    Line                 go to state 16
+    Content              go to state 17
+    VariableType         go to state 18
+    VariableDeclaration  go to state 19
+    Assignment           go to state 20
+    VariableDefinition   go to state 21
+    While                go to state 22
+    StartWhile           go to state 23
+    If                   go to state 24
+    StartIf              go to state 25
+    Print                go to state 26
+
+
+state 99
+
+   33 StartElse: tELSE tAG .
+
+    $default  reduce using rule 33 (StartElse)
+
+
+state 100
+
+   31 RemainIf: StartElse Program . tAD
+
+    tAD  shift, and go to state 107
+
+
+state 101
+
+   21 Expression: Expression . tPLUS Expression
+   22           | Expression . tMINUS Expression
+   23           | Expression . tMUL Expression
+   24           | Expression . tSLASH Expression
+   34 Boolean: Expression tEQUAL tEQUAL Expression .
+
+    tPLUS   shift, and go to state 49
+    tMINUS  shift, and go to state 50
+    tSLASH  shift, and go to state 51
+    tMUL    shift, and go to state 52
+
+    $default  reduce using rule 34 (Boolean)
+
+
+state 102
+
+   48 Print: tPRINTF tPG tQUOTE tPERCENTINT RemPrint tQUOTE . tCOMMA tNB tPD
+   49      | tPRINTF tPG tQUOTE tPERCENTINT RemPrint tQUOTE . tCOMMA tID tPD
+
+    tCOMMA  shift, and go to state 108
+
+
+state 103
+
+   47 Print: tPRINTF tPG tQUOTE RemPrint tQUOTE tPD .
+
+    $default  reduce using rule 47 (Print)
+
+
+state 104
+
+   50 Print: tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint . tQUOTE tCOMMA tID tPD
+   51      | tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint . tQUOTE tCOMMA tNB tPD
+
+    tQUOTE  shift, and go to state 109
+
+
+state 105
+
+   21 Expression: Expression . tPLUS Expression
+   22           | Expression . tMINUS Expression
+   23           | Expression . tMUL Expression
+   24           | Expression . tSLASH Expression
+   40 InverseBoolean: Expression tEQUAL tEQUAL Expression .
+
+    tPLUS   shift, and go to state 49
+    tMINUS  shift, and go to state 50
+    tSLASH  shift, and go to state 51
+    tMUL    shift, and go to state 52
+
+    $default  reduce using rule 40 (InverseBoolean)
+
+
+state 106
+
+   27 While: StartWhile tPG InverseBoolean tPD tAG Program . tAD
+
+    tAD  shift, and go to state 110
+
+
+state 107
+
+   31 RemainIf: StartElse Program tAD .
+
+    $default  reduce using rule 31 (RemainIf)
+
+
+state 108
+
+   48 Print: tPRINTF tPG tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA . tNB tPD
+   49      | tPRINTF tPG tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA . tID tPD
+
+    tNB  shift, and go to state 111
+    tID  shift, and go to state 112
+
+
+state 109
+
+   50 Print: tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE . tCOMMA tID tPD
+   51      | tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE . tCOMMA tNB tPD
+
+    tCOMMA  shift, and go to state 113
+
+
+state 110
+
+   27 While: StartWhile tPG InverseBoolean tPD tAG Program tAD .
+
+    $default  reduce using rule 27 (While)
+
+
+state 111
+
+   48 Print: tPRINTF tPG tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA tNB . tPD
+
+    tPD  shift, and go to state 114
+
+
+state 112
+
+   49 Print: tPRINTF tPG tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA tID . tPD
+
+    tPD  shift, and go to state 115
+
+
+state 113
+
+   50 Print: tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA . tID tPD
+   51      | tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA . tNB tPD
+
+    tNB  shift, and go to state 116
+    tID  shift, and go to state 117
+
+
+state 114
+
+   48 Print: tPRINTF tPG tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA tNB tPD .
+
+    $default  reduce using rule 48 (Print)
+
+
+state 115
+
+   49 Print: tPRINTF tPG tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA tID tPD .
+
+    $default  reduce using rule 49 (Print)
+
+
+state 116
+
+   51 Print: tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tNB . tPD
+
+    tPD  shift, and go to state 118
+
+
+state 117
+
+   50 Print: tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tID . tPD
+
+    tPD  shift, and go to state 119
+
+
+state 118
+
+   51 Print: tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tNB tPD .
+
+    $default  reduce using rule 51 (Print)
+
+
+state 119
+
+   50 Print: tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tID tPD .
+
+    $default  reduce using rule 50 (Print)

@@ -63,6 +63,10 @@ int find(Pile* pile, char* id){
 	return 0;
 }
 
+void changeAdr(Pile* pile, int adr){
+  pile->adr = adr;
+}
+
 void empiler(Pile* pile, char* type, char* id, int depth){
 
   Element* element = malloc(sizeof(*element));
