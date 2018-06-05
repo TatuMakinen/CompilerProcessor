@@ -54,31 +54,24 @@ signal register_bank: register_array := (others => x"0000");
 signal RST : std_logic;
 
 begin
-	process(CK)
+	-- READ registers at 2 addresses:
+	-- QX <=  register @ X_ADR;
+	-- bypass if reading and writing in same register
+	QA <= DATA when W_ADR = A_ADR else
+			register_bank(to_integer(unsigned(A_ADR)));
+	QB <= DATA when W_ADR = B_ADR else
+			register_bank(to_integer(unsigned(B_ADR)));
+	process
 	begin
-		if rising_edge(CK) then
-			if(RST='0') then
-				-- RESET registers to 0
-				register_bank <= (others => x"0000");
-			else
-				-- READ registers at 2 addresses:
-				-- QX <=  register @ X_ADR;
-				QA <= register_bank(to_integer(unsigned(A_ADR)));
-				QB <= register_bank(to_integer(unsigned(B_ADR)));
-				if(W='1') then
-					-- Writing active:
-					-- DATA should be copied to register at W_ADR
-					register_bank(to_integer(unsigned(W_ADR))) <= DATA;
-					
-					-- Bypass if reading and writing in same register
-					if(W_ADR = A_ADR) then
-						QA <= DATA;
-					end if;
-					if(W_ADR = B_ADR) then
-						QB <= DATA;
-					end if;
-					
-				end if;
+		wait until CK'event and CK='1';
+		if(RST='0') then
+			-- RESET registers to 0
+			register_bank <= (others => x"0000");
+		else
+			if(W='1') then
+				-- Writing active:
+				-- DATA should be copied to register at W_ADR
+				register_bank(to_integer(unsigned(W_ADR))) <= DATA;
 			end if;
 		end if;
 	end process;

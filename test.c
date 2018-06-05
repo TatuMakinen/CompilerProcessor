@@ -1,7 +1,5 @@
 int main() {
   int a = 1;
-  while(a > 2){
-    a = a+1;
-  }
-  int d = 10000;
+	a = a + 2 +3+4;
+ 	int b = a - 5;
 }

@@ -107,6 +107,29 @@ void save_assembly_to_file(Assembly* assembly, char * filename){
   }
 }
 
+void save_hex_to_file(Assembly* assembly, char * filename){
+	FILE *fp = fopen(filename, "wb");
+  char line [30];
+	int n;
+	Inst* inst;
+	for(int i=0;i<assembly->tailleEffective;i++){
+		inst = assembly->asmo[i];
+		if(inst->id == JMP){
+			n = sprintf(line,"%0.*x%0.*x00\n",2,inst->id+1,4,inst->param[0]);
+		}
+		else if(inst->id==JMPC || inst->id==STORE){
+			n = sprintf(line,"%0.*x%0.*x%0.*x\n",2,inst->id+1,4,inst->param[0],2,inst->param[1]);
+		}
+		else if(inst->id==AFC || inst->id==LOAD){
+			n = sprintf(line,"%0.*x%0.*x%0.*x\n",2,inst->id+1,2,inst->param[0],4,inst->param[1]);
+		}
+		else{
+			n = sprintf(line,"%0.*x%0.*x%0.*x%0.*x\n",2,inst->id+1,2,inst->param[0],2,inst->param[1],2,inst->param[2]);
+		}
+		fputs(line, fp);
+  }
+}
+
 void add_instruction(Assembly* assembly,int id, int param1, int param2, int param3){
   int place = assembly->tailleEffective;
   Inst *inst = malloc(sizeof(*inst));

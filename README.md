@@ -36,5 +36,7 @@
 
 # 1.6
 
-AFC, COP, ADD, SUB, MUL, DIV, LOAD, STORE
-chemin de données, alu, banc de registre, pipeline, décodeur
+- Functions (optional but do it)
+- Mémoire d'instruction avec verilog bram32 (fichier en .hex attention)
+- Gestion des aléas
+

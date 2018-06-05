@@ -52,14 +52,15 @@ begin
 	Rsub 	<=	('0'&A_IN)-('0'&B_IN);
 	R_OUT <=	Radd(15 downto 0) when CTRL_ALU = x"01" else
 				Rmul(15 downto 0) when CTRL_ALU = x"02" else
-				Rsub(15 downto 0) when CTRL_ALU = x"03" else 
+				Rsub(15 downto 0) when CTRL_ALU = x"03" else
+				B_IN 					when CTRL_ALU = x"08" else
 				x"0000";
 	-- Z
 	FLAGS_OUT(0) <= 	'1' when R=x"0000" else 
 							'0';
 	-- C - for unsigned arithmetics to detect errors
 	FLAGS_OUT(1) <=	Radd(16) when CTRL_ALU = x"01" else
-							Rsub(16) when CTRL_ALU = x"03" else 
+							Rsub(16) when CTRL_ALU = x"03" or CTRL_ALU = x"09" else 
 							'0';
 	-- N
 	FLAGS_OUT(2)	<= R(15);

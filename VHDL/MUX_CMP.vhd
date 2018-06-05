@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date:    17:40:38 05/29/2018 
+-- Create Date:    16:00:52 06/01/2018 
 -- Design Name: 
--- Module Name:    MUX2 - Behavioral 
+-- Module Name:    MUX_CMP - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
@@ -29,19 +29,21 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity MUX2 is
+entity MUX_CMP is
     Port ( OP_IN : in  STD_LOGIC_VECTOR (7 downto 0);
-           B_IN : in  STD_LOGIC_VECTOR (15 downto 0);
-           S_IN : in  STD_LOGIC_VECTOR (15 downto 0);
+           FLAGS_IN : in  STD_LOGIC_VECTOR (15 downto 0);
+           MUX2_IN : in  STD_LOGIC_VECTOR (15 downto 0);
            B_OUT : out  STD_LOGIC_VECTOR (15 downto 0));
-end MUX2;
+end MUX_CMP;
 
-architecture Behavioral of MUX2 is
+architecture Behavioral of MUX_CMP is
 
 begin
 
-	B_OUT <= S_IN when OP_IN=x"01" or OP_IN=x"02" or OP_IN=x"03" or OP_IN=x"04" or OP_IN=x"08" else
-				B_IN;
+	B_OUT <= x"0001" when (OP_IN = x"09" and FLAGS_IN(0) = '1') else  -- EQU - zero flag ON
+				x"0000" when (OP_IN = x"09" and FLAGS_IN(0) = '0') else  -- EQU - zero flag OFF
+				MUX2_IN;
+
 
 end Behavioral;
 
