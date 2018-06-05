@@ -110,15 +110,9 @@ Expression:
   }
   | Expression tMUL Expression
   {
-<<<<<<< HEAD
 		add_instruction(assembly,LOAD, 2, peek(pile), -1);
     depiler(pile); 
     add_instruction(assembly,LOAD,1,peek(pile),-1);
-=======
-		add_instruction(assembly,LOAD, 1, peek(pile), -1);
-    depiler(pile);
-    add_instruction(assembly,LOAD,0,peek(pile),-1);
->>>>>>> c097c5b177bea3c84d7f31218d58f134c0268e37
 		depiler(pile);
     add_instruction(assembly,MUL,0,1,2);
 		empiler(pile,"int","tmp",depth);
@@ -126,11 +120,7 @@ Expression:
   }
   | Expression tSLASH Expression
   {
-<<<<<<< HEAD
 		add_instruction(assembly,LOAD, 2, peek(pile), -1); 
-=======
-		add_instruction(assembly,LOAD, 1, peek(pile), -1);
->>>>>>> c097c5b177bea3c84d7f31218d58f134c0268e37
     depiler(pile);
     add_instruction(assembly,LOAD,1,peek(pile),-1);
 		depiler(pile);
@@ -193,15 +183,9 @@ StartElse:
 	}
 ;
 Boolean:
-<<<<<<< HEAD
   Expression tEQUAL tEQUAL Expression 
 	{ 
 		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
-=======
-  Expression tEQUAL tEQUAL Expression
-	{
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
->>>>>>> c097c5b177bea3c84d7f31218d58f134c0268e37
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -211,11 +195,7 @@ Boolean:
 	}
   | Expression tUNEQUAL Expression
 	{
-<<<<<<< HEAD
 		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
-=======
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
->>>>>>> c097c5b177bea3c84d7f31218d58f134c0268e37
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -227,11 +207,7 @@ Boolean:
 	}
 	| Expression tLESS Expression
 	{
-<<<<<<< HEAD
 		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
-=======
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
->>>>>>> c097c5b177bea3c84d7f31218d58f134c0268e37
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -241,11 +217,7 @@ Boolean:
 	}
 	| Expression tLESSEQUAL Expression
 	{
-<<<<<<< HEAD
 		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
-=======
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
->>>>>>> c097c5b177bea3c84d7f31218d58f134c0268e37
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -255,11 +227,7 @@ Boolean:
 	}
 	| Expression tGREATER Expression
 	{
-<<<<<<< HEAD
 		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
-=======
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
->>>>>>> c097c5b177bea3c84d7f31218d58f134c0268e37
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -269,11 +237,7 @@ Boolean:
 	}
 	| Expression tGREATEREQUAL Expression
 	{
-<<<<<<< HEAD
 		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
-=======
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
->>>>>>> c097c5b177bea3c84d7f31218d58f134c0268e37
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -285,11 +249,7 @@ Boolean:
 InverseBoolean:
   Expression tEQUAL tEQUAL Expression
 	{
-<<<<<<< HEAD
 		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
-=======
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
->>>>>>> c097c5b177bea3c84d7f31218d58f134c0268e37
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -299,11 +259,7 @@ InverseBoolean:
 	}
   | Expression tUNEQUAL Expression
 	{
-<<<<<<< HEAD
 		add_instruction(assembly,LOAD, 2, peek(pile), -1); 
-=======
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
->>>>>>> c097c5b177bea3c84d7f31218d58f134c0268e37
     depiler(pile);
     add_instruction(assembly,LOAD,3,peek(pile),-1);
 		depiler(pile);
@@ -315,11 +271,7 @@ InverseBoolean:
 	}
 	| Expression tLESS Expression
 	{
-<<<<<<< HEAD
 		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
-=======
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
->>>>>>> c097c5b177bea3c84d7f31218d58f134c0268e37
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -329,11 +281,7 @@ InverseBoolean:
 	}
 	| Expression tLESSEQUAL Expression
 	{
-<<<<<<< HEAD
 		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
-=======
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
->>>>>>> c097c5b177bea3c84d7f31218d58f134c0268e37
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -343,11 +291,7 @@ InverseBoolean:
 	}
 	| Expression tGREATER Expression
 	{
-<<<<<<< HEAD
 		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
-=======
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
->>>>>>> c097c5b177bea3c84d7f31218d58f134c0268e37
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -357,11 +301,7 @@ InverseBoolean:
 	}
 	| Expression tGREATEREQUAL Expression
 	{
-<<<<<<< HEAD
 		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
-=======
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
->>>>>>> c097c5b177bea3c84d7f31218d58f134c0268e37
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -422,6 +362,7 @@ int main(void) {
     afficherPile(pileFunction);
 		display_struct(assembly);
 		save_assembly_to_file(assembly,"asm_code");
+		save_hex_to_file(assembly,"rom.hex");
 		save_hex_to_file(assembly,"/home/makinen/Processeur/rom1.hex");
 	}
 
