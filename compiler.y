@@ -25,15 +25,30 @@ tGREATER tGREATEREQUAL tPG tPD tINT tVOID tID tEXP tFIRSTARG tPERCENTINT
 %type <str> tCHAINE
 %left tPLUS tMINUS
 %left tMUL tSLASH
-
-
 %%
+
+Gotzo: VariableType tID itch{}
+  | Main itch;
+
+itch: RemFunction{}
+  | DefFunction;
+
+RemFunction:
+  | tPG VariableDeclaration tPD tSEMICOLON Gotzo{
+      //printf("Declaration de la fonction : '%s' \n", $2);
+      //empiler(pileFunction,type,$2,depth);
+  }
+  | tPG tPD tSEMICOLON Gotzo {
+      //printf("Declaration de la fonction : '%s' \n", $2);
+      //empiler(pileFunction,type,$2,depth);
+  }
+
+DefFunction:
+  | tPG tPD tAG Program tAD DefFunction {}
+  | tPG VariableDeclaration tPD tAG Program tAD itch{};
+
 Main:
-//  | DefFunction tSEMICOLON MainDefFunc RemFunction {};
-  | tINT tMAIN tPG tPD tAG Program tAD {}
-//RemFunction:
-//  | Function RemFunction {}
-  //| Function {};
+  | tINT tMAIN tPG tPD tAG Program tAD {};
 Program:
   | Line Program {}
 ;
@@ -322,25 +337,6 @@ Print:
 RemPrint:
   | tID RemPrint { printf("Nous printons : %s \n",$1); }
 ;
-//DefFunction:
-  //| VariableType tID tPG ParamFunction tPD {
-
-  //};
-
-//Function:
-  //| VariableType tID tPG ParamFunction tPD Function
-  //{
-    //printf("Declaration de la fonction : '%s' \n", $2);
-      //empiler(pileFunction,type,$2,depth);
-  //}
-  //| tAG Program tAD
-  //{
-  //}
-
-//;
-//ParamFunction:
-  //| VariableDeclaration {}
-//;
 
 %%
 
