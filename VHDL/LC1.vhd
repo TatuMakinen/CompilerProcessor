@@ -37,7 +37,7 @@ end LC1;
 architecture Behavioral of LC1 is
 
 begin
-	w <= 	'1' when op = x"07" else
+	w <= 	'1' when op = x"08" else
 			'0';
 
 

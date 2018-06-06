@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date:    17:40:38 05/29/2018 
+-- Create Date:    18:38:46 05/29/2018 
 -- Design Name: 
--- Module Name:    MUX2 - Behavioral 
+-- Module Name:    MUX3 - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
@@ -29,19 +29,20 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity MUX2 is
+entity MUX4 is
     Port ( OP_IN : in  STD_LOGIC_VECTOR (7 downto 0);
            B_IN : in  STD_LOGIC_VECTOR (15 downto 0);
-           S_IN : in  STD_LOGIC_VECTOR (15 downto 0);
-           B_OUT : out  STD_LOGIC_VECTOR (15 downto 0));
-end MUX2;
+           DATA_IN : in  STD_LOGIC_VECTOR (15 downto 0);
+           DATA_OUT : out  STD_LOGIC_VECTOR (15 downto 0));
+end MUX4;
 
-architecture Behavioral of MUX2 is
+architecture Behavioral of MUX4 is
 
 begin
 
-	B_OUT <= S_IN when OP_IN=x"01" or OP_IN=x"02" or OP_IN=x"03" or OP_IN=x"04" or OP_IN=x"08" else
-				B_IN;
+	DATA_OUT <= DATA_IN when OP_IN = x"07" else
+					B_IN;
+
 
 end Behavioral;
 

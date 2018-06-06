@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date:    17:40:38 05/29/2018 
+-- Create Date:    17:17:31 06/01/2018 
 -- Design Name: 
--- Module Name:    MUX2 - Behavioral 
+-- Module Name:    IP - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
@@ -19,6 +19,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -29,19 +30,28 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity MUX2 is
-    Port ( OP_IN : in  STD_LOGIC_VECTOR (7 downto 0);
-           B_IN : in  STD_LOGIC_VECTOR (15 downto 0);
-           S_IN : in  STD_LOGIC_VECTOR (15 downto 0);
-           B_OUT : out  STD_LOGIC_VECTOR (15 downto 0));
-end MUX2;
+entity IP is
+    Port ( CK : in  STD_LOGIC;
+           RST : in  STD_LOGIC;
+           INST_ADR : out  STD_LOGIC_VECTOR (15 downto 0));
+end IP;
 
-architecture Behavioral of MUX2 is
+architecture Behavioral of IP is
+signal temp,divide_counter: STD_LOGIC_VECTOR (15 downto 0);
 
 begin
+	INST_ADR<=temp;
 
-	B_OUT <= S_IN when OP_IN=x"01" or OP_IN=x"02" or OP_IN=x"03" or OP_IN=x"04" or OP_IN=x"08" else
-				B_IN;
+	process (CK,RST)
+	begin
+		if RST='1' then temp<=x"0000";divide_counter<=x"0000";
+			elsif rising_edge(CK) then 
+				if divide_counter > x"0000" then temp<=temp+1; divide_counter<=x"0000";
+				else divide_counter <= divide_counter+1;
+				end if;	
+		end if; 
+	end process;
+
 
 end Behavioral;
 

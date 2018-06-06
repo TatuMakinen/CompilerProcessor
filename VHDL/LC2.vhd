@@ -38,8 +38,8 @@ architecture Behavioral of LC2 is
 
 begin
 
-	w <= '0' when op = x"08" or op = x"0E" or op = x"0F" else
-		  '1';
+	w <= '1' when op = x"01" or op = x"02" or op = x"03" or op = x"04" or op = x"05" or op = x"06" or op = x"07" or op = x"09" or op = x"0A" or op = x"0B" or op = x"0C" or op = x"0D" else
+		  '0';
 
 end Behavioral;
 

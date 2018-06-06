@@ -31,13 +31,9 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity Processor is
 	Generic ( 	adrwidth : natural := 4);
-    Port ( ins_di : in  STD_LOGIC_VECTOR (31 downto 0);
-           ins_a : out  STD_LOGIC_VECTOR (15 downto 0);
-           data_di : in  STD_LOGIC_VECTOR (15 downto 0);
-           data_do : out  STD_LOGIC_VECTOR (15 downto 0);
-           data_a : out  STD_LOGIC_VECTOR (15 downto 0);
-           data_we : out  STD_LOGIC_VECTOR (15 downto 0);
-           sys_clk : in  STD_LOGIC;
+    Port ( 
+			  ins_di : in  std_logic_vector(31 downto 0);
+			  sys_clk : in  STD_LOGIC;
            sys_rst : in  STD_LOGIC);
 end Processor;
 
@@ -52,6 +48,12 @@ type memory_cables is record
 	w: std_logic;
 	a,do,di : std_logic_vector(15 downto 0);
 end record;
+
+component IP
+	Port(	CK : in STD_LOGIC;
+			RST : in STD_LOGIC;
+			INST_ADR : out STD_LOGIC_VECTOR (15 downto 0));
+end component;
 
 component Decoder
 	Port(	  INS_DI : in  STD_LOGIC_VECTOR (31 downto 0);
@@ -98,13 +100,38 @@ component bram16
 		adr_width : Integer := 11);
 	Port (
 		-- System
-		clk : in std_logic;
-		rst : in std_logic;
+		sys_clk : in std_logic;
+		sys_rst : in std_logic;
 		-- Master
 		di : out std_logic_vector(15 downto 0);
 		do : in std_logic_vector(15 downto 0);
 		a : in std_logic_vector(15 downto 0);
 		we : in std_logic);
+end component;
+
+component OwnMemory
+	Port ( 
+		CK : in  STD_LOGIC;
+		RST : in  STD_LOGIC;
+		DO : in  STD_LOGIC_VECTOR (15 downto 0);
+		A : in  STD_LOGIC_VECTOR (15 downto 0);
+		WE : in  STD_LOGIC;
+		DI : out  STD_LOGIC_VECTOR (15 downto 0));
+end component;
+
+component bram32
+  generic (
+    init_file : String := "rom1.hex";
+    adr_width : Integer := 11);
+  port (
+  -- System
+  sys_clk : in std_logic;
+  sys_rst : in std_logic;
+  -- Master
+  di : out std_logic_vector(31 downto 0);
+  we : in std_logic;
+  a : in std_logic_vector(15 downto 0);
+  do : in std_logic_vector(31 downto 0));
 end component;
 
 component LC1
@@ -131,7 +158,21 @@ component MUX2
            B_OUT : out  STD_LOGIC_VECTOR (15 downto 0));
 end component;
 
+component MUX_CMP
+	Port (  OP_IN : in  STD_LOGIC_VECTOR (7 downto 0);
+           FLAGS_IN : in  STD_LOGIC_VECTOR (15 downto 0);
+           MUX2_IN : in  STD_LOGIC_VECTOR (15 downto 0);
+           B_OUT : out  STD_LOGIC_VECTOR (15 downto 0));
+end component;
+
 component MUX3
+	Port (  A_IN : in  STD_LOGIC_VECTOR (15 downto 0);
+           OP_IN : in  STD_LOGIC_VECTOR (7 downto 0);
+           B_IN : in  STD_LOGIC_VECTOR (15 downto 0);
+           DATA_A : out  STD_LOGIC_VECTOR (15 downto 0));
+end component;
+
+component MUX4
 	Port (  OP_IN : in  STD_LOGIC_VECTOR (7 downto 0);
            B_IN : in  STD_LOGIC_VECTOR (15 downto 0);
            DATA_IN : in  STD_LOGIC_VECTOR (15 downto 0);
@@ -142,13 +183,27 @@ signal li, di, ex, mem, re : stage;
 signal memcab : memory_cables;
 signal REG_W, MEM_W: std_logic;
 signal QA_dest, QB_dest : std_logic_vector (15 downto 0);
-signal MUX1_dest, MUX2_dest, MUX3_dest : std_logic_vector (15 downto 0);
+signal MUX1_dest, MUX2_dest, MUX_CMP_dest, MUX3_dest, MUX4_dest : std_logic_vector (15 downto 0);
 signal ALU_OUT: std_logic_vector (15 downto 0);
 signal ALU_FLAGS: std_logic_vector (15 downto 0);
+signal INST_IN: std_logic_vector (15 downto 0);
+signal INST_OUT,INST_DO: std_logic_vector (31 downto 0);
+signal INST_WE: std_logic;
 
 begin
 
-	Dec : Decoder port map(	INS_DI => ins_di,
+	Compteur : IP port map(	CK => sys_clk,
+									RST => sys_rst,
+									INST_ADR => INST_IN);
+
+	InstructionMemoire: bram32 port map(	sys_clk => sys_clk,
+														sys_rst => sys_rst,
+														di => INST_OUT,
+														do => INST_DO,
+														a => INST_IN,
+														we => INST_WE);
+
+	Dec : Decoder port map(	INS_DI => INST_OUT,
 									OP_OUT => li.op,
 									A_OUT => li.a,
 									B_OUT => li.b,
@@ -169,7 +224,7 @@ begin
 										A_ADR => di.b(adrwidth-1 downto 0),
 										B_ADR => di.c(adrwidth-1 downto 0),
 										W_ADR => re.a(adrwidth-1 downto 0),
-										DATA => MUX3_dest,
+										DATA => MUX4_dest,
 										QA => QA_dest,
 										QB => QB_dest);
 										
@@ -199,6 +254,12 @@ begin
 									B_IN => ex.b,
 									S_IN => ALU_OUT,
 									B_OUT => MUX2_dest);
+									
+	-- Does not work
+	--MUX_CMP1 : MUX_CMP port map(	OP_IN => ex.op,
+	--										FLAGS_IN => ALU_FLAGS,
+	--										MUX2_IN => MUX2_dest,
+	--										B_OUT => MUX_CMP_dest);
 	
 	PipExMem : Pipeline port map(	CK =>	sys_clk,
 											OP_IN => ex.op,
@@ -210,6 +271,11 @@ begin
 											B_OUT => mem.b,
 											C_OUT => mem.c);
 											
+	MUX_3 : MUX3 port map(	A_IN => mem.a,
+									OP_IN => mem.op,
+									B_IN => mem.b,
+									DATA_A => MUX3_dest);													
+		
 	LC_1 : LC1 port map(	op => mem.op,
 								w => MEM_W);
 	
@@ -226,17 +292,17 @@ begin
 	LC_2 : LC2 port map(	op => re.op,
 								w => REG_W);
 	
-	MUX_3 : MUX3 port map(	OP_IN => re.op,
+	MUX_4 : MUX4 port map(	OP_IN => re.op,
 									B_IN => re.b,
 									DATA_IN => memcab.di,
-									DATA_OUT => MUX3_dest);
+									DATA_OUT => MUX4_dest);
 	
-	Memoire : bram16 port map(	clk => sys_clk,
-										rst => sys_rst,
-										di => memcab.di,
-										do => memcab.do,
-										a => mem.b, 
-										we => MEM_W);
+	Memoire : OwnMemory port map(	CK => sys_clk,
+											RST => sys_rst,
+											DI => memcab.di,
+											DO => mem.b,
+											A => MUX3_dest,
+											WE => MEM_W);
 	
 end Behavioral;
 

@@ -62,6 +62,7 @@ begin
 								 x"00";
 	
 	B_OUT(7 downto 0) <= C_IN when OP_IN = x"06" or OP_IN = x"07" else
+								x"00" when OP_IN = x"08" or OP_IN = x"0E" or OP_IN = x"0F" else
 								B_IN;
 	
 	C_OUT(15 downto 8) <= x"00";

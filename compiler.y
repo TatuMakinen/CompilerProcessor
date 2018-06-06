@@ -104,42 +104,42 @@ VariableDefinition:
 Expression:
   Expression tPLUS Expression
   {
-		add_instruction(assembly,LOAD, 1, peek(pile), -1);
+		add_instruction(assembly,LOAD, 2, peek(pile), -1);
     depiler(pile);
-    add_instruction(assembly,LOAD, 0, peek(pile), -1);
+    add_instruction(assembly,LOAD, 1, peek(pile), -1);
 		depiler(pile);
-    add_instruction(assembly,ADD, 0, 0, 1);
+    add_instruction(assembly,ADD, 0, 1, 2);
 		empiler(pile,"int","tmp",depth);
 		add_instruction(assembly,STORE, peek(pile), 0, -1);
 
   }
   | Expression tMINUS Expression
   {
-		add_instruction(assembly,LOAD, 1, peek(pile), -1);
+		add_instruction(assembly,LOAD, 2, peek(pile), -1);
 		depiler(pile);
-    add_instruction(assembly,LOAD,0,peek(pile),-1);
+    add_instruction(assembly,LOAD,1,peek(pile),-1);
 		depiler(pile);
-    add_instruction(assembly,SOU,0,0,1);
+    add_instruction(assembly,SOU,0,1,2);
 		empiler(pile,"int","tmp",depth);
 		add_instruction(assembly,STORE, peek(pile), 0, -1);
   }
   | Expression tMUL Expression
   {
-		add_instruction(assembly,LOAD, 1, peek(pile), -1);
-    depiler(pile);
-    add_instruction(assembly,LOAD,0,peek(pile),-1);
+		add_instruction(assembly,LOAD, 2, peek(pile), -1);
+    depiler(pile); 
+    add_instruction(assembly,LOAD,1,peek(pile),-1);
 		depiler(pile);
-    add_instruction(assembly,MUL,0,0,1);
+    add_instruction(assembly,MUL,0,1,2);
 		empiler(pile,"int","tmp",depth);
 		add_instruction(assembly,STORE, peek(pile), 0, -1);
   }
   | Expression tSLASH Expression
   {
-		add_instruction(assembly,LOAD, 1, peek(pile), -1);
+		add_instruction(assembly,LOAD, 2, peek(pile), -1); 
     depiler(pile);
-    add_instruction(assembly,LOAD,0,peek(pile),-1);
+    add_instruction(assembly,LOAD,1,peek(pile),-1);
 		depiler(pile);
-    add_instruction(assembly,DIV,0,0,1);
+    add_instruction(assembly,DIV,0,1,2);
 		empiler(pile,"int","tmp",depth);
 		add_instruction(assembly,STORE, peek(pile), 0, -1);
   }
@@ -198,23 +198,23 @@ StartElse:
 	}
 ;
 Boolean:
-  Expression tEQUAL tEQUAL Expression
-	{
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
+  Expression tEQUAL tEQUAL Expression 
+	{ 
+		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
     depiler(pile);
-    add_instruction(assembly,LOAD,1,peek(pile),-1);
+    add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
-		add_instruction(assembly,EQU,0,0,1);
+		add_instruction(assembly,EQU,0,1,2);
 		add_instruction(assembly,JMPC,-1,0,-1);
 		insertQueue(assembly->tailleEffective);
 	}
   | Expression tUNEQUAL Expression
 	{
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
+		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
     depiler(pile);
-    add_instruction(assembly,LOAD,1,peek(pile),-1);
+    add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
-		add_instruction(assembly,EQU,0,0,1);
+		add_instruction(assembly,EQU,0,1,2);
 		add_instruction(assembly,AFC,1,0,-1);	// To get inverse of EQU
 		add_instruction(assembly,EQU,0,0,1);
 		add_instruction(assembly,JMPC,-1,0,-1);
@@ -222,41 +222,41 @@ Boolean:
 	}
 	| Expression tLESS Expression
 	{
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
+		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
     depiler(pile);
-    add_instruction(assembly,LOAD,1,peek(pile),-1);
+    add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
-		add_instruction(assembly,INF,0,0,1);
+		add_instruction(assembly,INF,0,1,2);
 		add_instruction(assembly,JMPC,-1,0,-1);
 		insertQueue(assembly->tailleEffective);
 	}
 	| Expression tLESSEQUAL Expression
 	{
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
+		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
     depiler(pile);
-    add_instruction(assembly,LOAD,1,peek(pile),-1);
+    add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
-		add_instruction(assembly,INFE,0,0,1);
+		add_instruction(assembly,INFE,0,1,2);
 		add_instruction(assembly,JMPC,-1,0,-1);
 		insertQueue(assembly->tailleEffective);
 	}
 	| Expression tGREATER Expression
 	{
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
+		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
     depiler(pile);
-    add_instruction(assembly,LOAD,1,peek(pile),-1);
+    add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
-		add_instruction(assembly,SUP,0,0,1);
+		add_instruction(assembly,SUP,0,1,2);
 		add_instruction(assembly,JMPC,-1,0,-1);
 		insertQueue(assembly->tailleEffective);
 	}
 	| Expression tGREATEREQUAL Expression
 	{
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
+		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
     depiler(pile);
-    add_instruction(assembly,LOAD,1,peek(pile),-1);
+    add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
-		add_instruction(assembly,SUPE,0,0,1);
+		add_instruction(assembly,SUPE,0,1,2);
 		add_instruction(assembly,JMPC,-1,0,-1);
 		insertQueue(assembly->tailleEffective);
 	}
@@ -264,63 +264,63 @@ Boolean:
 InverseBoolean:
   Expression tEQUAL tEQUAL Expression
 	{
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
+		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
     depiler(pile);
-    add_instruction(assembly,LOAD,1,peek(pile),-1);
+    add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
-		add_instruction(assembly,EQU,0,0,1);
+		add_instruction(assembly,EQU,0,1,2);
 		add_instruction(assembly,JMPC,-1,0,-1);
 		insertQueue(assembly->tailleEffective);
 	}
   | Expression tUNEQUAL Expression
 	{
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
+		add_instruction(assembly,LOAD, 2, peek(pile), -1); 
     depiler(pile);
-    add_instruction(assembly,LOAD,1,peek(pile),-1);
+    add_instruction(assembly,LOAD,3,peek(pile),-1);
 		depiler(pile);
-		add_instruction(assembly,EQU,0,0,1);
-		add_instruction(assembly,AFC,1,0,-1);	// To get inverse of EQU
-		add_instruction(assembly,EQU,0,0,1);
+		add_instruction(assembly,EQU,1,2,3);
+		add_instruction(assembly,AFC,2,0,-1);	// To get inverse of EQU
+		add_instruction(assembly,EQU,0,1,2);
 		add_instruction(assembly,JMPC,-1,0,-1);
 		insertQueue(assembly->tailleEffective);
 	}
 	| Expression tLESS Expression
 	{
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
+		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
     depiler(pile);
-    add_instruction(assembly,LOAD,1,peek(pile),-1);
+    add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
-		add_instruction(assembly,SUP,0,0,1);
+		add_instruction(assembly,SUP,0,1,2);
 		add_instruction(assembly,JMPC,-1,0,-1);
 		insertQueue(assembly->tailleEffective);
 	}
 	| Expression tLESSEQUAL Expression
 	{
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
+		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
     depiler(pile);
-    add_instruction(assembly,LOAD,1,peek(pile),-1);
+    add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
-		add_instruction(assembly,SUPE,0,0,1);
+		add_instruction(assembly,SUPE,0,1,2);
 		add_instruction(assembly,JMPC,-1,0,-1);
 		insertQueue(assembly->tailleEffective);
 	}
 	| Expression tGREATER Expression
 	{
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
+		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
     depiler(pile);
-    add_instruction(assembly,LOAD,1,peek(pile),-1);
+    add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
-		add_instruction(assembly,INF,0,0,1);
+		add_instruction(assembly,INF,0,1,2);
 		add_instruction(assembly,JMPC,-1,0,-1);
 		insertQueue(assembly->tailleEffective);
 	}
 	| Expression tGREATEREQUAL Expression
 	{
-		add_instruction(assembly,LOAD, 0, peek(pile), -1);
+		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
     depiler(pile);
-    add_instruction(assembly,LOAD,1,peek(pile),-1);
+    add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
-		add_instruction(assembly,INFE,0,0,1);
+		add_instruction(assembly,INFE,0,1,2);
 		add_instruction(assembly,JMPC,-1,0,-1);
 		insertQueue(assembly->tailleEffective);
 	}
@@ -358,6 +358,8 @@ int main(void) {
     afficherPile(pileFunction);
 		display_struct(assembly);
 		save_assembly_to_file(assembly,"asm_code");
+		save_hex_to_file(assembly,"rom.hex");
+		save_hex_to_file(assembly,"/home/makinen/Processeur/rom1.hex");
 	}
 
 
