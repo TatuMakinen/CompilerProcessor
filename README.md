@@ -3,7 +3,7 @@ Whole pipeline from compilation of simple C-code to execution on FPGA was . Inte
 
 ## Compilateur:
 
-![Compiler.](https://raw.githubusercontent.com/TatuMakinen/CompilerProcessor/Compiler.png)
+![Compiler.](Compiler.png?raw=true "Title")
 * Variable definitions, assigment
 * arithmetic expressions
 * if/else
