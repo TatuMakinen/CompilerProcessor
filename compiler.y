@@ -334,8 +334,6 @@ int main(void) {
 	}else{
 		printf("Compile succesful!\n");
 		afficherPile(pile);
-    printf("Okdoc");
-    afficherPile(pileFunction);
 		display_struct(assembly);
 		save_assembly_to_file(assembly,"asm_code");
 		save_hex_to_file(assembly,"rom.hex");
