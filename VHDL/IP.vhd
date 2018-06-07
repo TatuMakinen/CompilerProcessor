@@ -33,23 +33,26 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 entity IP is
     Port ( CK : in  STD_LOGIC;
            RST : in  STD_LOGIC;
+			  ENABLE : in  STD_LOGIC;
            INST_ADR : out  STD_LOGIC_VECTOR (15 downto 0));
 end IP;
 
 architecture Behavioral of IP is
-signal temp,divide_counter: STD_LOGIC_VECTOR (15 downto 0);
+signal temp : STD_LOGIC_VECTOR (15 downto 0) :=x"0000";
+signal temp2 : STD_LOGIC_VECTOR (15 downto 0) :=x"0000";
+signal alea_counter : STD_LOGIC_VECTOR (3 downto 0) :=x"0";
 
 begin
-	INST_ADR<=temp;
+	INST_ADR <=temp;
 
-	process (CK,RST)
+	process
 	begin
-		if RST='1' then temp<=x"0000";divide_counter<=x"0000";
-			elsif rising_edge(CK) then 
-				if divide_counter > x"0000" then temp<=temp+1; divide_counter<=x"0000";
-				else divide_counter <= divide_counter+1;
-				end if;	
-		end if; 
+		wait until CK'event and CK='1';
+		if(RST ='1') then temp <= x"0000";temp2 <= x"0000";
+		elsif(ENABLE = '0') then alea_counter<=x"0";temp <= temp2;
+		elsif alea_counter < x"1" then alea_counter<=alea_counter+1;
+		else temp <= temp+1;temp2<=temp;
+		end if;	
 	end process;
 
 

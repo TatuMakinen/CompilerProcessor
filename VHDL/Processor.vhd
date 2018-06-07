@@ -22,7 +22,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx primitives in this code.
@@ -52,6 +52,7 @@ end record;
 component IP
 	Port(	CK : in STD_LOGIC;
 			RST : in STD_LOGIC;
+			ENABLE : in STD_LOGIC;
 			INST_ADR : out STD_LOGIC_VECTOR (15 downto 0));
 end component;
 
@@ -69,10 +70,20 @@ component Pipeline
 			  A_IN : in  STD_LOGIC_VECTOR (15 downto 0);
            B_IN : in  STD_LOGIC_VECTOR (15 downto 0);
            C_IN : in  STD_LOGIC_VECTOR (15 downto 0);
+			  ENABLE 	: in  STD_LOGIC;
 			  OP_OUT : out  STD_LOGIC_VECTOR (7 downto 0);
            A_OUT : out  STD_LOGIC_VECTOR (15 downto 0);
            B_OUT : out  STD_LOGIC_VECTOR (15 downto 0);
            C_OUT : out  STD_LOGIC_VECTOR (15 downto 0));
+end component;
+
+component AleaTreater
+	Port(		LIDIB : in STD_LOGIC_VECTOR (15 downto 0);
+				LIDIC : in STD_LOGIC_VECTOR (15 downto 0);
+				DIEXA : in STD_LOGIC_VECTOR (15 downto 0);
+				EXMEMA : in STD_LOGIC_VECTOR (15 downto 0);
+				RST : in STD_LOGIC;
+				ENABLE : out  STD_LOGIC);
 end component;
 
 component ALU
@@ -94,21 +105,6 @@ component Registery
 			  QB : out  STD_LOGIC_VECTOR (15 downto 0));
 end component;
 
-component bram16
-	Generic (
-		init_file : String := "none"; -- initialisation
-		adr_width : Integer := 11);
-	Port (
-		-- System
-		sys_clk : in std_logic;
-		sys_rst : in std_logic;
-		-- Master
-		di : out std_logic_vector(15 downto 0);
-		do : in std_logic_vector(15 downto 0);
-		a : in std_logic_vector(15 downto 0);
-		we : in std_logic);
-end component;
-
 component OwnMemory
 	Port ( 
 		CK : in  STD_LOGIC;
@@ -119,19 +115,13 @@ component OwnMemory
 		DI : out  STD_LOGIC_VECTOR (15 downto 0));
 end component;
 
-component bram32
-  generic (
-    init_file : String := "rom1.hex";
-    adr_width : Integer := 11);
-  port (
-  -- System
-  sys_clk : in std_logic;
-  sys_rst : in std_logic;
-  -- Master
-  di : out std_logic_vector(31 downto 0);
-  we : in std_logic;
-  a : in std_logic_vector(15 downto 0);
-  do : in std_logic_vector(31 downto 0));
+component OwnInstructionMemory
+	Generic ( 	DATA_BITS : natural := 32;
+					DEPTH : natural := 1024;
+					FILENAME : string := "rom1.hex");
+	Port (
+	   A    : in  std_logic_vector(15 downto 0);          
+	   DI   : out std_logic_vector(DATA_BITS-1 downto 0));
 end component;
 
 component LC1
@@ -186,22 +176,26 @@ signal QA_dest, QB_dest : std_logic_vector (15 downto 0);
 signal MUX1_dest, MUX2_dest, MUX_CMP_dest, MUX3_dest, MUX4_dest : std_logic_vector (15 downto 0);
 signal ALU_OUT: std_logic_vector (15 downto 0);
 signal ALU_FLAGS: std_logic_vector (15 downto 0);
-signal INST_IN: std_logic_vector (15 downto 0);
+signal INST_A: std_logic_vector (15 downto 0);
 signal INST_OUT,INST_DO: std_logic_vector (31 downto 0);
-signal INST_WE: std_logic;
+signal INST_WE, ENABLE_SIG: std_logic;
 
 begin
 
 	Compteur : IP port map(	CK => sys_clk,
+									ENABLE => ENABLE_SIG,
 									RST => sys_rst,
-									INST_ADR => INST_IN);
+									INST_ADR => INST_A);
+									
+	IM : OwnInstructionMemory port map( 	A => INST_A,
+														DI => INST_OUT);
 
-	InstructionMemoire: bram32 port map(	sys_clk => sys_clk,
-														sys_rst => sys_rst,
-														di => INST_OUT,
-														do => INST_DO,
-														a => INST_IN,
-														we => INST_WE);
+--	InstructionMemoire: bram32 port map(	sys_clk => sys_clk,
+--														sys_rst => sys_rst,
+--														di => INST_OUT,
+--														do => INST_DO,
+--														a => INST_A,
+--														we => INST_WE);
 
 	Dec : Decoder port map(	INS_DI => INST_OUT,
 									OP_OUT => li.op,
@@ -214,10 +208,18 @@ begin
 											A_IN => li.a,
 											B_IN => li.b,
 											C_IN => li.c,
+											ENABLE => ENABLE_SIG,
 											OP_OUT => di.op,
 											A_OUT => di.a,
 											B_OUT => di.b,
 											C_OUT => di.c);
+											
+	AleaT : AleaTreater port map(	LIDIB => li.b,
+											LIDIC => li.c,
+											DIEXA => di.a,
+											EXMEMA => ex.a,
+											RST => sys_rst,
+											ENABLE => ENABLE_SIG);
 											
 	Reg : Registery port map(	CK => sys_clk,
 										W => REG_W,
@@ -239,6 +241,7 @@ begin
 											A_IN => di.a,
 											B_IN => MUX1_dest,
 											C_IN => QB_dest,
+											ENABLE => '1',
 											OP_OUT => ex.op,
 											A_OUT => ex.a,
 											B_OUT => ex.b,
@@ -266,6 +269,7 @@ begin
 											A_IN => ex.a,
 											B_IN => MUX2_dest,
 											C_IN => ex.c,
+											ENABLE => '1',
 											OP_OUT => mem.op,
 											A_OUT => mem.a,
 											B_OUT => mem.b,
@@ -284,6 +288,7 @@ begin
 											A_IN => mem.a,
 											B_IN => mem.b,
 											C_IN => mem.c,
+											ENABLE => '1',
 											OP_OUT => re.op,
 											A_OUT => re.a,
 											B_OUT => re.b,

@@ -27,26 +27,6 @@ tGREATER tGREATEREQUAL tPG tPD tINT tVOID tID tEXP tFIRSTARG tPERCENTINT
 %left tMUL tSLASH
 %%
 
-Gotzo: VariableType tID itch{}
-  | Main itch;
-
-itch: RemFunction{}
-  | DefFunction;
-
-RemFunction:
-  | tPG VariableDeclaration tPD tSEMICOLON Gotzo{
-      //printf("Declaration de la fonction : '%s' \n", $2);
-      //empiler(pileFunction,type,$2,depth);
-  }
-  | tPG tPD tSEMICOLON Gotzo {
-      //printf("Declaration de la fonction : '%s' \n", $2);
-      //empiler(pileFunction,type,$2,depth);
-  }
-
-DefFunction:
-  | tPG tPD tAG Program tAD DefFunction {}
-  | tPG VariableDeclaration tPD tAG Program tAD itch{};
-
 Main:
   | tINT tMAIN tPG tPD tAG Program tAD {};
 Program:
@@ -359,7 +339,7 @@ int main(void) {
 		display_struct(assembly);
 		save_assembly_to_file(assembly,"asm_code");
 		save_hex_to_file(assembly,"rom.hex");
-		save_hex_to_file(assembly,"/home/makinen/Processeur/rom1.hex");
+		//save_hex_to_file(assembly,"/home/makinen/Processeur/rom1.hex");
 	}
 
 
