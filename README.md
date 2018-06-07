@@ -2,11 +2,12 @@
 Whole pipeline from compilation of simple C-code to execution on FPGA was . Interpretor is inc
 
 ## Compilateur:
+
+![Compiler.](https://raw.githubusercontent.com/TatuMakinen/CompilerProcessor/Compiler.png)
 * Variable definitions, assigment
 * arithmetic expressions
 * if/else
 * while
-
 ## Interpreter
 
 ## Processor
