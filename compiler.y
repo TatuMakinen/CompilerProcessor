@@ -42,7 +42,7 @@ Content:
   | VariableDeclaration {}
   | VariableDefinition {}
   | Assignment {}
-  | Print {}
+  //| Print {}
 ;
 // Variable type can be int, void or string
 VariableType:
@@ -305,18 +305,31 @@ InverseBoolean:
 		insertQueue(assembly->tailleEffective);
 	}
 ;
-
+/*
 Print:
   tPRINTF tPG tID tPD { printf("La variable a printé : %s \n", $3); }
   | tPRINTF tPG tQUOTE RemPrint tQUOTE tPD {}
-  | tPRINTF tPG tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA tNB tPD { printf("Nous printons : %d \n",$8); }
-  | tPRINTF tPG tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA tID tPD { printf("Nous printons : %s \n",$8); }
-  | tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tID tPD { printf("Nous printons : %s \n",$9); }
-  | tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tNB tPD { printf("Nous printons : %d \n",$9); }
+  | tPRINTF tPG tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA tNB tPD
+	{ 
+		printf("Nous printons : %d \n",$8); 
+	}
+  | tPRINTF tPG tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA tID tPD 
+	{ 
+		printf("Nous printons : %s \n",$8); 
+	}
+  | tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tID tPD 
+	{ 
+		printf("Nous printons : %s \n",$9); 
+	}
+  | tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tNB tPD 
+	{ 
+		printf("Nous printons : %d \n",$9); 
+	}
 ;
 RemPrint:
   | tID RemPrint { printf("Nous printons : %s \n",$1); }
 ;
+*/
 
 %%
 
