@@ -2,12 +2,11 @@
 Whole pipeline from compilation of simple C-code to execution on FPGA was . Interpretor is inc
 
 ## Compilateur:
-
-![Compiler.](Compiler.png?raw=true "Title")
 * Variable definitions, assigment
 * arithmetic expressions
 * if/else
 * while
+![compiler](Compiler.png?raw=true "Title")
 ## Interpreter
 
 ## Processor
@@ -16,7 +15,8 @@ Whole pipeline from compilation of simple C-code to execution on FPGA was . Inte
 * STORE, LOAD
 * EQU
 * Treatment of register read/write hazards between consequent instructions
-* 
+
+![processor](Processor.png?raw=true "Title")
 
 # 30.5. Prochaine fois:
 
