@@ -1,32 +1,21 @@
-# Compiler & Processor
-## Obligatory things TODO:
-* if/else
-* while (optional but do it ?)
-* functions (optional but do it)
+## Compiler, Interpreter & Processo
+Whole pipeline from compilation of simple C-code to execution on FPGA was . Interpretor is inc
+
+## Compilateur:
+* Variable definitions, assigment
 * arithmetic expressions
-* basic errors
-* interpreter
+* if/else
+* while
 
-## Optional things TODO:
-* errors in depth
-* embedded fonctions
-* types
-* pointers
-* structs
-* tables
-* preprocessor
-* just in time compilator
+## Interpreter
 
-# 14.5.
-
-* fonctions !
-* bonus: ptr, ternaires
-
-## Processeur
-
-* instructions -> recuperer valeurs dans les registres -> pipeline "reg" -> ALU -> pipeline -> memoire
-* conditions -> pause
-* chemin critique pour ameliorer la vitesse
+## Processor
+* AFC
+* ADD, SOU, MUL
+* STORE, LOAD
+* EQU
+* Treatment of register read/write hazards between consequent instructions
+* 
 
 # 30.5. Prochaine fois:
 
