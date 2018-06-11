@@ -190,13 +190,6 @@ begin
 	IM : OwnInstructionMemory port map( 	A => INST_A,
 														DI => INST_OUT);
 
---	InstructionMemoire: bram32 port map(	sys_clk => sys_clk,
---														sys_rst => sys_rst,
---														di => INST_OUT,
---														do => INST_DO,
---														a => INST_A,
---														we => INST_WE);
-
 	Dec : Decoder port map(	INS_DI => INST_OUT,
 									OP_OUT => li.op,
 									A_OUT => li.a,
@@ -258,16 +251,16 @@ begin
 									S_IN => ALU_OUT,
 									B_OUT => MUX2_dest);
 									
-	-- Does not work
-	--MUX_CMP1 : MUX_CMP port map(	OP_IN => ex.op,
-	--										FLAGS_IN => ALU_FLAGS,
-	--										MUX2_IN => MUX2_dest,
-	--										B_OUT => MUX_CMP_dest);
+	-- For EQU etc. - Not completed
+	MUX_CMP1 : MUX_CMP port map(	OP_IN => ex.op,
+											FLAGS_IN => ALU_FLAGS,
+											MUX2_IN => MUX2_dest,
+											B_OUT => MUX_CMP_dest);
 	
 	PipExMem : Pipeline port map(	CK =>	sys_clk,
 											OP_IN => ex.op,
 											A_IN => ex.a,
-											B_IN => MUX2_dest,
+											B_IN => MUX_CMP_dest,
 											C_IN => ex.c,
 											ENABLE => '1',
 											OP_OUT => mem.op,
