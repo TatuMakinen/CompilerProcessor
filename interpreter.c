@@ -9,19 +9,19 @@ void interpreter(Assembly * instructions){
 	while(i < instructions->tailleEffective){
 		instruction = instructions->asmo[i];
 		if (instruction->id == ADD){
-			registers[instruction->param[0]] = registers[instruction->param[1]] 
+			registers[instruction->param[0]] = registers[instruction->param[1]]
 			+ registers[instruction->param[2]];
 		}
 		if (instruction->id == MUL){
-			registers[instruction->param[0]] = registers[instruction->param[1]] 
+			registers[instruction->param[0]] = registers[instruction->param[1]]
 			* registers[instruction->param[2]];
 		}
 		if (instruction->id == SOU){
-			registers[instruction->param[0]] = registers[instruction->param[1]] 
+			registers[instruction->param[0]] = registers[instruction->param[1]]
 			- registers[instruction->param[2]];
 		}
 		if (instruction->id == DIV){
-			registers[instruction->param[0]] = registers[instruction->param[1]] 
+			registers[instruction->param[0]] = registers[instruction->param[1]]
 			/ registers[instruction->param[2]];
 		}
 		if (instruction->id == COP){
@@ -37,23 +37,23 @@ void interpreter(Assembly * instructions){
 			memory[instruction->param[0]] = registers[instruction->param[1]];
 		}
 		if (instruction->id == EQU){
-			registers[instruction->param[0]] = (registers[instruction->param[1]] == 
+			registers[instruction->param[0]] = (registers[instruction->param[1]] ==
 				registers[instruction->param[2]]) ? 1 : 0;
 		}
 		if (instruction->id == INF){
-			registers[instruction->param[0]] = (registers[instruction->param[1]] < 
+			registers[instruction->param[0]] = (registers[instruction->param[1]] <
 				registers[instruction->param[2]]) ? 1 : 0;
 		}
 		if (instruction->id == INFE){
-			registers[instruction->param[0]] = (registers[instruction->param[1]] <= 
+			registers[instruction->param[0]] = (registers[instruction->param[1]] <=
 				registers[instruction->param[2]]) ? 1 : 0;
 		}
 		if (instruction->id == SUP){
-			registers[instruction->param[0]] = (registers[instruction->param[1]] > 
+			registers[instruction->param[0]] = (registers[instruction->param[1]] >
 				registers[instruction->param[2]]) ? 1 : 0;
 		}
 		if (instruction->id == SUPE){
-			registers[instruction->param[0]] = (registers[instruction->param[1]] >= 
+			registers[instruction->param[0]] = (registers[instruction->param[1]] >=
 				registers[instruction->param[2]]) ? 1 : 0;
 		}
 		++i;
@@ -65,7 +65,7 @@ void interpreter(Assembly * instructions){
 				i = instruction->param[0];
 			}
 		}
-		
+
 	}
 }
 

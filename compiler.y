@@ -10,9 +10,7 @@
   int depth = 0;
 	int line = 0;
 	Pile* pile;
-  Pile* pileFunction;
 	Assembly* assembly;
-
 %}
 
 %union { char* str; int nb;}
@@ -27,25 +25,6 @@ tGREATER tGREATEREQUAL tPG tPD tINT tVOID tID tEXP tFIRSTARG tPERCENTINT
 %left tMUL tSLASH
 %%
 
-Gotzo: VariableType tID itch{}
-  | Main itch;
-
-itch: RemFunction{}
-  | DefFunction;
-
-RemFunction:
-  | tPG VariableDeclaration tPD tSEMICOLON Gotzo{
-      //printf("Declaration de la fonction : '%s' \n", $2);
-      //empiler(pileFunction,type,$2,depth);
-  }
-  | tPG tPD tSEMICOLON Gotzo {
-      //printf("Declaration de la fonction : '%s' \n", $2);
-      //empiler(pileFunction,type,$2,depth);
-  }
-
-DefFunction:
-  | tPG tPD tAG Program tAD DefFunction {}
-  | tPG VariableDeclaration tPD tAG Program tAD itch{};
 
 Main:
   | tINT tMAIN tPG tPD tAG Program tAD {};
@@ -53,12 +32,11 @@ Program:
   | Line Program {}
 ;
 Line:
-  Content tSEMICOLON {}
+  |Content tSEMICOLON {}
   | If {}
   | While {}
 ;
 Content:
-
   | VariableDeclaration {}
   | VariableDefinition {}
   | Assignment {}
@@ -126,7 +104,7 @@ Expression:
   | Expression tMUL Expression
   {
 		add_instruction(assembly,LOAD, 2, peek(pile), -1);
-    depiler(pile); 
+    depiler(pile);
     add_instruction(assembly,LOAD,1,peek(pile),-1);
 		depiler(pile);
     add_instruction(assembly,MUL,0,1,2);
@@ -135,7 +113,7 @@ Expression:
   }
   | Expression tSLASH Expression
   {
-		add_instruction(assembly,LOAD, 2, peek(pile), -1); 
+		add_instruction(assembly,LOAD, 2, peek(pile), -1);
     depiler(pile);
     add_instruction(assembly,LOAD,1,peek(pile),-1);
 		depiler(pile);
@@ -198,9 +176,9 @@ StartElse:
 	}
 ;
 Boolean:
-  Expression tEQUAL tEQUAL Expression 
-	{ 
-		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
+  Expression tEQUAL tEQUAL Expression
+	{
+		add_instruction(assembly,LOAD, 1, peek(pile), -1);
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -210,7 +188,7 @@ Boolean:
 	}
   | Expression tUNEQUAL Expression
 	{
-		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
+		add_instruction(assembly,LOAD, 1, peek(pile), -1);
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -222,7 +200,7 @@ Boolean:
 	}
 	| Expression tLESS Expression
 	{
-		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
+		add_instruction(assembly,LOAD, 1, peek(pile), -1);
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -232,7 +210,7 @@ Boolean:
 	}
 	| Expression tLESSEQUAL Expression
 	{
-		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
+		add_instruction(assembly,LOAD, 1, peek(pile), -1);
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -242,7 +220,7 @@ Boolean:
 	}
 	| Expression tGREATER Expression
 	{
-		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
+		add_instruction(assembly,LOAD, 1, peek(pile), -1);
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -252,7 +230,7 @@ Boolean:
 	}
 	| Expression tGREATEREQUAL Expression
 	{
-		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
+		add_instruction(assembly,LOAD, 1, peek(pile), -1);
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -264,7 +242,7 @@ Boolean:
 InverseBoolean:
   Expression tEQUAL tEQUAL Expression
 	{
-		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
+		add_instruction(assembly,LOAD, 1, peek(pile), -1);
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -274,7 +252,7 @@ InverseBoolean:
 	}
   | Expression tUNEQUAL Expression
 	{
-		add_instruction(assembly,LOAD, 2, peek(pile), -1); 
+		add_instruction(assembly,LOAD, 2, peek(pile), -1);
     depiler(pile);
     add_instruction(assembly,LOAD,3,peek(pile),-1);
 		depiler(pile);
@@ -286,7 +264,7 @@ InverseBoolean:
 	}
 	| Expression tLESS Expression
 	{
-		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
+		add_instruction(assembly,LOAD, 1, peek(pile), -1);
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -296,7 +274,7 @@ InverseBoolean:
 	}
 	| Expression tLESSEQUAL Expression
 	{
-		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
+		add_instruction(assembly,LOAD, 1, peek(pile), -1);
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -306,7 +284,7 @@ InverseBoolean:
 	}
 	| Expression tGREATER Expression
 	{
-		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
+		add_instruction(assembly,LOAD, 1, peek(pile), -1);
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -316,7 +294,7 @@ InverseBoolean:
 	}
 	| Expression tGREATEREQUAL Expression
 	{
-		add_instruction(assembly,LOAD, 1, peek(pile), -1); 
+		add_instruction(assembly,LOAD, 1, peek(pile), -1);
     depiler(pile);
     add_instruction(assembly,LOAD,2,peek(pile),-1);
 		depiler(pile);
@@ -346,7 +324,6 @@ void yyerror (char const *s) {
 
 int main(void) {
 	pile = initPile();
-  pileFunction = initPile();
 
 	assembly = initAsm();
   if(yyparse()) {
@@ -355,11 +332,9 @@ int main(void) {
 		printf("Compile succesful!\n");
 		afficherPile(pile);
     printf("Okdoc");
-    afficherPile(pileFunction);
 		display_struct(assembly);
 		save_assembly_to_file(assembly,"asm_code");
 		save_hex_to_file(assembly,"rom.hex");
-		save_hex_to_file(assembly,"/home/makinen/Processeur/rom1.hex");
 	}
 
 

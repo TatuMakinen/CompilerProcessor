@@ -19,5 +19,6 @@ int main() {
   while(a <5){
     a= a+1;
   }
-
+  printf("Je suis du texte %d",a);
+  printf("Moi %d aussi",b);
 }

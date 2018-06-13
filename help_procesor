@@ -1,0 +1,7 @@
+
+Conflits d'aléas :
+  Premier pipeline, deuxième écriture
+  Premier pipeline lecture, troisième écriture
+
+Bloquer la mémoire d'instructions, mettre un enable et sur le bram32 et sur le premier pipeline, mettre un nop
+Ajouter une autre entrée aux pipelines, pour insérer un nop au niveau du 2ème étage.
