@@ -80,10 +80,6 @@ BEGIN
    begin		
 
       -- insert stimulus here
-		
-		sys_rst <= '1';
-		wait for sys_clk_period;
-		sys_rst <= '0';
 
       wait;
    end process;

@@ -35,7 +35,7 @@ entity ALU is
 				A_IN : in  STD_LOGIC_VECTOR (15 downto 0);
 				B_IN : in  STD_LOGIC_VECTOR (15 downto 0);
 				R_OUT : out  STD_LOGIC_VECTOR (15 downto 0);
-				FLAGS_OUT: out  STD_LOGIC_VECTOR (15 downto 0));
+				FLAGS_OUT: out  STD_LOGIC_VECTOR (15 downto 0) := x"0000");
 end ALU;
 
 architecture Behavioral of ALU is
@@ -50,7 +50,7 @@ begin
 	Rmul 	<= A_IN*B_IN;
 	Radd 	<=	('0'&A_IN)+('0'&B_IN);
 	Rsub 	<=	('0'&A_IN)-('0'&B_IN);
-	R_OUT <=	Radd(15 downto 0) when CTRL_ALU = x"01" else
+	R <=	Radd(15 downto 0) when CTRL_ALU = x"01" else
 				Rmul(15 downto 0) when CTRL_ALU = x"02" else
 				Rsub(15 downto 0) when CTRL_ALU = x"03" else
 				B_IN 					when CTRL_ALU = x"08" else
@@ -67,6 +67,8 @@ begin
 	-- O - for signed arithmetics to detect errors
 	FLAGS_OUT(3)	<= '1' when A_IN(15) = B_IN(15) and not A_IN(15) = R(15) else 
 							'0';
+							
+	R_OUT <= R;
 
 end Behavioral;
 

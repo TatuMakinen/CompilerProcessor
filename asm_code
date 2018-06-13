@@ -6,14 +6,19 @@ LOAD 0 1;
 STORE 2 0;
 LOAD 0 0;
 STORE 3 0;
+<<<<<<< HEAD
 LOAD 2 3;
 LOAD 1 2;
 MUL 0 1 2;
+=======
+AFC 0 3;
+>>>>>>> 38dfbb8ca767744aeb30c1c535227945a844fea0
 STORE 4 0;
 LOAD 0 1;
 STORE 5 0;
 LOAD 0 0;
 STORE 6 0;
+<<<<<<< HEAD
 LOAD 0 4;
 STORE 7 0;
 LOAD 2 7;
@@ -63,11 +68,19 @@ JMP 66;
 AFC 0 3;
 STORE 1 0;
 LOAD 0 1;
+=======
+LOAD 2 6;
+LOAD 1 5;
+ADD 0 1 2;
+STORE 7 0;
+LOAD 0 7;
+>>>>>>> 38dfbb8ca767744aeb30c1c535227945a844fea0
 STORE 0 0;
 LOAD 0 0;
 STORE 1 0;
 AFC 0 5;
 STORE 2 0;
+<<<<<<< HEAD
 LOAD 1 2;
 LOAD 2 1;
 SUP 0 1 2;
@@ -83,3 +96,9 @@ STORE 5 0;
 LOAD 0 5;
 STORE 0 0;
 JMP 66;
+=======
+LOAD 2 2;
+LOAD 1 1;
+SOU 0 1 2;
+STORE 3 0;
+>>>>>>> 38dfbb8ca767744aeb30c1c535227945a844fea0
