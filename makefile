@@ -4,11 +4,7 @@ compiler.lex: compiler.l
 	flex compiler.l
 
 compiler.tab.c: compiler.y
-<<<<<<< HEAD
 	bison -d -v compiler.y
-=======
-	/home/makinen/bison/bison-3.0.4/src/bison -d -v compiler.y
->>>>>>> 38dfbb8ca767744aeb30c1c535227945a844fea0
 
 compiler: compiler.tab.c compiler.lex
 	gcc -std=c99 -o compiler lex.yy.c compiler.tab.c -ll -ly

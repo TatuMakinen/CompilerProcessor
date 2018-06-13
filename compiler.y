@@ -11,9 +11,11 @@
 	int line = 0;
 	Pile* pile;
 	Assembly* assembly;
+
 %}
 
 %union { char* str; int nb;}
+
 
 %token tIF tWHILE tELSE tMAIN tQUOTE tCHAINE tCONST tNB tRETURN tPRINTF tSTRING
 tAG tAD tSEMICOLON tCOMMA tPLUS tMINUS tSLASH tMUL tEQUAL tUNEQUAL tLESS tLESSEQUAL
@@ -25,25 +27,21 @@ tGREATER tGREATEREQUAL tPG tPD tINT tVOID tID tEXP tFIRSTARG tPERCENTINT
 %left tMUL tSLASH
 %%
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 38dfbb8ca767744aeb30c1c535227945a844fea0
 Main:
   | tINT tMAIN tPG tPD tAG Program tAD {};
 Program:
   | Line Program {}
 ;
 Line:
-  |Content tSEMICOLON {}
+  Content tSEMICOLON {}
   | If {}
   | While {}
 ;
 Content:
-  | VariableDeclaration {}
+  VariableDeclaration {}
   | VariableDefinition {}
   | Assignment {}
-  //| Print {}
+  | Print {}
 ;
 // Variable type can be int, void or string
 VariableType:
@@ -306,37 +304,38 @@ InverseBoolean:
 		insertQueue(assembly->tailleEffective);
 	}
 ;
-/*
+
 Print:
   tPRINTF tPG tID tPD { printf("La variable a printé : %s \n", $3); }
   | tPRINTF tPG tQUOTE RemPrint tQUOTE tPD {}
   | tPRINTF tPG tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA tNB tPD
-	{ 
-		printf("Nous printons : %d \n",$8); 
+	{
+		printf("Nous printons : %d \n",$8);
 	}
-  | tPRINTF tPG tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA tID tPD 
-	{ 
-		printf("Nous printons : %s \n",$8); 
+  | tPRINTF tPG tQUOTE tPERCENTINT RemPrint tQUOTE tCOMMA tID tPD
+	{
+		printf("Nous printons : %s \n",$8);
 	}
-  | tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tID tPD 
-	{ 
-		printf("Nous printons : %s \n",$9); 
+  | tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tID tPD
+	{
+		printf("Nous printons : %s \n",$9);
 	}
-  | tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tNB tPD 
-	{ 
-		printf("Nous printons : %d \n",$9); 
+  | tPRINTF tPG tQUOTE RemPrint tPERCENTINT RemPrint tQUOTE tCOMMA tNB tPD
+	{
+		printf("Nous printons : %d \n",$9);
 	}
 ;
 RemPrint:
   | tID RemPrint { printf("Nous printons : %s \n",$1); }
 ;
-*/
+
 
 %%
 
 void yyerror (char const *s) {
 	fprintf (stderr, "%s\n", s);
 }
+
 
 int main(void) {
 	pile = initPile();
@@ -347,20 +346,11 @@ int main(void) {
 	}else{
 		printf("Compile succesful!\n");
 		afficherPile(pile);
-<<<<<<< HEAD
     printf("Okdoc");
 		display_struct(assembly);
 		save_assembly_to_file(assembly,"asm_code");
 		save_hex_to_file(assembly,"rom.hex");
-=======
-		display_struct(assembly);
-		save_assembly_to_file(assembly,"asm_code");
-		save_hex_to_file(assembly,"rom.hex");
-		//save_hex_to_file(assembly,"/home/makinen/Processeur/rom1.hex");
->>>>>>> 38dfbb8ca767744aeb30c1c535227945a844fea0
 	}
-
-
 
   return 0;
 }
