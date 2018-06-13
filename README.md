@@ -1,13 +1,16 @@
-## Compiler, Interpreter & Processo
-Whole pipeline from compilation of simple C-code to execution on FPGA was . Interpretor is inc
+## Compiler, Interpreter & Processor
+Whole pipeline from compilation of simple C-code to execution on FPGA implemented. Compiler compiles c to assembly code in the file "asm_code" and the same code in hexadecimal in the file "rom.hex". The assembly code is used by the interpreter to simulate the execution, and the hexadesimal file by the FPGA to execute the code.
 
-## Compilateur:
+## Compilator:
 * Variable definitions, assigment
 * arithmetic expressions
 * if/else
 * while
+
 ![compiler](Compiler.png?raw=true "Title")
+
 ## Interpreter
+* For testing the assembly code with simple c-structures as registers/memory
 
 ## Processor
 * AFC
@@ -17,16 +20,3 @@ Whole pipeline from compilation of simple C-code to execution on FPGA was . Inte
 * Treatment of register read/write hazards between consequent instructions
 
 ![processor](Processor.png?raw=true "Title")
-
-# 30.5. Prochaine fois:
-
-* essaye à régler le cas de memoire - comment récriré sur les "tmp"
-* finis les commandes de l'interpreteur - les sauts etc.
-
-
-# 1.6
-
-- Functions (optional but do it)
-- Mémoire d'instruction avec verilog bram32 (fichier en .hex attention)
-- Gestion des aléas
-
