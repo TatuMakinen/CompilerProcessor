@@ -1,0 +1,25 @@
+all: compiler test_compiler interpreter test_interpreter
+
+compiler.lex: compiler.l
+	flex compiler.l
+
+compiler.tab.c: compiler.y
+	bison -d -v compiler.y
+
+compiler: compiler.tab.c compiler.lex
+	gcc -o compiler lex.yy.c compiler.tab.c -lfl
+
+test_compiler: compiler
+	./compiler.exe < testCompiler.c
+
+interpreter.lex: interpreter.l
+	flex interpreter.l
+
+interpreter.tab.c: interpreter.y
+	bison -d -v interpreter.y
+
+interpreter: interpreter.tab.c interpreter.lex
+	gcc -o interpreter lex.yy.c interpreter.tab.c -lfl
+
+test_interpreter:
+	./interpreter.exe < asm_code
